@@ -122,9 +122,12 @@ class Level3DragonGame {
       </div>
     `
     this.container.appendChild(intro)
-    document.getElementById('l3startBtn').addEventListener('click', () => {
+    const startBtn = document.getElementById('l3startBtn');
+    startBtn.addEventListener('click', () => {
+      if (this.running) return; // Prevent double clicks starting multiple game loops
+      this.running = true;
       if (window.playMusicTrack) window.playMusicTrack('battle');
-      gsap.to(intro,{opacity:0,duration:0.5,onComplete:()=>{intro.remove();this.running=true;this._loop()}})
+      gsap.to(intro,{opacity:0,duration:0.5,onComplete:()=>{intro.remove();this._loop()}})
     })
   }
   _loop() {

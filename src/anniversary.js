@@ -96,19 +96,24 @@ export function initAnniversaryCanvas() {
     particles.push(new Particle(Math.random() * width, Math.random() * height, false));
   }
 
+  let lastMove = 0;
   canvas.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
-    if (Math.random() > 0.5) {
+    const now = performance.now();
+    // Throttle heart creation to avoid massive lag
+    if (now - lastMove > 50 && Math.random() > 0.3) {
       particles.push(new Particle(mouse.x, mouse.y, true));
+      lastMove = now;
     }
   });
 
   canvas.addEventListener('click', (e) => {
-    for (let i = 0; i < 20; i++) {
+    // Limit burst to 10 particles instead of 20 to reduce lag
+    for (let i = 0; i < 10; i++) {
       let p = new Particle(e.clientX, e.clientY, true);
-      p.speedX = (Math.random() - 0.5) * 10;
-      p.speedY = (Math.random() - 0.5) * 10;
+      p.speedX = (Math.random() - 0.5) * 8;
+      p.speedY = (Math.random() - 0.5) * 8;
       p.decay = Math.random() * 0.02 + 0.01;
       particles.push(p);
     }
