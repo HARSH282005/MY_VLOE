@@ -1,7 +1,6 @@
 // rose.js
-document.addEventListener('DOMContentLoaded', () => {
-
-    const triggerOverlay = document.getElementById('triggerOverlay');
+// Modules are deferred, so DOM is already parsed
+const triggerOverlay = document.getElementById('triggerOverlay');
     const startButton = document.getElementById('startButton');
     const loadingBar = document.getElementById('loadingBar');
     const statusText = document.getElementById('statusText');
@@ -233,5 +232,3 @@ document.addEventListener('DOMContentLoaded', () => {
             startCardLoader();
         }, 400);
     };
-
-});

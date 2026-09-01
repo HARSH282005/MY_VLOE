@@ -872,8 +872,8 @@ function initTypewriter() {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  gsap.registerPlugin(ScrollTrigger);
+// Modules are deferred, so DOM is already parsed
+gsap.registerPlugin(ScrollTrigger);
   
   // Start the Minecraft torch (replaces cursor + rose trail)
   window.torch = new MinecraftTorch();
@@ -898,8 +898,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTorchToggle();
   initTorchHint();
   initMusic();
-});
-
 // ═══════════════════════════════════════════════════════════
 //  HEART RAIN & PETAL RAIN
 // ═══════════════════════════════════════════════════════════
