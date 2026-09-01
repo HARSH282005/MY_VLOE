@@ -722,3 +722,5 @@ class Level3DragonGame {
     })
   }
 }
+
+window.Level3DragonGame = Level3DragonGame;
