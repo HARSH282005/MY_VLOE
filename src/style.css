@@ -3330,7 +3330,9 @@ body.torch-off .mc-btn-pink {
 }
 .lit-up .lamp-body { 
   background-image: url('/sakura-lit.svg');
-  animation: turnOnSakura 2s forwards, breatheSakura 4s ease-in-out infinite 2s; 
+  filter: drop-shadow(0 0 10px rgba(255, 183, 197, 0.7));
+  animation: turnOnSakura 2s forwards, breatheSakura 4s ease-in-out infinite 2s;
+  will-change: transform, opacity;
 }
 
 /* Enable pointer events on lit-up */
@@ -3380,13 +3382,13 @@ body.torch-off .mc-btn-pink {
 }
 
 @keyframes turnOnSakura {
-  from { filter: drop-shadow(0 0 0px #ffb7c5); }
-  to { filter: drop-shadow(0 0 15px #ffb7c5) drop-shadow(0 0 30px #ff8da6); }
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes breatheSakura {
-  0%, 100% { filter: drop-shadow(0 0 15px #ffb7c5) drop-shadow(0 0 30px #ff8da6); }
-  50% { filter: drop-shadow(0 0 25px #ffb7c5) drop-shadow(0 0 45px #ff8da6) brightness(1.15); }
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.1); opacity: 1; }
 }
 
 @keyframes dropLamp {
