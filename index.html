@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For You, My Love ♡</title>
+    <meta name="description" content="A personal anniversary wish, crafted with love." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♡</text></svg>" />
+    <!-- Ambient music (hidden autoplay prevention workaround via user gesture) -->
+    <audio id="ambientMusic" loop preload="none">
+      <source src="/bg_music.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Battle music -->
+    <audio id="battleMusic" loop preload="none">
+      <source src="/battle_music.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Final slide music -->
+    <audio id="finalMusic" loop preload="none">
+      <source src="/Last Leaves of Autumn - Zleepyfred (Official Lyric Video) - Zleepyfred.mp3" type="audio/mpeg">
+    </audio>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Pacifico&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@500;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="stylesheet" href="/src/rose.css">
+  </head>
+  <body>
+    <!-- Live video background -->
+    <video class="bg-breeze" src="/cherry-blossom-house-minecraft-live-wallpaper.mp4" autoplay loop muted playsinline></video>
+    <div class="bg-overlay"></div>
+
+    <!-- Torch Toggle Button -->
+    <button id="torchToggleBtn" class="torch-toggle-btn" title="Toggle Torch">
+      <span class="torch-btn-icon">🔦</span>
+      <span class="torch-btn-label" id="torchBtnLabel">TORCH ON</span>
+    </button>
+
+    <!-- Music Toggle Button -->
+    <button id="musicToggleBtn" class="torch-toggle-btn music-toggle-btn" title="Toggle Music">
+      <span class="torch-btn-icon" id="musicBtnIcon">🔊</span>
+      <span class="torch-btn-label" id="musicBtnLabel">MUSIC ON</span>
+    </button>
+
+    <!-- Torch explore hint -->
+    <div id="torchHint" class="torch-hint">⛏ Move your torch to explore</div>
+
+    <!-- Interactive Canvas Background -->
+    <canvas id="heartCanvas"></canvas>
+
+    <!-- Page Loader -->
+    <div id="loader">
+      <div class="loader-heart">♡</div>
+      <p class="loader-text">Loading a moment just for you…</p>
+    </div>
+
+    <!-- Main Content -->
+    <main id="app">
+
+      <!-- Section 1: Hero / Game Intro -->
+      <section id="hero" class="section">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="title-line line-1">WELCOME</span>
+            <span class="title-line line-2 italic">PYALA BACHA</span>
+          </h1>
+        </div>
+        
+        <!-- Clean Scroll Indicator -->
+        <div class="scroll-indicator">
+          <span class="scroll-text">SCROLL</span>
+          <div class="scroll-arrow"></div>
+        </div>
+      </section>
+
+      <!-- Section 2: The Letter -->
+      <section id="letter" class="section">
+        <div class="glass-card letter-card" data-reveal>
+          <div class="card-ornament top-left">✦</div>
+          <div class="card-ornament top-right">✦</div>
+          <p class="letter-date">To the love of my life,</p>
+          <div class="letter-body" style="text-transform: uppercase;">
+            <p>HELLO MY BABULU, I MADE THIS WEBSITE TYPE GAME FOR YOU. IT'S EASY, JUST BE WITH ME MY LOVE. I KNOW YOU ARE MY PRETTY LITTLE BABY, I AM WITH YOU.</p>
+            <p>SO THERE WILL BE 3 LEVELS. IN TWO YOU HAVE TO KILL THE MOBS AND GET HALF HALF HEART . ASLO THEN IN LAST YOU WILL KIL DRAGON TO COMBINE THAT HEART</p>
+            <p>OHKI, ALL THE BEST SHONA!</p>
+          </div>
+          <div class="signature">
+            <span class="forever">FOREVER YOURS,</span><br>
+            <span class="name">HARSH 💫</span>
+          </div>
+        </div>
+        
+        <!-- Start Action -->
+        <div class="start-action">
+          <button id="startGameBtn" class="mc-btn-pink">START GAME</button>
+        </div>
+      </section>
+
+
+
+    </main>
+
+    <!-- Fireworks overlay -->
+    <canvas id="fireworksCanvas"></canvas>
+
+
+
+    <!-- Template for Slide 3: Character Selection -->
+    <template id="charSelectTemplate">
+      <!-- Section 3: CHARACTER SELECT -->
+      <section id="reasons" class="section char-select-section">
+        <div class="char-select-wrapper">
+
+          <!-- Header -->
+          <div class="char-select-header" data-reveal>
+            <div class="char-select-label">⚔ CHOOSE YOUR SKIN ⚔</div>
+            <h2 class="char-select-title">SELECT CHARACTER</h2>
+            <p class="char-select-sub">Pick your player. Your adventure begins after.</p>
+          </div>
+
+          <!-- Characters Grid -->
+          <div class="char-grid">
+
+            <!-- Skin 1: Pink Bunny -->
+            <div class="char-card" data-char="pink" data-reveal data-delay="0">
+              <div class="char-card-inner">
+                <div class="char-rarity rarity-rare">✦ RARE</div>
+                <div class="char-img-wrap">
+                  <img src="/skin_pink.jpg" alt="Pink Bunny" class="char-img" draggable="false"/>
+                  <div class="char-glow char-glow-pink"></div>
+                  <div class="char-select-ring"></div>
+                  <div class="char-sparkles">
+                    <span class="sparkle s1">✦</span>
+                    <span class="sparkle s2">♡</span>
+                    <span class="sparkle s3">✦</span>
+                    <span class="sparkle s4">♡</span>
+                  </div>
+                </div>
+                <div class="char-info">
+                  <div class="char-name">BUNNY GIRL</div>
+                  <div class="char-tag">🐰 Kawaii &nbsp;·&nbsp; ♡ Cute</div>
+                  <div class="char-stats">
+                    <div class="stat-bar"><span class="stat-label">CHARM</span><div class="stat-fill" style="--pct:95%; --clr:#ff85b3"></div></div>
+                    <div class="stat-bar"><span class="stat-label">SPEED</span><div class="stat-fill" style="--pct:70%; --clr:#ffcc44"></div></div>
+                    <div class="stat-bar"><span class="stat-label">POWER</span><div class="stat-fill" style="--pct:60%; --clr:#f2a7c3"></div></div>
+                  </div>
+                </div>
+                <button class="char-pick-btn" data-char="pink">SELECT ▶</button>
+              </div>
+            </div>
+
+            <!-- Skin 2: Dark Red -->
+            <div class="char-card" data-char="red" data-reveal data-delay="150">
+              <div class="char-card-inner">
+                <div class="char-rarity rarity-epic">★ EPIC</div>
+                <div class="char-img-wrap">
+                  <img src="/skin_red.jpg" alt="Dark Red" class="char-img" draggable="false"/>
+                  <div class="char-glow char-glow-red"></div>
+                  <div class="char-select-ring"></div>
+                  <div class="char-sparkles">
+                    <span class="sparkle s1">☠</span>
+                    <span class="sparkle s2">✦</span>
+                    <span class="sparkle s3">☠</span>
+                    <span class="sparkle s4">✦</span>
+                  </div>
+                </div>
+                <div class="char-info">
+                  <div class="char-name">DARK SOUL</div>
+                  <div class="char-tag">☠ Gothic &nbsp;·&nbsp; ♦ Edgy</div>
+                  <div class="char-stats">
+                    <div class="stat-bar"><span class="stat-label">CHARM</span><div class="stat-fill" style="--pct:65%; --clr:#ff4466"></div></div>
+                    <div class="stat-bar"><span class="stat-label">SPEED</span><div class="stat-fill" style="--pct:85%; --clr:#cc2233"></div></div>
+                    <div class="stat-bar"><span class="stat-label">POWER</span><div class="stat-fill" style="--pct:95%; --clr:#ff2244"></div></div>
+                  </div>
+                </div>
+                <button class="char-pick-btn" data-char="red">SELECT ▶</button>
+              </div>
+            </div>
+
+            <!-- Skin 3: Frog -->
+            <div class="char-card" data-char="frog" data-reveal data-delay="300">
+              <div class="char-card-inner">
+                <div class="char-rarity rarity-legendary">◆ LEGENDARY</div>
+                <div class="char-img-wrap">
+                  <img src="/skin_frog.jpg" alt="Frog" class="char-img" draggable="false"/>
+                  <div class="char-glow char-glow-frog"></div>
+                  <div class="char-select-ring"></div>
+                  <div class="char-sparkles">
+                    <span class="sparkle s1">🐸</span>
+                    <span class="sparkle s2">✦</span>
+                    <span class="sparkle s3">🍃</span>
+                    <span class="sparkle s4">✦</span>
+                  </div>
+                </div>
+                <div class="char-info">
+                  <div class="char-name">FROG WITCH</div>
+                  <div class="char-tag">🐸 Cottage &nbsp;·&nbsp; 🍃 Rare</div>
+                  <div class="char-stats">
+                    <div class="stat-bar"><span class="stat-label">CHARM</span><div class="stat-fill" style="--pct:80%; --clr:#7ec850"></div></div>
+                    <div class="stat-bar"><span class="stat-label">SPEED</span><div class="stat-fill" style="--pct:75%; --clr:#55aa33"></div></div>
+                    <div class="stat-bar"><span class="stat-label">POWER</span><div class="stat-fill" style="--pct:88%; --clr:#33cc66"></div></div>
+                  </div>
+                </div>
+                <button class="char-pick-btn" data-char="frog">SELECT ▶</button>
+              </div>
+            </div>
+
+          </div><!-- /char-grid -->
+
+          <!-- Confirm bar -->
+          <div class="char-confirm-bar" id="charConfirmBar">
+            <div class="char-chosen-preview">
+              <span class="chosen-icon" id="chosenIcon">?</span>
+              <span class="chosen-name" id="chosenName">No character selected</span>
+            </div>
+            <button class="char-confirm-btn" id="charConfirmBtn" disabled>CONFIRM &amp; CONTINUE ▶</button>
+          </div>
+
+        </div>
+      </section>
+    </template>
+
+    <!-- Template for Slide 4: Loading Screen -->
+    <template id="slide4Template">
+      <section id="promise" class="section loading-section">
+        <div class="loading-world-wrap">
+
+          <!-- Player HUD -->
+          <div class="loading-player-hud">
+            <div class="loading-avatar-box">
+              <img id="activePlayerImg" src="/skin_pink.jpg" alt="Active Player" class="loading-avatar-img" />
+              <div class="loading-avatar-glow"></div>
+            </div>
+            <div class="loading-player-info">
+              <span class="loading-hero-tag">HERO SELECTED</span>
+              <h3 id="activePlayerTitle" class="loading-hero-name">BUNNY GIRL</h3>
+            </div>
+          </div>
+
+          <!-- Main Loading Title -->
+          <div class="loading-title-block">
+            <div class="loading-world-label">⚔ ENTERING THE WORLD ⚔</div>
+            <h2 class="loading-main-title">LOADING...</h2>
+            <p class="loading-tip-text" id="loadingTip">Generating terrain blocks…</p>
+          </div>
+
+          <!-- Minecraft-style Loading Bar -->
+          <div class="mc-loading-bar-wrap">
+            <div class="mc-loading-bar" id="mcLoadingBar">
+              <div class="mc-loading-fill" id="mcLoadingFill"></div>
+              <div class="mc-loading-shimmer"></div>
+            </div>
+            <div class="mc-loading-percent" id="mcLoadingPercent">0%</div>
+          </div>
+
+          <!-- Block decorations -->
+          <div class="loading-blocks-row">
+            <span class="lb lb1">🌿</span>
+            <span class="lb lb2">🪨</span>
+            <span class="lb lb3">⚔</span>
+            <span class="lb lb4">💎</span>
+            <span class="lb lb5">🪨</span>
+            <span class="lb lb6">🌿</span>
+          </div>
+
+        </div>
+      </section>
+    </template>
+
+    <!-- Template for Slide 5: Game Start -->
+    <template id="finalTemplate">
+      <section id="final" class="section game-start-section">
+        <div class="game-start-wrap">
+
+          <!-- Level badge -->
+          <div class="gs-level-badge">⚔ LEVEL 1 · BEGIN ⚔</div>
+
+          <!-- Selected player banner -->
+          <div class="gs-player-banner">
+            <div class="gs-avatar-box">
+              <img id="gsPlayerImg" src="/skin_pink.jpg" alt="Player" class="gs-avatar-img" />
+              <div class="gs-avatar-ring"></div>
+            </div>
+            <div class="gs-player-meta">
+              <span class="gs-status-tag">ACTIVE HERO</span>
+              <h3 id="gsPlayerName" class="gs-player-name">BUNNY GIRL</h3>
+              <p class="gs-player-sub">Ready for battle!</p>
+            </div>
+          </div>
+
+          <!-- Game objective box -->
+          <div class="gs-objective-box">
+            <div class="gs-obj-label">🎯 MISSION OBJECTIVE</div>
+            <h2 class="gs-obj-title">DEFEAT THE MONSTER</h2>
+            <p class="gs-obj-desc">Hunt down the cave monster, collect the Enchanted Book,<br>and bring it back to craft the final gift. YOU GOT THIS, SHONA! 💖</p>
+          </div>
+
+          <!-- Stats row -->
+          <div class="gs-stats-row">
+            <div class="gs-stat-chip"><span class="gs-stat-icon">❤️</span><span class="gs-stat-val">20 HP</span></div>
+            <div class="gs-stat-chip"><span class="gs-stat-icon">⚔</span><span class="gs-stat-val">IRON SWORD</span></div>
+            <div class="gs-stat-chip"><span class="gs-stat-icon">🛡️</span><span class="gs-stat-val">FULL ARMOR</span></div>
+          </div>
+
+          <!-- Start Button -->
+          <button class="mc-btn-pink gs-start-btn" id="gsStartBtn">▶ PLAY LEVEL 1</button>
+
+        </div>
+      </section>
+    </template>
+
+    <!-- Template for Slide 6: Level 1 — Ghast Battle -->
+    <template id="slide6Template">
+      <section id="level1Game" class="game-level-section">
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- HUD Overlay -->
+        <div class="game-hud" id="gameHud">
+          <div class="hud-left">
+            <div class="hud-label">⚔ YOU</div>
+            <div class="hud-hearts" id="playerHearts"></div>
+          </div>
+          <div class="hud-center">
+            <div class="hud-level-tag">⚔ LEVEL 1 — NETHER ⚔</div>
+            <div class="hud-tip" id="gameTip">SPACE / TAP to throw trident · A D to move</div>
+          </div>
+          <div class="hud-right">
+            <div class="hud-label">👾 GHAST</div>
+            <div class="hud-hearts" id="ghastHearts"></div>
+          </div>
+        </div>
+
+        <!-- Mobile touch controls -->
+        <div class="mobile-game-controls">
+          <button class="mc-game-ctrl left-ctrl" id="ctrlLeft">◀</button>
+          <button class="mc-game-ctrl throw-ctrl" id="ctrlThrow">🔱 THROW</button>
+          <button class="mc-game-ctrl right-ctrl" id="ctrlRight">▶</button>
+        </div>
+      </section>
+    </template>
+
+    <!-- FINAL SLIDE: SCRAPBOOK DIARY -->
+    <section id="final-slide" style="display:none; opacity:0; position:relative; overflow-y:auto; overflow-x:hidden; height:100vh;">
+      <div class="final-fixed-bg">
+        <video id="finalVideoBg" autoplay muted loop playsinline>
+          <source src="/minecraft-sakura-oasis-moewalls-com.mp4" type="video/mp4">
+        </video>
+        <div class="final-vid-overlay"></div>
+      </div>
+      
+      <!-- Anniversary Interactive Canvas -->
+      <canvas id="anniversaryCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:auto;"></canvas>
+      <!-- Minecraft Hanging Lamps -->
+      <div class="lamps-group">
+        <div class="minecraft-lamp-container lamp-1"><div class="lamp-chain" style="height: 140px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-2"><div class="lamp-chain" style="height: 150px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-3"><div class="lamp-chain" style="height: 135px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-mid"><div class="lamp-chain" style="height: 100px;"></div><div class="lamp-body"><div class="lamp-inner"></div><div class="flower-click-hint">CLICK</div></div></div>
+        <div class="minecraft-lamp-container lamp-4"><div class="lamp-chain" style="height: 155px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-5"><div class="lamp-chain" style="height: 140px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-6"><div class="lamp-chain" style="height: 150px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-7"><div class="lamp-chain" style="height: 60px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-8"><div class="lamp-chain" style="height: 70px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-9"><div class="lamp-chain" style="height: 55px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-10"><div class="lamp-chain" style="height: 65px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-11"><div class="lamp-chain" style="height: 160px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-12"><div class="lamp-chain" style="height: 145px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-13"><div class="lamp-chain" style="height: 70px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-14"><div class="lamp-chain" style="height: 60px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-15"><div class="lamp-chain" style="height: 55px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-16"><div class="lamp-chain" style="height: 65px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <!-- 20 New Lamps -->
+        <div class="minecraft-lamp-container lamp-17"><div class="lamp-chain" style="height: 80px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-18"><div class="lamp-chain" style="height: 120px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-19"><div class="lamp-chain" style="height: 95px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-20"><div class="lamp-chain" style="height: 110px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-21"><div class="lamp-chain" style="height: 130px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-22"><div class="lamp-chain" style="height: 75px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-23"><div class="lamp-chain" style="height: 105px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-24"><div class="lamp-chain" style="height: 85px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-25"><div class="lamp-chain" style="height: 115px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-26"><div class="lamp-chain" style="height: 90px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-27"><div class="lamp-chain" style="height: 125px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-28"><div class="lamp-chain" style="height: 140px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-29"><div class="lamp-chain" style="height: 100px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-30"><div class="lamp-chain" style="height: 135px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-31"><div class="lamp-chain" style="height: 80px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-32"><div class="lamp-chain" style="height: 110px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-33"><div class="lamp-chain" style="height: 150px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-34"><div class="lamp-chain" style="height: 130px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-35"><div class="lamp-chain" style="height: 70px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-36"><div class="lamp-chain" style="height: 95px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+      
+        <!-- 50 More Lamps -->
+        <div class="minecraft-lamp-container lamp-37"><div class="lamp-chain" style="height: 125px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-38"><div class="lamp-chain" style="height: 210px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-39"><div class="lamp-chain" style="height: 150px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-40"><div class="lamp-chain" style="height: 196px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-41"><div class="lamp-chain" style="height: 140px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-42"><div class="lamp-chain" style="height: 137px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-43"><div class="lamp-chain" style="height: 204px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-44"><div class="lamp-chain" style="height: 162px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-45"><div class="lamp-chain" style="height: 172px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-46"><div class="lamp-chain" style="height: 156px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-47"><div class="lamp-chain" style="height: 149px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-48"><div class="lamp-chain" style="height: 152px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-49"><div class="lamp-chain" style="height: 144px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-50"><div class="lamp-chain" style="height: 153px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-51"><div class="lamp-chain" style="height: 128px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-52"><div class="lamp-chain" style="height: 190px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-53"><div class="lamp-chain" style="height: 175px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-54"><div class="lamp-chain" style="height: 196px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-55"><div class="lamp-chain" style="height: 211px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-56"><div class="lamp-chain" style="height: 191px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-57"><div class="lamp-chain" style="height: 143px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-58"><div class="lamp-chain" style="height: 134px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-59"><div class="lamp-chain" style="height: 157px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-60"><div class="lamp-chain" style="height: 126px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-61"><div class="lamp-chain" style="height: 192px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-62"><div class="lamp-chain" style="height: 164px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-63"><div class="lamp-chain" style="height: 186px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-64"><div class="lamp-chain" style="height: 134px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-65"><div class="lamp-chain" style="height: 192px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-66"><div class="lamp-chain" style="height: 206px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-67"><div class="lamp-chain" style="height: 173px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-68"><div class="lamp-chain" style="height: 146px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-69"><div class="lamp-chain" style="height: 161px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-70"><div class="lamp-chain" style="height: 138px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-71"><div class="lamp-chain" style="height: 147px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-72"><div class="lamp-chain" style="height: 179px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-73"><div class="lamp-chain" style="height: 149px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-74"><div class="lamp-chain" style="height: 188px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-75"><div class="lamp-chain" style="height: 138px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-76"><div class="lamp-chain" style="height: 196px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-77"><div class="lamp-chain" style="height: 196px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-78"><div class="lamp-chain" style="height: 175px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-79"><div class="lamp-chain" style="height: 180px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-80"><div class="lamp-chain" style="height: 180px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-81"><div class="lamp-chain" style="height: 132px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-82"><div class="lamp-chain" style="height: 131px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-83"><div class="lamp-chain" style="height: 190px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-84"><div class="lamp-chain" style="height: 195px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-85"><div class="lamp-chain" style="height: 217px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+        <div class="minecraft-lamp-container lamp-86"><div class="lamp-chain" style="height: 190px;"></div><div class="lamp-body"><div class="lamp-inner"></div></div></div>
+      </div>
+
+      <!-- Anniversary Text Overlay -->
+      <div class="anniversary-text-container" style="position:absolute; top:72%; left:50%; transform:translate(-50%, -50%); text-align:center; z-index:20; pointer-events:none; width: 100%; opacity: 0;">
+        <h1 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; font-size: 2rem; color: #FFF8E7; text-shadow: 2px 2px 0 #333, -2px -2px 0 #333, 2px -2px 0 #333, -2px 2px 0 #333, 3px 3px 0 #C08081, 4px 4px 0 #C08081, 5px 5px 0 #C08081, 6px 6px 0 #9E6768, 7px 7px 0 #9E6768, 8px 8px 0 #9E6768, 9px 9px 0 #7D4F50, 0 0 20px rgba(192,128,129,0.8); margin-bottom: 20px;">Happy Anniversary, My Love!</h1>
+        <p style="font-family: 'Minecrafter', 'Press Start 2P', monospace; font-size: 1.2rem; color: #FFF8E7; text-shadow: 2px 2px 0 #333, -2px -2px 0 #333, 2px -2px 0 #333, -2px 2px 0 #333, 3px 3px 0 #C08081, 4px 4px 0 #9E6768, 5px 5px 0 #7D4F50, 0 0 15px rgba(192,128,129,0.8);">You are my rarest treasure.</p>
+        <img id="finalLetter" src="/envelope.png" style="width: 320px; margin-top: 15px; display: inline-block; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.6)); pointer-events: auto; cursor: pointer;" alt="Love Letter Envelope">
+      </div>
+    </section>
+
+    <!-- The Letter Slide -->
+    <section id="letter-content-slide" class="section" style="display:none; position:relative; overflow-y:auto; overflow-x:hidden; height:100vh; background:url('/letter_bg_3.jpg') no-repeat center center; background-size:cover; color:#7D4F50;">
+      
+      <!-- Vintage Torn Corners -->
+      <img src="/corner_tl_new.png" class="vintage-corner corner-top-left" alt="Top Left Corner">
+      <img src="/corner_tr_new.png" class="vintage-corner corner-top-right" alt="Top Right Corner">
+      <img src="/corner_bl_new_3.png" class="vintage-corner corner-bottom-left" alt="Bottom Left Corner">
+      <img src="/corner_br_new.png" class="vintage-corner corner-bottom-right" alt="Bottom Right Corner">
+      <img src="/white_lilies.png" class="vintage-corner side-sticker-left animate-sway-horizontal" alt="Side Sticker">
+      <img src="/peonies_quote.png" class="vintage-corner side-sticker-right animate-sway-horizontal" alt="Side Sticker Right">
+      <img src="/quote_sticker.png" class="vintage-corner side-sticker-bottom-left animate-sway-horizontal" alt="Quote Sticker">
+      <img src="/clouds.png" class="vintage-corner side-sticker-top-center animate-sway-horizontal" alt="Clouds Sticker">
+      <img src="/flower.png" class="vintage-corner side-sticker-bottom-right-inner animate-spin-slow" alt="Flower Sticker">
+      <img src="/center_note.png" class="vintage-corner center-sticker" alt="Center Note Sticker">
+      <div class="center-text-container">
+        <span class="beautiful-text">letters for you</span>
+      </div>
+      <style>
+        .swaying-cat {
+          animation: sway 4s ease-in-out infinite alternate;
+          transform-origin: bottom center;
+        }
+        .swaying-hanging {
+          animation: sway 4s ease-in-out infinite alternate;
+          transform-origin: top center;
+        }
+        @keyframes sway {
+          0% { transform: rotate(-5deg); }
+          100% { transform: rotate(5deg); }
+        }
+        @keyframes vinyl-slideshow {
+          0%, 25% { opacity: 1; }
+          33%, 92% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        .slide-img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 270px;
+          height: auto;
+          /* Shift slightly left to match the square part of the vinyl card */
+          transform: translate(-58%, -50%) rotate(3deg);
+          z-index: 3;
+          filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.3));
+          opacity: 0;
+          animation: vinyl-slideshow 6s infinite;
+        }
+
+        @keyframes popInLetter {
+          0% { transform: scale(0); opacity: 0; }
+          70% { transform: scale(1.2); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .small-letter-wrapper {
+          position: absolute;
+          z-index: 9999;
+          cursor: pointer;
+        }
+        .small-letter-wrapper img {
+          width: 150px;
+          opacity: 0;
+          animation: popInLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+          filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
+        }
+      </style>
+      
+      <div id="scrapbook-items-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998;">
+      
+      <!-- Headline Text -->
+      <h2 style="position: absolute; top: 2%; left: 50%; transform: translateX(-50%); font-family: 'Minecrafter', 'Press Start 2P', monospace; font-weight: normal; color: #6B705C; font-size: 2.2em; text-align: center; text-shadow: 1px 1px 0 #4B5040, 2px 2px 0 #4B5040, 3px 3px 0 #4B5040, 4px 4px 0 #2A2F22, 5px 5px 0 #2A2F22, 0 5px 10px rgba(0,0,0,0.4); z-index: 10; width: 90%;">
+        HI SHONA BACHA YOU HAVE TO FIND AND READ ALL 4 SMALL NOTES
+      </h2>
+
+      <!-- 4 Small Letters placed around center note -->
+      <div class="small-letter-wrapper" style="top: 20%; left: 25%; transform: rotate(-12deg);" onclick="openNote(1)">
+        <img src="/small_letter.png" style="animation-delay: 1.5s;" alt="Small Letter">
+      </div>
+      <div class="small-letter-wrapper" style="top: 25%; right: 25%; transform: rotate(15deg);" onclick="openNote(2)">
+        <img src="/small_letter.png" style="animation-delay: 3s;" alt="Small Letter">
+      </div>
+      <div class="small-letter-wrapper" style="bottom: 25%; left: 25%; transform: rotate(-8deg);" onclick="openNote(3)">
+        <img src="/small_letter.png" style="animation-delay: 4.5s;" alt="Small Letter">
+      </div>
+      <div class="small-letter-wrapper" style="bottom: 20%; right: 25%; transform: rotate(10deg);" onclick="openNote(4)">
+        <img src="/small_letter.png" style="animation-delay: 6s;" alt="Small Letter">
+      </div>
+
+      <!-- Vinyl Card and Slideshow -->
+      </div> <!-- End of scrapbook-items-container -->
+
+      <!-- Big Letter Container -->
+      <div id="big-letter-container" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; justify-content: center; align-items: center; z-index: 100;">
+        <img src="/small_letter.png" onclick="openFinalNote()" style="width: 700px; cursor: pointer; filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); animation: popInLetter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;" alt="The Big Letter">
+      </div>
+
+      <!-- The Final Big Note -->
+      <div id="final-big-note" style="display: none; position: absolute; top: 5%; left: 50%; transform: translateX(-50%); width: 95vw; max-width: 600px; height: 90vh; background: url('/big_note_bg.jpg') no-repeat center center; background-size: 100% 100%; z-index: 200; padding: 120px 40px 40px 40px; box-sizing: border-box; text-align: center; flex-direction: column; justify-content: flex-start; align-items: center; animation: popInLetter 1s forwards; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));">
+        <h1 id="final-note-heading" style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #5c3a21; font-size: 3em; margin-bottom: 20px;">my princess</h1>
+        <div id="final-note-text" style="font-family: 'Caveat', cursive; color: #4a2e1b; font-size: 1.8em; line-height: 1.3; font-weight: bold; overflow-y: auto; text-align: left; padding: 0 10px;">
+          Hello my pretty little princess.<br><br>
+          First of all, happy anniversary, my love! I am so incredibly happy that you are my princess. We've faced so many hurdles from the first day until now, and I feel truly blessed to have had you by my side through every single one of them.<br><br>
+          We have created so many beautiful moments together. From the very beginning—staying up late just to talk, falling asleep on video calls, and sending each other gifts. I have seen every side of you: happy, angry, crying, and laughing out loud. I’ve seen your caring side, your loving side, your protective "mumma" side, and your adorable baby side. I know you better than I will ever know anyone else.<br><br>
+          All of these memories are like pictures saved in my heart, and they will always be there, my bacha. I really love you so much.<br><br>
+          Once again, HAPPY ANNIVERSARY MY LOVE!
+        </div>
+        
+        <!-- Blended Click Open Button with Rose Text -->
+        <div style="position: absolute; bottom: 35px; right: 45px; display: flex; align-items: center; gap: 15px;">
+          <span style="font-family: 'Caveat', cursive; color: #4a2e1b; font-size: 1.8em; font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.7);">ROSE FOR YOU</span>
+          <span style="font-family: 'Pacifico', cursive; color: #fff; background-color: #a11447; font-size: 1.8em; cursor: pointer; padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="openBlankSlide()">Click Open ➔</span>
+        </div>
+      </div>
+
+      <div style="padding: 40px; text-align: center; max-width: 800px; margin: 0 auto; position: relative; z-index: 10; text-shadow: 1px 1px 0 rgba(255,255,255,0.7);">
+      </div>
+
+      <!-- The Secret Note -->
+      <div id="secret-note-1" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+        <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(1)">×</span>
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+          <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">Always yours</h2>
+          <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.2; color: #5c0834; margin: 0;">no matter what shoan bacha i will always love you and there will be oonly one person in my heart is you only</p>
+        </div>
+      </div>
+
+      <!-- The Secret Note 2 -->
+      <div id="secret-note-2" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+        <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(2)">×</span>
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+          <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">I MISS YOU ALLOT BABULU</h2>
+          <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.2; color: #5c0834; margin: 0;">NO MATTER WHAT HOW MUCH DO I TRY TO BE BUSY MAKE MY MIND BUSY TO JUST MAKE HABBIT BUT MY HEART ALWAYS MISS YOU AND CRAVE FRO YOU BABY</p>
+        </div>
+      </div>
+
+      <!-- The Secret Note 3 -->
+      <div id="secret-note-3" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+        <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(3)">×</span>
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+          <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">I LOVE YOU MUCH MOLE SHONA</h2>
+          <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.1; color: #5c0834; margin: 0;">BABY I REALLLLLLLLLLLLYYYYYYY LOVEEE YOU ALLOT NO MATTER HOW FAR WE WILL GO BUT I WILL ALWAY LOVE YOU MORE THAN ANYONE FROM THE FIRST DAY OF OUR RELATIONSHIP UPTO MY LAST BREATH I WILL LOVE YOU ONLY AND ALWASYS</p>
+        </div>
+      </div>
+
+      <!-- The Secret Note 4 -->
+      <div id="secret-note-4" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+        <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(4)">×</span>
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+          <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">EFFORTS</h2>
+          <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.1; color: #5c0834; margin: 0;">IK WE BOTH DID ALLOT OF EFFORTS AND YOU DID WAY NUCH NORE THANA ME I ALWAYS FEEL BLESSED AAP JB TK BHI MERE SAT THE SBB SE KHASTE I NEVER WANT TO LOSE YOU AND THIS WEBSITE I MADE ITS JUST NTG INFRONT OF YIUR EFFORTS</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blank Final Slide -->
+    <section id="blank-final-slide" style="display: none; width: 100vw; height: 100vh; background-color: #000; position: absolute; top: 0; left: 0; z-index: 1000; justify-content: center; align-items: center;">
+      <div class="vignette"></div>
+
+      <div class="spotlight"></div>
+      <div class="ambient-light" id="ambientLight"></div>
+
+      <div class="trigger-overlay" id="triggerOverlay">
+          <div class="glass-card">
+              <div class="card-glow"></div>
+              <div class="rose-icon">🌹</div>
+              <h2 class="title">for love</h2>
+              <div class="loading-bar-container">
+                  <div class="loading-bar" id="loadingBar"></div>
+              </div>
+              <p class="status-text" id="statusText">Ready to compile...</p>
+              <button class="start-button" id="startButton" disabled>
+                  <span class="btn-text">Tap to Bloom</span>
+                  <span class="btn-shine"></span>
+              </button>
+          </div>
+      </div>
+
+      <div class="scene">
+          <div class="rose-wrapper" id="roseWrapper">
+              <div class="stem-group">
+                  <div class="stem" id="stem">
+                      <div class="stem-highlight"></div>
+                  </div>
+                  <div class="thorn thorn-1" id="thorn1"></div>
+                  <div class="thorn thorn-2" id="thorn2"></div>
+                  <div class="leaf leaf-left" id="leafLeft">
+                      <div class="leaf-vein"></div>
+                  </div>
+                  <div class="leaf leaf-right" id="leafRight">
+                      <div class="leaf-vein"></div>
+                  </div>
+              </div>
+
+              <div class="calyx" id="calyx"></div>
+
+              <div class="rose-head" id="roseHead">
+                  <div class="rose-glow"></div>
+                  <div class="rose-glow-inner"></div>
+              </div>
+          </div>
+      </div>
+
+      <div class="end-text" id="endText">
+          <p class="tagline" id="tagline">I LOVE YOU INFINITY</p>
+          <span class="rose-emoji">🌹</span>
+      </div>
+
+      <div id="fallingPetals"></div>
+    </section>
+
+    <!-- Script for Note Logic -->
+    <script>
+      const openedNotesSet = new Set();
+      
+      function openNote(id) {
+        for(let i=1; i<=4; i++) {
+          if (i !== id) {
+            document.getElementById(`secret-note-${i}`).style.display = 'none';
+          }
+        }
+        document.getElementById(`secret-note-${id}`).style.display = 'block';
+        openedNotesSet.add(id);
+      }
+      
+      function closeNote(id) {
+        document.getElementById(`secret-note-${id}`).style.display = 'none';
+        if(openedNotesSet.size === 4) {
+          // All 4 have been opened. Hide everything and show the big letter.
+          document.getElementById('scrapbook-items-container').style.display = 'none';
+          document.getElementById('big-letter-container').style.display = 'flex';
+        }
+      }
+
+      function openFinalNote() {
+        document.getElementById('big-letter-container').style.display = 'none';
+        document.getElementById('final-big-note').style.display = 'flex';
+      }
+
+      function openBlankSlide() {
+        document.getElementById('letter-content-slide').style.display = 'none';
+        document.getElementById('blank-final-slide').style.display = 'flex';
+        if(window.startRoseLoader) {
+            window.startRoseLoader();
+        }
+      }
+    </script>
+
+    <!-- Flower Curtain Overlay -->
+    <div id="flowerCurtain"></div>
+
+    <!-- Scripts -->
+    <script src="/src/level3.js"></script>
+    <script type="module" src="/src/main.js"></script>
+    <script src="/src/rose.js"></script>
+  </body>
+</html>

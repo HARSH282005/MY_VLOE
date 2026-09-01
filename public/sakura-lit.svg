@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" shape-rendering="crispEdges">
+  <style>
+    .petal { fill: #ffb7c5; stroke: #ff8da6; stroke-width: 4; stroke-linejoin: miter; }
+    .center { fill: #ffcc00; }
+    .highlight { fill: #ffffff; opacity: 0.6; }
+  </style>
+  <g id="petals">
+    <g>
+      <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" />
+      <path class="highlight" d="M 45 45 L 35 25 L 40 15 L 50 25 Z" />
+    </g>
+    <g transform="rotate(72 50 50)">
+      <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" />
+      <path class="highlight" d="M 45 45 L 35 25 L 40 15 L 50 25 Z" />
+    </g>
+    <g transform="rotate(144 50 50)">
+      <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" />
+      <path class="highlight" d="M 45 45 L 35 25 L 40 15 L 50 25 Z" />
+    </g>
+    <g transform="rotate(216 50 50)">
+      <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" />
+      <path class="highlight" d="M 45 45 L 35 25 L 40 15 L 50 25 Z" />
+    </g>
+    <g transform="rotate(288 50 50)">
+      <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" />
+      <path class="highlight" d="M 45 45 L 35 25 L 40 15 L 50 25 Z" />
+    </g>
+  </g>
+  <rect class="center" x="40" y="40" width="20" height="20" />
+</svg>

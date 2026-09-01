@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" shape-rendering="crispEdges">
+  <style>
+    .petal { fill: #805c6d; stroke: #4d2b3d; stroke-width: 4; stroke-linejoin: miter; }
+    .center { fill: #806600; }
+  </style>
+  <g id="petals">
+    <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" />
+    <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" transform="rotate(72 50 50)" />
+    <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" transform="rotate(144 50 50)" />
+    <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" transform="rotate(216 50 50)" />
+    <path class="petal" d="M 45 45 L 25 20 L 40 5 L 50 15 L 60 5 L 75 20 L 55 45 Z" transform="rotate(288 50 50)" />
+  </g>
+  <rect class="center" x="40" y="40" width="20" height="20" />
+</svg>
