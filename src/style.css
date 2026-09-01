@@ -3330,9 +3330,14 @@ body.torch-off .mc-btn-pink {
 }
 .lit-up .lamp-body { 
   background-image: url('/sakura-lit.svg');
-  filter: drop-shadow(0 0 10px rgba(255, 183, 197, 0.7));
+  /* Removed drop-shadow here because moving 86 elements with SVG filters causes extreme lag */
   animation: turnOnSakura 2s forwards, breatheSakura 4s ease-in-out infinite 2s;
   will-change: transform, opacity;
+}
+
+/* Only the center lamp gets the expensive glow filter */
+.lit-up .lamp-mid .lamp-body {
+  filter: drop-shadow(0 0 15px rgba(255, 183, 197, 0.8));
 }
 
 /* Enable pointer events on lit-up */
