@@ -518,6 +518,58 @@
           animation: popInLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
           filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
         }
+
+        /* --- MOBILE FIXES FOR THIS SLIDE --- */
+        @media (max-width: 768px) {
+          #scrapbook-items-container h2 {
+            font-size: 1.2em !important;
+            top: 8% !important;
+            line-height: 1.4 !important;
+          }
+          .small-letter-wrapper img {
+            width: 100px !important;
+          }
+          .small-letter-wrapper:nth-child(2) { top: 25% !important; left: 10% !important; }
+          .small-letter-wrapper:nth-child(3) { top: 35% !important; right: 10% !important; }
+          .small-letter-wrapper:nth-child(4) { bottom: 35% !important; left: 10% !important; }
+          .small-letter-wrapper:nth-child(5) { bottom: 25% !important; right: 10% !important; }
+          
+          .vintage-corner {
+            transform: scale(0.65) !important;
+            opacity: 0.7 !important;
+          }
+          .center-sticker {
+            max-width: 90vw !important;
+          }
+          .center-text-container .beautiful-text {
+            font-size: 2.5rem !important;
+          }
+          
+          /* Fix Secret Notes */
+          [id^="secret-note-"] {
+            width: 90vw !important;
+            height: 70vh !important;
+            max-height: 600px !important;
+          }
+          [id^="secret-note-"] h2 {
+            font-size: 1.2em !important;
+          }
+          [id^="secret-note-"] p {
+            font-size: 1.1em !important;
+          }
+          
+          /* Fix Final Note */
+          #final-big-note {
+            width: 95vw !important;
+            padding: 80px 20px 20px 20px !important;
+          }
+          #final-note-heading {
+            font-size: 2em !important;
+          }
+          #final-note-text {
+            font-size: 1.2em !important;
+          }
+        }
       </style>
       
       <div id="scrapbook-items-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998;">
