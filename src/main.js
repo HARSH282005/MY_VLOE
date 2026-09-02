@@ -1178,9 +1178,9 @@ function initCharSelect() {
 
                 const meta = charMeta[window.selectedCharacter]
                 const skinImgMap = {
-                  pink: window.processedSprites?.pink || '/sprite_pink.jpg',
-                  red:  window.processedSprites?.red  || '/sprite_red.jpg',
-                  frog: window.processedSprites?.frog || '/sprite_frog.jpg'
+                  pink: window.processedSprites?.pink || '/sprite_pink.png',
+                  red:  window.processedSprites?.red  || '/sprite_red.png',
+                  frog: window.processedSprites?.frog || '/sprite_frog.png'
                 }
 
                 // Update avatar + name in loading screen
@@ -1362,7 +1362,7 @@ function launchSlide6(app, charMeta) {
   if (!canvas) return
 
   const skinKey = window.selectedCharacter || 'pink'
-  const spriteSheetMap = { pink: '/sprite_pink.jpg', red: '/sprite_red.jpg', frog: '/sprite_frog.jpg' }
+  const spriteSheetMap = { pink: '/sprite_pink.png', red: '/sprite_red.png', frog: '/sprite_frog.png' }
 
   const game = new Level1Game(canvas, window.processedSprites?.[skinKey] || spriteSheetMap[skinKey], skinKey)
   window.currentGame = game
@@ -3121,7 +3121,7 @@ class Level2Game {
     pCvs.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;'
     slide.appendChild(pCvs)
 
-    slide.innerHTML += `
+    slide.insertAdjacentHTML('beforeend', `
       <div style="text-align:center;padding:2rem;max-width:720px;position:relative;z-index:2;">
 
         <div style="font-family:var(--font-pixel);font-size:clamp(0.55rem,2vw,0.8rem);
@@ -3131,7 +3131,7 @@ class Level2Game {
         </div>
 
         <!-- Right Heart Piece (matches Level 1 pixel style, mirrored) -->
-        <div id="halfHeartAnim" style="margin-bottom:2rem;opacity:0;transform:scale(0.5);">
+        <div id="halfHeartAnim" style="margin-bottom:2rem;transform:scale(1);">
           <div style="
             display:inline-block;
             filter:drop-shadow(0 0 18px rgba(220,0,0,0.9)) drop-shadow(0 0 6px rgba(255,60,60,0.6));
@@ -3186,7 +3186,7 @@ class Level2Game {
         </div>
 
         <h2 style="font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.5rem);
-          color:#fff;line-height:1.4;margin-bottom:1.5rem;opacity:0;
+          color:#fff;line-height:1.4;margin-bottom:1.5rem;
           text-shadow:0 0 30px rgba(242,167,195,0.5), 3px 3px 0 rgba(0,0,0,0.8);"
           id="halfHeartTitle">
           YOU'RE INCREDIBLE,<br>
@@ -3195,14 +3195,14 @@ class Level2Game {
 
         <div style="font-family:var(--font-pixel);font-size:clamp(0.75rem,2vw,1rem);
           color:rgba(255,255,255,0.75);line-height:1.9;letter-spacing:0.06em;
-          text-shadow:2px 2px 0 rgba(0,0,0,0.8);max-width:560px;margin:0 auto 2rem;opacity:0;"
+          text-shadow:2px 2px 0 rgba(0,0,0,0.8);max-width:560px;margin:0 auto 2rem;"
           id="halfHeartDesc">
           YOU DID REALY GREAT JOB FINNY YOU HAVHE REACHED THE FINAL BOSS NOW YOU HAVE TO KILL THE DRAGON FOR THE SPELL TO JOIN THE HEART, ALL THE BEST BACHA
         </div>
 
         <button id="halfHeartContinueBtn" style="
           font-family:var(--font-pixel);font-size:clamp(0.65rem,2.5vw,0.9rem);
-          letter-spacing:0.18em;padding:14px 40px;opacity:0;
+          letter-spacing:0.18em;padding:14px 40px;
           background:linear-gradient(135deg,#1a0035,#2a005a);
           border:2px solid rgba(242,167,195,.55);border-top-color:rgba(242,167,195,.85);
           border-bottom:4px solid rgba(0,0,0,.6);border-radius:4px;
@@ -3241,36 +3241,31 @@ class Level2Game {
     }
     animHearts()
 
-    // Staggered reveal
-    setTimeout(() => {
-      const heartEl = document.getElementById('halfHeartAnim')
-      if (heartEl) gsap.to(heartEl, { opacity:1, scale:1, duration:0.8, ease:'back.out(1.5)' })
-    }, 600)
-    setTimeout(() => {
-      const titleEl = document.getElementById('halfHeartTitle')
-      if (titleEl) gsap.to(titleEl, { opacity:1, y:0, duration:0.7 })
-    }, 1200)
-    setTimeout(() => {
-      const descEl = document.getElementById('halfHeartDesc')
-      if (descEl) gsap.to(descEl, { opacity:1, duration:0.7 })
-    }, 1700)
-    setTimeout(() => {
-      const btn = document.getElementById('halfHeartContinueBtn')
-      if (btn) {
-        gsap.to(btn, { opacity:1, duration:0.5 })
-        btn.addEventListener('click', () => {
-          gsap.to(slide, { opacity:0, duration:0.6, onComplete: () => {
-            slide.remove()
-            // Launch the Final Dragon Boss Level!
-            const lvl3Container = document.createElement('div')
-            lvl3Container.id = 'level3Container'
-            lvl3Container.style.cssText = 'position:fixed;inset:0;z-index:200;background:#000;'
-            document.body.appendChild(lvl3Container)
-            new Level3DragonGame(lvl3Container, window.activeSkin || '/skin_pink.jpg')
-          }})
-        })
-      }
-    }, 2400)
+    // Staggered reveal using gsap.from
+    const heartEl = slide.querySelector('#halfHeartAnim')
+    if (heartEl) gsap.from(heartEl, { opacity:0, scale:0.5, duration:0.8, ease:'back.out(1.5)', delay: 0.6 })
+    
+    const titleEl = slide.querySelector('#halfHeartTitle')
+    if (titleEl) gsap.from(titleEl, { opacity:0, y:-20, duration:0.7, delay: 1.2 })
+    
+    const descEl = slide.querySelector('#halfHeartDesc')
+    if (descEl) gsap.from(descEl, { opacity:0, duration:0.7, delay: 1.7 })
+    
+    const btn = slide.querySelector('#halfHeartContinueBtn')
+    if (btn) {
+      gsap.from(btn, { opacity:0, duration:0.5, delay: 2.2 })
+      btn.addEventListener('click', () => {
+        gsap.to(slide, { opacity:0, duration:0.6, onComplete: () => {
+          slide.remove()
+          // Launch the Final Dragon Boss Level!
+          const lvl3Container = document.createElement('div')
+          lvl3Container.id = 'level3Container'
+          lvl3Container.style.cssText = 'position:fixed;inset:0;z-index:200;background:#000;'
+          document.body.appendChild(lvl3Container)
+          new Level3DragonGame(lvl3Container, this.skinSrc)
+        }})
+      })
+    }
   }
 
 
