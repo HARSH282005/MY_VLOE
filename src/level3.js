@@ -1,6 +1,3 @@
-// ============================================================
-//  LEVEL 3 - ENDER DRAGON BOSS FIGHT
-// ============================================================
 class Level3DragonGame {
   constructor(container, skinSrc) {
     this.container = container
@@ -19,6 +16,13 @@ class Level3DragonGame {
     this.flames   = []
     this.hits     = []
     this._shake   = 0
+    // Sprite sheet walk animation (same sheet as charselect: 2064×512, 4 frames)
+    this.SPRITE_FRAMES   = 4
+    this.SPRITE_FRAME_W  = 516   // 2064 / 4
+    this.SPRITE_H        = 512
+    this.spriteFrameIdx  = 0
+    this.spriteFrameTick = 0
+    this.spriteFrameRate = 8
     this.resize()
     window.addEventListener('resize', () => this.resize())
     this._setupInput()
@@ -527,6 +531,16 @@ class Level3DragonGame {
   _drawPlayer3(ctx,t){
     const p=this.player
     if(p.invincible&&Math.floor(t/4)%2===0) return
+
+    // Advance sprite frame
+    this.spriteFrameTick++
+    const moving = Math.abs(p.vx) > 0.5
+    const rate = moving ? this.spriteFrameRate : 18
+    if(this.spriteFrameTick >= rate){
+      this.spriteFrameTick = 0
+      this.spriteFrameIdx = (this.spriteFrameIdx + 1) % this.SPRITE_FRAMES
+    }
+
     ctx.save();ctx.translate(p.x,p.y);ctx.scale(p.facing,1)
     // Wings
     const wf=Math.sin(p.wingPhase)*0.38
@@ -543,11 +557,15 @@ class Level3DragonGame {
       }
       ctx.restore()
     })
-    // Body
+    // Body — draw ONE sprite frame using source rect
     if(this.playerImg.complete&&this.playerImg.naturalWidth){
-      ctx.save();ctx.beginPath();ctx.rect(-p.w/2,-p.h,p.w,p.h);ctx.clip()
-      ctx.drawImage(this.playerImg,-p.w/2,-p.h,p.w,p.h);ctx.restore()
-      ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=1.5;ctx.strokeRect(-p.w/2,-p.h,p.w,p.h)
+      const fw = this.SPRITE_FRAME_W   // 516px source frame width
+      const fh = this.SPRITE_H         // 512px source frame height
+      const sx = this.spriteFrameIdx * fw
+      const dw = p.w + 16
+      const dh = p.h + 8
+      // No clip — just draw the single frame directly
+      ctx.drawImage(this.playerImg, sx, 0, fw, fh, -dw/2, -dh, dw, dh)
     } else {ctx.fillStyle='#ff85b3';ctx.fillRect(-p.w/2,-p.h,p.w,p.h)}
     // Sword
     ctx.save();ctx.translate(16,-34)
