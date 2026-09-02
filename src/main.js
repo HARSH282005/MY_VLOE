@@ -1065,7 +1065,7 @@ function launchGame(fireworks) {
         app.appendChild(clone)
 
         // Initialize character selection events
-        initCharSelect(fireworks)
+        initCharSelect()
         initScrollReveal()
 
         // Ensure scroll stays at top
@@ -1092,7 +1092,7 @@ function launchGame(fireworks) {
 // ═══════════════════════════════════════════════════════════
 //  CHARACTER SELECT LOGIC
 // ═══════════════════════════════════════════════════════════
-function initCharSelect(fireworks) {
+function initCharSelect() {
   const cards      = document.querySelectorAll('.char-card')
   const confirmBtn = document.getElementById('charConfirmBtn')
   const chosenIcon = document.getElementById('chosenIcon')
@@ -1105,85 +1105,14 @@ function initCharSelect(fireworks) {
     frog: { icon: '🐸', name: 'FROG WITCH', color: '#55cc33' },
   }
 
-  // ── Color-key: flood-fill from image corners to remove checker bg ──
-  function removeCheckerBackground(imgSrc) {
-    return new Promise(resolve => {
-      const img = new Image()
-      // NO crossOrigin — same-origin Vercel assets don't need it (it causes errors)
-      img.onload = () => {
-        try {
-          const W = img.naturalWidth, H = img.naturalHeight
-          const cvs = document.createElement('canvas')
-          cvs.width = W; cvs.height = H
-          const ctx2 = cvs.getContext('2d')
-          ctx2.drawImage(img, 0, 0)
-          const id = ctx2.getImageData(0, 0, W, H)
-          const d = id.data
-
-          // Sample the corner colour (top-left pixel = background colour)
-          const bgR = d[0], bgG = d[1], bgB = d[2]
-          const TOL = 38  // colour distance tolerance (handles JPEG artifacts)
-
-          // Flood-fill from ALL 4 edges using BFS
-          const visited = new Uint8Array(W * H)
-          const queue = []
-
-          // Seed: all pixels on the 4 borders
-          for (let x = 0; x < W; x++) {
-            queue.push(x, 0);      // top
-            queue.push(x, H - 1); // bottom
-          }
-          for (let y = 0; y < H; y++) {
-            queue.push(0, y);      // left
-            queue.push(W - 1, y); // right
-          }
-
-          let qi = 0
-          while (qi < queue.length) {
-            const x = queue[qi++], y = queue[qi++]
-            const idx = y * W + x
-            if (visited[idx]) continue
-            visited[idx] = 1
-            const pi = idx * 4
-            const r = d[pi], g = d[pi+1], b = d[pi+2]
-            // Is this pixel similar to the corner background colour?
-            if (Math.abs(r-bgR) + Math.abs(g-bgG) + Math.abs(b-bgB) > TOL) continue
-            // Yes → make transparent
-            d[pi+3] = 0
-            // Expand to 4 neighbours
-            if (x > 0)   queue.push(x-1, y)
-            if (x < W-1) queue.push(x+1, y)
-            if (y > 0)   queue.push(x, y-1)
-            if (y < H-1) queue.push(x, y+1)
-          }
-
-          ctx2.putImageData(id, 0, 0)
-          resolve(cvs.toDataURL('image/png'))
-        } catch(e) {
-          console.warn('Sprite bg removal failed, using original:', e)
-          resolve(imgSrc)
-        }
-      }
-      img.onerror = () => resolve(imgSrc)
-      img.src = imgSrc + '?v=' + Date.now()  // cache-bust to avoid stale state
-    })
-  }
-
   // Process all sprites and apply them to the character select UI
-  const spriteRaw = { pink: '/sprite_pink.jpg', red: '/sprite_red.jpg', frog: '/sprite_frog.jpg' }
-  Promise.all(
-    Object.entries(spriteRaw).map(([k, src]) =>
-      removeCheckerBackground(src).then(url => [k, url])
-    )
-  ).then(entries => {
-    const processed = Object.fromEntries(entries)
-    // Store globally so other slides can use them
-    window.processedSprites = processed
-    // Apply to char-sprite elements
-    document.querySelectorAll('.char-sprite-pink').forEach(el => el.style.backgroundImage = `url('${processed.pink}')`)
-    document.querySelectorAll('.char-sprite-red').forEach(el  => el.style.backgroundImage = `url('${processed.red}')`)
-    document.querySelectorAll('.char-sprite-frog').forEach(el  => el.style.backgroundImage = `url('${processed.frog}')`)
-  })
+  const processed = { pink: '/sprite_pink.png', red: '/sprite_red.png', frog: '/sprite_frog.png' }
+  // Store globally so other slides can use them
+  window.processedSprites = processed
+  // Apply to char-sprite elements
+  document.querySelectorAll('.char-sprite-pink').forEach(el => el.style.backgroundImage = `url('${processed.pink}')`)
+  document.querySelectorAll('.char-sprite-red').forEach(el  => el.style.backgroundImage = `url('${processed.red}')`)
+  document.querySelectorAll('.char-sprite-frog').forEach(el  => el.style.backgroundImage = `url('${processed.frog}')`)
 
   function selectChar(charId) {
     // Deselect all

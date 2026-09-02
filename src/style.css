@@ -1404,9 +1404,9 @@ body.torch-off .mc-btn-pink {
     charBob  1.4s ease-in-out infinite;
   filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
 }
-.char-sprite-pink { background-image: url('/sprite_pink.jpg'); }
-.char-sprite-red  { background-image: url('/sprite_red.jpg'); }
-.char-sprite-frog { background-image: url('/sprite_frog.jpg'); }
+.char-sprite-pink { background-image: url('/sprite_pink.png'); }
+.char-sprite-red  { background-image: url('/sprite_red.png'); }
+.char-sprite-frog { background-image: url('/sprite_frog.png'); }
 
 /* Hover: speed up the walk cycle */
 .char-card:hover .char-sprite {
