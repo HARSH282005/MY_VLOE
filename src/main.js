@@ -3252,8 +3252,7 @@ class Level2Game {
           FINAL LVL ➜
         </button>
       </div>
-    `
-
+    `)
     this.container.appendChild(slide)
     gsap.to(slide, { opacity: 1, duration: 0.9 })
 
