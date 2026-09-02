@@ -2947,12 +2947,15 @@ class Level2Game {
 
       // Draw character sprite
       if (this.playerImg.complete && this.playerImg.naturalWidth) {
+        const totalFrames = 4
+        const fw = this.playerImg.naturalWidth / totalFrames
+        const fh = this.playerImg.naturalHeight
+        const sx = Math.floor(animPhase * 5) % totalFrames * fw
+        const dw = 48 + 16
+        const dh = 70 + 8
         wCtx.save()
-        wCtx.beginPath(); wCtx.rect(cx-24, cy-68, 48, 70); wCtx.clip()
-        wCtx.drawImage(this.playerImg, cx-24, cy-68, 48, 70)
+        wCtx.drawImage(this.playerImg, sx, 0, fw, fh, cx - dw/2, cy - dh + 2, dw, dh)
         wCtx.restore()
-        wCtx.strokeStyle='rgba(255,255,255,.4)'; wCtx.lineWidth=1.5
-        wCtx.strokeRect(cx-24, cy-68, 48, 70)
       } else {
         wCtx.fillStyle='#ff85b3'; wCtx.fillRect(cx-24, cy-68, 48, 70)
       }
@@ -3683,9 +3686,19 @@ class Level2Game {
 
     // Draw body
     if (this.playerImg.complete && this.playerImg.naturalWidth) {
-      ctx.save(); ctx.beginPath(); ctx.rect(-p.w/2,-p.h,p.w,p.h); ctx.clip()
-      ctx.drawImage(this.playerImg,-p.w/2,-p.h,p.w,p.h); ctx.restore()
-      ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=2; ctx.strokeRect(-p.w/2,-p.h,p.w,p.h)
+      const totalFrames = 4
+      const fw = this.playerImg.naturalWidth / totalFrames
+      const fh = this.playerImg.naturalHeight
+      let frameIdx = 0
+      if (Math.abs(p.vx) > 0.1) {
+        frameIdx = Math.floor(Date.now() / 150) % totalFrames
+      }
+      const sx = frameIdx * fw
+      const dw = p.w + 16
+      const dh = p.h + 8
+      ctx.save()
+      ctx.drawImage(this.playerImg, sx, 0, fw, fh, -dw/2, -dh + 2, dw, dh)
+      ctx.restore()
     } else {
       ctx.fillStyle='#ff85b3'; ctx.fillRect(-20,-68,40,68)
     }
