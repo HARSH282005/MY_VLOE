@@ -108,6 +108,18 @@ export function initAnniversaryCanvas() {
     }
   });
 
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+      const now = performance.now();
+      if (now - lastMove > 50 && Math.random() > 0.3) {
+        particles.push(new Particle(mouse.x, mouse.y, true));
+        lastMove = now;
+      }
+    }
+  }, { passive: true });
+
   canvas.addEventListener('click', (e) => {
     // Limit burst to 10 particles instead of 20 to reduce lag
     for (let i = 0; i < 10; i++) {

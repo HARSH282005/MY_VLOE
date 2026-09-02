@@ -35,6 +35,18 @@ class MinecraftTorch {
     this.resize()
     window.addEventListener('resize', () => this.resize())
     window.addEventListener('mousemove', e => { this.mx = e.clientX; this.my = e.clientY })
+    window.addEventListener('touchmove', e => { 
+      if(e.touches.length > 0) {
+        this.mx = e.touches[0].clientX; 
+        this.my = e.touches[0].clientY;
+      }
+    }, { passive: true })
+    window.addEventListener('touchstart', e => {
+      if(e.touches.length > 0) {
+        this.mx = e.touches[0].clientX; 
+        this.my = e.touches[0].clientY;
+      }
+    }, { passive: true })
     this.animate()
   }
 
@@ -328,6 +340,12 @@ class HeartCanvas {
     this.createParticles()
     window.addEventListener('resize', () => { this.resize(); this.createParticles() })
     window.addEventListener('mousemove', e => { this.mouse.x = e.clientX; this.mouse.y = e.clientY })
+    window.addEventListener('touchmove', e => { 
+      if(e.touches.length > 0) {
+        this.mouse.x = e.touches[0].clientX; 
+        this.mouse.y = e.touches[0].clientY;
+      }
+    }, { passive: true })
     this.animate()
   }
 
@@ -534,6 +552,15 @@ class HeartCursor {
         this.particles.push(this.createParticle());
       }
     });
+    window.addEventListener('touchmove', (e) => {
+      if(e.touches.length > 0) {
+        this.x = e.touches[0].clientX;
+        this.y = e.touches[0].clientY;
+        if (Math.random() > 0.2) {
+          this.particles.push(this.createParticle());
+        }
+      }
+    }, { passive: true });
     
     // Hide default cursor
     document.body.style.cursor = 'none';
@@ -2373,10 +2400,14 @@ function initLoader() {
 function initTorchHint() {
   const hint = document.getElementById('torchHint')
   if (!hint) return
-  // Auto-hide after first mouse move
-  window.addEventListener('mousemove', () => {
+  // Auto-hide after first mouse move or touch
+  const hideHint = () => {
     gsap.to(hint, { opacity: 0, duration: 1, delay: 0.5, onComplete: () => hint.remove() })
-  }, { once: true })
+    window.removeEventListener('mousemove', hideHint)
+    window.removeEventListener('touchstart', hideHint)
+  }
+  window.addEventListener('mousemove', hideHint, { once: true })
+  window.addEventListener('touchstart', hideHint, { once: true })
 }
 
 // ═══════════════════════════════════════════════════════════

@@ -3545,3 +3545,51 @@ body.torch-off .mc-btn-pink {
   color: #3e2723;
   text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS (ADDED)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  html {
+    font-size: 8px; /* Scale down everything using rem */
+  }
+  
+  #gameOverlay, #heartCanvas, #fireworksCanvas {
+    touch-action: none; /* Prevent scroll bouncing on mobile during interactions */
+  }
+
+  .health-bar-container {
+    width: 200px;
+    margin-top: 5px;
+  }
+
+  .monster-entity {
+    font-size: 7rem;
+  }
+
+  .item-drop {
+    font-size: 5rem;
+  }
+
+  .inv-slot {
+    width: 55px;
+    height: 55px;
+    font-size: 2rem;
+  }
+
+  .craft-slot {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+  }
+  
+  .crafting-grid {
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .torch-toggle-btn {
+    padding: 12px 20px 12px 16px; /* Larger touch target */
+  }
+}
+
