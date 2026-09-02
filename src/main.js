@@ -1278,17 +1278,18 @@ function launchSlide5(app, charMeta) {
   const clone = finalTemplate.content.cloneNode(true)
   app.appendChild(clone)
 
-  const skinImgMap = {
-    pink: window.processedSprites?.pink || '/sprite_pink.jpg',
-    red:  window.processedSprites?.red  || '/sprite_red.jpg',
-    frog: window.processedSprites?.frog || '/sprite_frog.jpg'
-  }
-  const meta = charMeta ? charMeta[window.selectedCharacter] : null
-
   // Update player avatar + name
-  const gsImg  = document.getElementById('gsPlayerImg')
+  const meta = charMeta ? charMeta[window.selectedCharacter] : null
+  const gsSprite = document.getElementById('gsPlayerSprite')
   const gsName = document.getElementById('gsPlayerName')
-  if (gsImg  && skinImgMap[window.selectedCharacter]) gsImg.src = skinImgMap[window.selectedCharacter]
+  
+  if (gsSprite && window.selectedCharacter) {
+    // Remove old sprite classes
+    gsSprite.classList.remove('char-sprite-pink', 'char-sprite-red', 'char-sprite-frog')
+    // Add new sprite class
+    gsSprite.classList.add(`char-sprite-${window.selectedCharacter}`)
+  }
+  
   if (gsName && meta) {
     gsName.textContent = meta.name
     gsName.style.color = meta.color
