@@ -521,53 +521,56 @@
 
         /* --- MOBILE FIXES FOR THIS SLIDE --- */
         @media (max-width: 768px) {
-          #scrapbook-items-container h2 {
-            font-size: 1.2em !important;
-            top: 8% !important;
-            line-height: 1.4 !important;
+          #scrapbook-headline {
+            font-size: 16px !important;
+            top: 15% !important;
+            width: 95% !important;
+            line-height: 1.5 !important;
+            text-shadow: 1px 1px 0 #4B5040, 2px 2px 0 #4B5040, 0 3px 5px rgba(0,0,0,0.5) !important;
           }
-          .small-letter-wrapper img {
-            width: 100px !important;
-          }
-          .small-letter-wrapper:nth-child(2) { top: 25% !important; left: 10% !important; }
-          .small-letter-wrapper:nth-child(3) { top: 35% !important; right: 10% !important; }
-          .small-letter-wrapper:nth-child(4) { bottom: 35% !important; left: 10% !important; }
-          .small-letter-wrapper:nth-child(5) { bottom: 25% !important; right: 10% !important; }
+          
+          /* Envelopes scaling and positioning */
+          .sl-1 { top: 32% !important; left: 5% !important; width: 80px !important; }
+          .sl-2 { top: 42% !important; right: 5% !important; width: 80px !important; }
+          .sl-3 { bottom: 35% !important; left: 5% !important; width: 80px !important; }
+          .sl-4 { bottom: 25% !important; right: 5% !important; width: 80px !important; }
           
           .vintage-corner {
-            transform: scale(0.65) !important;
-            opacity: 0.7 !important;
+            transform: scale(0.5) !important;
+            opacity: 0.5 !important;
           }
           .center-sticker {
-            max-width: 90vw !important;
+            max-width: 80vw !important;
           }
           .center-text-container .beautiful-text {
-            font-size: 2.5rem !important;
+            font-size: 2rem !important;
           }
           
           /* Fix Secret Notes */
-          [id^="secret-note-"] {
+          .secret-note-modal {
             width: 90vw !important;
             height: 70vh !important;
-            max-height: 600px !important;
+            max-height: 550px !important;
+            background-size: cover !important;
           }
-          [id^="secret-note-"] h2 {
-            font-size: 1.2em !important;
+          .secret-note-modal h2 {
+            font-size: 16px !important;
           }
-          [id^="secret-note-"] p {
-            font-size: 1.1em !important;
+          .secret-note-modal p {
+            font-size: 14px !important;
           }
           
           /* Fix Final Note */
           #final-big-note {
             width: 95vw !important;
-            padding: 80px 20px 20px 20px !important;
+            height: 85vh !important;
+            padding: 60px 20px 20px 20px !important;
           }
           #final-note-heading {
-            font-size: 2em !important;
+            font-size: 24px !important;
           }
           #final-note-text {
-            font-size: 1.2em !important;
+            font-size: 14px !important;
           }
         }
       </style>
@@ -575,22 +578,22 @@
       <div id="scrapbook-items-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998;">
       
       <!-- Headline Text -->
-      <h2 style="position: absolute; top: 2%; left: 50%; transform: translateX(-50%); font-family: 'Minecrafter', 'Press Start 2P', monospace; font-weight: normal; color: #6B705C; font-size: 2.2em; text-align: center; text-shadow: 1px 1px 0 #4B5040, 2px 2px 0 #4B5040, 3px 3px 0 #4B5040, 4px 4px 0 #2A2F22, 5px 5px 0 #2A2F22, 0 5px 10px rgba(0,0,0,0.4); z-index: 10; width: 90%;">
+      <h2 id="scrapbook-headline" style="position: absolute; top: 2%; left: 50%; transform: translateX(-50%); font-family: 'Minecrafter', 'Press Start 2P', monospace; font-weight: normal; color: #6B705C; font-size: 2.2em; text-align: center; text-shadow: 1px 1px 0 #4B5040, 2px 2px 0 #4B5040, 3px 3px 0 #4B5040, 4px 4px 0 #2A2F22, 5px 5px 0 #2A2F22, 0 5px 10px rgba(0,0,0,0.4); z-index: 10; width: 90%;">
         HI SHONA BACHA YOU HAVE TO FIND AND READ ALL 4 SMALL NOTES
       </h2>
 
       <!-- 4 Small Letters placed around center note -->
-      <div class="small-letter-wrapper" style="top: 20%; left: 25%; transform: rotate(-12deg);" onclick="openNote(1)">
-        <img src="/small_letter.png" style="animation-delay: 1.5s;" alt="Small Letter">
+      <div class="small-letter-wrapper sl-1" style="top: 20%; left: 25%; transform: rotate(-12deg);" onclick="openNote(1)">
+        <img src="/small_letter.png" style="animation-delay: 1.5s;" alt="Small Letter" class="sl-img">
       </div>
-      <div class="small-letter-wrapper" style="top: 25%; right: 25%; transform: rotate(15deg);" onclick="openNote(2)">
-        <img src="/small_letter.png" style="animation-delay: 3s;" alt="Small Letter">
+      <div class="small-letter-wrapper sl-2" style="top: 25%; right: 25%; transform: rotate(15deg);" onclick="openNote(2)">
+        <img src="/small_letter.png" style="animation-delay: 3s;" alt="Small Letter" class="sl-img">
       </div>
-      <div class="small-letter-wrapper" style="bottom: 25%; left: 25%; transform: rotate(-8deg);" onclick="openNote(3)">
-        <img src="/small_letter.png" style="animation-delay: 4.5s;" alt="Small Letter">
+      <div class="small-letter-wrapper sl-3" style="bottom: 25%; left: 25%; transform: rotate(-8deg);" onclick="openNote(3)">
+        <img src="/small_letter.png" style="animation-delay: 4.5s;" alt="Small Letter" class="sl-img">
       </div>
-      <div class="small-letter-wrapper" style="bottom: 20%; right: 25%; transform: rotate(10deg);" onclick="openNote(4)">
-        <img src="/small_letter.png" style="animation-delay: 6s;" alt="Small Letter">
+      <div class="small-letter-wrapper sl-4" style="bottom: 20%; right: 25%; transform: rotate(10deg);" onclick="openNote(4)">
+        <img src="/small_letter.png" style="animation-delay: 6s;" alt="Small Letter" class="sl-img">
       </div>
 
       <!-- Vinyl Card and Slideshow -->
@@ -598,7 +601,7 @@
 
       <!-- Big Letter Container -->
       <div id="big-letter-container" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; justify-content: center; align-items: center; z-index: 100;">
-        <img src="/small_letter.png" onclick="openFinalNote()" style="width: 700px; cursor: pointer; filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); animation: popInLetter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;" alt="The Big Letter">
+        <img src="/small_letter.png" onclick="openFinalNote()" style="width: 700px; max-width: 90vw; cursor: pointer; filter: drop-shadow(0px 15px 35px rgba(0,0,0,0.6)); animation: popInLetter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;" alt="The Big Letter">
       </div>
 
       <!-- The Final Big Note -->
@@ -623,7 +626,7 @@
       </div>
 
       <!-- The Secret Note -->
-      <div id="secret-note-1" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+      <div id="secret-note-1" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(1)">×</span>
         <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">Always yours</h2>
@@ -632,7 +635,7 @@
       </div>
 
       <!-- The Secret Note 2 -->
-      <div id="secret-note-2" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+      <div id="secret-note-2" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(2)">×</span>
         <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">I MISS YOU ALLOT BABULU</h2>
@@ -641,7 +644,7 @@
       </div>
 
       <!-- The Secret Note 3 -->
-      <div id="secret-note-3" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+      <div id="secret-note-3" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(3)">×</span>
         <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">I LOVE YOU MUCH MOLE SHONA</h2>
@@ -650,7 +653,7 @@
       </div>
 
       <!-- The Secret Note 4 -->
-      <div id="secret-note-4" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
+      <div id="secret-note-4" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(4)">×</span>
         <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">EFFORTS</h2>
