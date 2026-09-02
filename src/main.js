@@ -1105,6 +1105,56 @@ function initCharSelect(fireworks) {
     frog: { icon: '🐸', name: 'FROG WITCH', color: '#55cc33' },
   }
 
+  // ── Color-key: strip checker background from JPEG sprites ─────────
+  function removeCheckerBackground(imgSrc) {
+    return new Promise(resolve => {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.onload = () => {
+        const cvs = document.createElement('canvas')
+        cvs.width = img.naturalWidth
+        cvs.height = img.naturalHeight
+        const ctx2 = cvs.getContext('2d')
+        ctx2.drawImage(img, 0, 0)
+        const id = ctx2.getImageData(0, 0, cvs.width, cvs.height)
+        const d = id.data
+        for (let i = 0; i < d.length; i += 4) {
+          const r = d[i], g = d[i+1], b = d[i+2]
+          const brightness = (r + g + b) / 3
+          const max = Math.max(r, g, b)
+          const min = Math.min(r, g, b)
+          const saturation = max === 0 ? 0 : (max - min) / max
+          // Checker: high brightness, very low saturation (gray/white squares)
+          if (brightness > 165 && saturation < 0.13) {
+            // Smooth edge: fade near threshold
+            const alpha = brightness < 185 ? Math.round((185 - brightness) / 20 * 255) : 0
+            d[i+3] = alpha
+          }
+        }
+        ctx2.putImageData(id, 0, 0)
+        resolve(cvs.toDataURL('image/png'))
+      }
+      img.onerror = () => resolve(imgSrc)
+      img.src = imgSrc
+    })
+  }
+
+  // Process all sprites and apply them to the character select UI
+  const spriteRaw = { pink: '/sprite_pink.jpg', red: '/sprite_red.jpg', frog: '/sprite_frog.jpg' }
+  Promise.all(
+    Object.entries(spriteRaw).map(([k, src]) =>
+      removeCheckerBackground(src).then(url => [k, url])
+    )
+  ).then(entries => {
+    const processed = Object.fromEntries(entries)
+    // Store globally so other slides can use them
+    window.processedSprites = processed
+    // Apply to char-sprite elements
+    document.querySelectorAll('.char-sprite-pink').forEach(el => el.style.backgroundImage = `url('${processed.pink}')`)
+    document.querySelectorAll('.char-sprite-red').forEach(el  => el.style.backgroundImage = `url('${processed.red}')`)
+    document.querySelectorAll('.char-sprite-frog').forEach(el  => el.style.backgroundImage = `url('${processed.frog}')`)
+  })
+
   function selectChar(charId) {
     // Deselect all
     cards.forEach(c => c.classList.remove('selected'))
@@ -1169,9 +1219,9 @@ function initCharSelect(fireworks) {
 
                 const meta = charMeta[window.selectedCharacter]
                 const skinImgMap = {
-                  pink: '/skin_pink.jpg',
-                  red:  '/skin_red.jpg',
-                  frog: '/skin_frog.jpg'
+                  pink: window.processedSprites?.pink || '/sprite_pink.jpg',
+                  red:  window.processedSprites?.red  || '/sprite_red.jpg',
+                  frog: window.processedSprites?.frog || '/sprite_frog.jpg'
                 }
 
                 // Update avatar + name in loading screen
@@ -1270,9 +1320,9 @@ function launchSlide5(app, charMeta) {
   app.appendChild(clone)
 
   const skinImgMap = {
-    pink: '/skin_pink.jpg',
-    red:  '/skin_red.jpg',
-    frog: '/skin_frog.jpg'
+    pink: window.processedSprites?.pink || '/sprite_pink.jpg',
+    red:  window.processedSprites?.red  || '/sprite_red.jpg',
+    frog: window.processedSprites?.frog || '/sprite_frog.jpg'
   }
   const meta = charMeta ? charMeta[window.selectedCharacter] : null
 
@@ -1352,9 +1402,9 @@ function launchSlide6(app, charMeta) {
   if (!canvas) return
 
   const skinKey = window.selectedCharacter || 'pink'
-  const skinImgMap = { pink: '/skin_pink.jpg', red: '/skin_red.jpg', frog: '/skin_frog.jpg' }
+  const spriteSheetMap = { pink: '/sprite_pink.jpg', red: '/sprite_red.jpg', frog: '/sprite_frog.jpg' }
 
-  const game = new Level1Game(canvas, skinImgMap[skinKey])
+  const game = new Level1Game(canvas, window.processedSprites?.[skinKey] || spriteSheetMap[skinKey], skinKey)
   window.currentGame = game
   
   // Play battle music when level 1 starts
@@ -1375,12 +1425,23 @@ function launchSlide6(app, charMeta) {
 //  LEVEL 1 GAME — Pixel-Art 3D Ghast Battle
 // ═══════════════════════════════════════════════════════════
 class Level1Game {
-  constructor(canvas, skinSrc) {
+  constructor(canvas, skinSrc, skinKey) {
     this.canvas = canvas
     this.ctx    = canvas.getContext('2d')
     this.skinSrc = skinSrc
+    this.skinKey = skinKey || 'pink'
     this.playerImg = new Image()
     this.playerImg.src = skinSrc
+
+    // Sprite sheet walk animation: 2064×512, 4 frames, each 516×512
+    // Display size: 56×78 (player hitbox), sprite frame ~56px wide
+    this.SPRITE_FRAMES   = 4
+    this.SPRITE_W        = 2064  // natural image width
+    this.SPRITE_H        = 512   // natural image height
+    this.SPRITE_FRAME_W  = this.SPRITE_W / this.SPRITE_FRAMES  // 516px per frame
+    this.spriteFrameIdx  = 0
+    this.spriteFrameTick = 0
+    this.spriteFrameRate = 8  // advance frame every 8 game ticks
 
     this.frame = 0
     this.running = false
@@ -2097,31 +2158,47 @@ class Level1Game {
     // Full body tilt when running
     const bodyTilt = this.isMoving ? Math.sin(this.runPhase) * 0.15 * this.playerFacing : 0
 
+    // Advance sprite walk frame
+    this.spriteFrameTick++
+    const rate = this.isMoving ? this.spriteFrameRate : 20  // slower idle rate
+    if (this.spriteFrameTick >= rate) {
+      this.spriteFrameTick = 0
+      this.spriteFrameIdx = (this.spriteFrameIdx + 1) % this.SPRITE_FRAMES
+    }
+
     ctx.save()
     ctx.translate(p.x, p.y + bob)
     ctx.scale(entryScale, entryScale)
     
-    // Shadow (shrinks when entering, drawn before tilt so it stays on ground)
+    // Shadow
     const shadowR = 44 * entryScale
     const shG = ctx.createRadialGradient(0, 42, 2, 0, 42, shadowR)
     shG.addColorStop(0,'rgba(0,0,0,0.55)'); shG.addColorStop(1,'rgba(0,0,0,0)')
     ctx.fillStyle = shG; ctx.fillRect(-shadowR, 20, shadowR*2, 32)
 
-    // Apply rotation for the rest of the body
     ctx.rotate(bodyTilt)
 
-    // Character image (clipped to rectangle, pixel border)
+    // Flip sprite when facing left
+    if (this.playerFacing === -1) {
+      ctx.scale(-1, 1)
+    }
+
+    // Draw character sprite (one frame from sprite sheet)
     if (this.playerImg.complete && this.playerImg.naturalWidth) {
-      ctx.save()
-      ctx.beginPath(); ctx.rect(-p.w/2, -p.h, p.w, p.h); ctx.clip()
-      ctx.drawImage(this.playerImg, -p.w/2, -p.h, p.w, p.h)
-      ctx.restore()
-      // Minecraft 2px border
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 2.5
-      ctx.strokeRect(-p.w/2, -p.h, p.w, p.h)
+      const fw = this.SPRITE_FRAME_W  // source frame width (516px)
+      const fh = this.SPRITE_H        // source frame height (512px)
+      const sx = this.spriteFrameIdx * fw  // source X
+      const dw = p.w + 20  // display width (a bit wider for character)
+      const dh = p.h + 10  // display height
+      ctx.drawImage(
+        this.playerImg,
+        sx, 0, fw, fh,         // source: one frame
+        -dw/2, -dh, dw, dh    // dest: centered on player position
+      )
     } else {
-      // Fallback block character
-      ctx.fillStyle = '#ff85b3'
+      // Fallback block
+      const clr = this.skinKey === 'red' ? '#cc2244' : this.skinKey === 'frog' ? '#55cc33' : '#ff85b3'
+      ctx.fillStyle = clr
       ctx.fillRect(-22, -72, 44, 72)
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(-22, -72, 44, 72)
     }

@@ -1376,11 +1376,11 @@ body.torch-off .mc-btn-pink {
   align-items: flex-end;
 }
 
-/* Dark viewport that hides the JPEG checker background */
+/* Dark viewport - now transparent since sprites are processed client-side */
 .char-sprite-stage {
   width: 202px;
   height: 200px;
-  background: #0a0416;
+  background: transparent;
   border-radius: 6px;
   overflow: hidden;
   display: flex;
@@ -1388,7 +1388,6 @@ body.torch-off .mc-btn-pink {
   justify-content: center;
   position: relative;
   z-index: 2;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
 .char-sprite {
