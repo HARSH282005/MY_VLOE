@@ -1408,6 +1408,11 @@ body.torch-off .mc-btn-pink {
 .char-sprite-red  { background-image: url('/sprite_red.png'); }
 .char-sprite-frog { background-image: url('/sprite_frog.png'); }
 
+@keyframes gsCharWalk {
+  0%   { background-position: 0px center; }
+  100% { background-position: -360px center; }
+}
+
 /* Hover: speed up the walk cycle */
 .char-card:hover .char-sprite {
   animation:
@@ -2007,8 +2012,12 @@ body.torch-off .mc-btn-pink {
 }
 
 .gs-avatar-stage .char-sprite {
-  transform: scale(0.65);
-  transform-origin: center;
+  width: 90px;
+  height: 89px;
+  background-size: 360px 89px;
+  animation: 
+    gsCharWalk 0.7s steps(4, end) infinite,
+    charBob  1.4s ease-in-out infinite;
 }
 
 .gs-player-meta { text-align: left; }
