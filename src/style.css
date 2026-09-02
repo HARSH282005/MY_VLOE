@@ -1353,28 +1353,55 @@ body.torch-off .mc-btn-pink {
 .rarity-legendary { color: #ffcc44; border-color: #ffcc44; background: rgba(255,200,50,0.1);  text-shadow: 0 0 8px #ffcc44; animation: legendPulse 2s ease-in-out infinite; }
 @keyframes legendPulse { 0%,100%{text-shadow:0 0 8px #ffcc44;} 50%{text-shadow:0 0 20px #ffcc44,0 0 40px #ff9900;} }
 
-/* Character image */
+/* Character image wrap */
 .char-img-wrap {
   position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: flex-end;
 }
-.char-img {
-  width: 80%;
-  max-width: 150px;
+
+/* === ANIMATED WALK SPRITES === */
+@keyframes charWalk {
+  from { background-position-x: 0; }
+  to   { background-position-x: -400%; }
+}
+@keyframes charBob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.char-sprite {
+  width: 160px;
   height: 185px;
-  object-fit: contain;
-  object-position: center;
+  background-size: 400% 100%;   /* 4 frames side-by-side */
+  background-repeat: no-repeat;
   image-rendering: pixelated;
-  border-radius: 2px;
+  image-rendering: crisp-edges;
   position: relative;
   z-index: 2;
+  animation:
+    charWalk 0.7s steps(4, end) infinite,
+    charBob  1.4s ease-in-out infinite;
   transition: transform 0.3s var(--ease-spring), filter 0.3s ease;
   filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6));
 }
-.char-card:hover .char-img { transform: scale(1.06) translateY(-4px); }
-.char-card.selected .char-img { filter: drop-shadow(0 0 12px currentColor) drop-shadow(0 8px 20px rgba(0,0,0,0.6)); }
+.char-sprite-pink { background-image: url('/sprite_pink.jpg'); }
+.char-sprite-red  { background-image: url('/sprite_red.jpg'); }
+.char-sprite-frog { background-image: url('/sprite_frog.jpg'); }
+
+/* Hover: speed up walk + lift */
+.char-card:hover .char-sprite {
+  animation:
+    charWalk 0.4s steps(4, end) infinite,
+    charBob  0.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(255,255,255,0.5)) drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+}
+/* Selected: add colour glow */
+.char-card.selected .char-sprite {
+  filter: drop-shadow(0 0 16px currentColor) drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+}
 
 /* Per-skin glow halo */
 .char-glow {
