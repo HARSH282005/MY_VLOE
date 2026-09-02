@@ -1353,7 +1353,21 @@ body.torch-off .mc-btn-pink {
 .rarity-legendary { color: #ffcc44; border-color: #ffcc44; background: rgba(255,200,50,0.1);  text-shadow: 0 0 8px #ffcc44; animation: legendPulse 2s ease-in-out infinite; }
 @keyframes legendPulse { 0%,100%{text-shadow:0 0 8px #ffcc44;} 50%{text-shadow:0 0 20px #ffcc44,0 0 40px #ff9900;} }
 
-/* Character image wrap */
+/* === ANIMATED WALK SPRITES === */
+/*  Sprite sheets: 2064 × 512 px  →  4 frames × 516px each
+    Display at height 200px  →  scale = 200/512 = 0.39
+    Frame display width ≈ 202px  |  Total display width = 808px           */
+
+@keyframes charWalk {
+  /* Step through 4 frames with pixel-exact positions */
+  0%   { background-position: 0px center; }
+  100% { background-position: -808px center; }
+}
+@keyframes charBob {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-7px); }
+}
+
 .char-img-wrap {
   position: relative;
   width: 100%;
@@ -1362,46 +1376,47 @@ body.torch-off .mc-btn-pink {
   align-items: flex-end;
 }
 
-/* === ANIMATED WALK SPRITES === */
-@keyframes charWalk {
-  from { background-position-x: 0; }
-  to   { background-position-x: -400%; }
-}
-@keyframes charBob {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+/* Dark viewport that hides the JPEG checker background */
+.char-sprite-stage {
+  width: 202px;
+  height: 200px;
+  background: #0a0416;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
 .char-sprite {
-  width: 160px;
-  height: 185px;
-  background-size: 400% 100%;   /* 4 frames side-by-side */
+  width: 202px;
+  height: 200px;
+  background-size: 808px 200px;  /* 4 frames × 202px wide, 200px tall */
   background-repeat: no-repeat;
+  background-position: 0px center;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   position: relative;
-  z-index: 2;
   animation:
     charWalk 0.7s steps(4, end) infinite,
     charBob  1.4s ease-in-out infinite;
-  transition: transform 0.3s var(--ease-spring), filter 0.3s ease;
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
 }
 .char-sprite-pink { background-image: url('/sprite_pink.jpg'); }
 .char-sprite-red  { background-image: url('/sprite_red.jpg'); }
 .char-sprite-frog { background-image: url('/sprite_frog.jpg'); }
 
-/* Hover: speed up walk + lift */
+/* Hover: speed up the walk cycle */
 .char-card:hover .char-sprite {
   animation:
-    charWalk 0.4s steps(4, end) infinite,
-    charBob  0.8s ease-in-out infinite;
-  filter: drop-shadow(0 0 14px rgba(255,255,255,0.5)) drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+    charWalk 0.42s steps(4, end) infinite,
+    charBob  0.84s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,0.4)) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
 }
-/* Selected: add colour glow */
-.char-card.selected .char-sprite {
-  filter: drop-shadow(0 0 16px currentColor) drop-shadow(0 8px 20px rgba(0,0,0,0.6));
-}
+
 
 /* Per-skin glow halo */
 .char-glow {
