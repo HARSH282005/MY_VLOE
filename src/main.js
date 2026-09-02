@@ -1105,14 +1105,55 @@ function initCharSelect() {
     frog: { icon: '🐸', name: 'FROG WITCH', color: '#55cc33' },
   }
 
+  function removeSpriteBackground(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = () => {
+        const cvs = document.createElement('canvas');
+        cvs.width = img.naturalWidth;
+        cvs.height = img.naturalHeight;
+        const ctx = cvs.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+        const data = imgData.data;
+        
+        // Sample top-left pixel for background color
+        const bgR = data[0], bgG = data[1], bgB = data[2];
+        const tolerance = 25;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i+1], b = data[i+2];
+          if (Math.abs(r - bgR) <= tolerance && 
+              Math.abs(g - bgG) <= tolerance && 
+              Math.abs(b - bgB) <= tolerance) {
+            data[i+3] = 0; // Make transparent
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+        resolve(cvs.toDataURL('image/png'));
+      };
+      img.onerror = () => resolve(url);
+      img.src = url;
+    });
+  }
+
   // Process all sprites and apply them to the character select UI
-  const processed = { pink: '/sprite_pink.png', red: '/sprite_red.png', frog: '/sprite_frog.png' }
-  // Store globally so other slides can use them
-  window.processedSprites = processed
-  // Apply to char-sprite elements
-  document.querySelectorAll('.char-sprite-pink').forEach(el => el.style.backgroundImage = `url('${processed.pink}')`)
-  document.querySelectorAll('.char-sprite-red').forEach(el  => el.style.backgroundImage = `url('${processed.red}')`)
-  document.querySelectorAll('.char-sprite-frog').forEach(el  => el.style.backgroundImage = `url('${processed.frog}')`)
+  const rawSprites = { pink: '/sprite_pink.png', red: '/sprite_red.png', frog: '/sprite_frog.png' }
+  const processed = {}
+  
+  // Set fallback first
+  window.processedSprites = rawSprites;
+
+  Promise.all(Object.entries(rawSprites).map(async ([key, url]) => {
+    processed[key] = await removeSpriteBackground(url);
+  })).then(() => {
+    window.processedSprites = processed;
+    // Apply to char-sprite elements
+    document.querySelectorAll('.char-sprite-pink').forEach(el => el.style.backgroundImage = `url('${processed.pink}')`)
+    document.querySelectorAll('.char-sprite-red').forEach(el  => el.style.backgroundImage = `url('${processed.red}')`)
+    document.querySelectorAll('.char-sprite-frog').forEach(el  => el.style.backgroundImage = `url('${processed.frog}')`)
+  });
 
   function selectChar(charId) {
     // Deselect all
