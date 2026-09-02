@@ -559,8 +559,8 @@ class Level3DragonGame {
     })
     // Body — draw ONE sprite frame using source rect
     if(this.playerImg.complete&&this.playerImg.naturalWidth){
-      const fw = this.SPRITE_FRAME_W   // 516px source frame width
-      const fh = this.SPRITE_H         // 512px source frame height
+      const fw = this.playerImg.naturalWidth / 4;
+      const fh = this.playerImg.naturalHeight;
       const sx = this.spriteFrameIdx * fw
       const dw = p.w + 16
       const dh = p.h + 8
