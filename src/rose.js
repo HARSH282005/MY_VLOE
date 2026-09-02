@@ -215,6 +215,12 @@ const triggerOverlay = document.getElementById('triggerOverlay');
         startButton.addEventListener('click', () => {
             if(triggerOverlay) triggerOverlay.classList.add('fade-out');
 
+            const finalBgVideo = document.getElementById('finalBgVideo');
+            if (finalBgVideo) {
+                finalBgVideo.play().catch(e => console.log('Video auto-play blocked:', e));
+                finalBgVideo.style.opacity = '1'; // CSS transition of 5s handles the slow fade in
+            }
+
             setTimeout(() => {
                 startAnimationSequence();
             }, 800);
