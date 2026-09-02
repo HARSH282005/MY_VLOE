@@ -542,19 +542,38 @@ class Level3DragonGame {
     }
 
     ctx.save();ctx.translate(p.x,p.y);ctx.scale(p.facing,1)
-    // Wings
-    const wf=Math.sin(p.wingPhase)*0.38
-    ;[-1,1].forEach(side=>{
-      ctx.save();ctx.scale(side,1)
-      const fCols=['rgba(255,255,255,0.92)','rgba(230,230,255,0.68)','rgba(200,200,255,0.42)']
-      for(let layer=0;layer<3;layer++){
-        const spread=0.58+wf*0.32+layer*0.14,len=65-layer*14
-        ctx.save();ctx.rotate(-spread)
-        ctx.fillStyle=fCols[layer];ctx.shadowColor='rgba(210,210,255,0.7)';ctx.shadowBlur=12-layer*3
-        ctx.beginPath();ctx.moveTo(0,-p.h*0.7);ctx.lineTo(len,-p.h*0.38-layer*7);ctx.lineTo(len*0.82,-p.h*0.08);ctx.lineTo(0,-p.h*0.22);ctx.closePath();ctx.fill()
-        for(let f=0;f<4;f++){const fx2=len*0.5+f*len*0.13,fy2=-p.h*0.38+f*7-layer*3;ctx.beginPath();ctx.ellipse(fx2,fy2,4-layer,11-layer*2,-spread*0.28,0,Math.PI*2);ctx.fill()}
-        ctx.shadowBlur=0;ctx.restore()
-      }
+    // Wings - Static beautiful 2D wings (Elytra style)
+    const wSpan = 65
+    ;[-1, 1].forEach(side => {
+      ctx.save()
+      ctx.scale(side, 1)
+      ctx.shadowColor = 'rgba(200,230,255,0.9)'
+      ctx.shadowBlur  = 14
+      const feathers = [
+        [8, -p.h*0.55,    wSpan,     14, -35],
+        [8, -p.h*0.55+4,  wSpan*0.8, 11, -18],
+        [8, -p.h*0.55+8,  wSpan*0.6,  9,   0],
+        [8, -p.h*0.55+6,  wSpan*0.4,  7,  16],
+        [8, -p.h*0.55+2,  wSpan*0.2,  5,  28],
+      ]
+      feathers.forEach(([ox,oy,len,h,angle]) => {
+        ctx.save()
+        ctx.translate(ox, oy)
+        ctx.rotate(angle * Math.PI/180)
+        const fg = ctx.createLinearGradient(0,0,len,0)
+        fg.addColorStop(0,   'rgba(255,255,255,0.95)')
+        fg.addColorStop(0.5, 'rgba(220,235,255,0.85)')
+        fg.addColorStop(1,   'rgba(180,210,255,0.3)')
+        ctx.fillStyle = fg
+        ctx.beginPath()
+        ctx.ellipse(len/2, 0, len/2, h/2, 0, 0, Math.PI*2)
+        ctx.fill()
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)'
+        ctx.lineWidth = 0.8
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(len,0); ctx.stroke()
+        ctx.restore()
+      })
+      ctx.shadowBlur = 0
       ctx.restore()
     })
     // Body — draw ONE sprite frame using source rect
