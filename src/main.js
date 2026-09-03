@@ -1985,96 +1985,186 @@ class Level1Game {
       ctx.globalAlpha = Math.max(0, 1 - g.deadTimer / 80)
     }
 
-    const bob = Math.sin(g.phase * 2.2) * 4
+    const t = g.phase
+    const bob = Math.sin(t * 2.2) * 8
     ctx.translate(0, bob)
 
-    // Shadow
-    const shG = ctx.createRadialGradient(0, 55, 5, 0, 55, 90)
-    shG.addColorStop(0, 'rgba(0,0,0,0.45)'); shG.addColorStop(1, 'rgba(0,0,0,0)')
-    ctx.fillStyle = shG; ctx.fillRect(-90, 30, 180, 50)
-
-    const bw = 106, bh = 92
-    const DX  = 20,  DY  = 11
+    const bw = 118, bh = 100
+    const DX = 24, DY = 14
     const hit = g.hit
 
-    // === 3D ISOMETRIC BOX (Ghast body) ===
-    // Top face
-    ctx.fillStyle = hit ? '#ffbbbb' : '#d8d8d8'
+    // ── OUTER DANGER AURA (pulsing red glow) ──
+    const auraR = 165 + Math.sin(t * 3.5) * 22
+    const aG = ctx.createRadialGradient(0, 0, 30, 0, 0, auraR)
+    aG.addColorStop(0, hit ? 'rgba(255,50,0,0.55)' : 'rgba(200,0,0,0.3)')
+    aG.addColorStop(0.5, hit ? 'rgba(255,100,0,0.2)' : 'rgba(120,0,0,0.12)')
+    aG.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = aG
+    ctx.fillRect(-auraR, -auraR, auraR * 2, auraR * 2)
+
+    // ── NETHER CRACK LINES ──
+    const crackAlpha = 0.55 + Math.sin(t * 4) * 0.25
+    ctx.save()
+    ctx.globalAlpha = crackAlpha
+    ctx.strokeStyle = '#ff4400'
+    ctx.lineWidth = 1.5
+    ctx.shadowColor = '#ff8800'
+    ctx.shadowBlur = 6
+    const cracks = [
+      [[-bw/2+10, -bh/2+15], [-bw/2+35, -bh/2+45]],
+      [[-bw/2+40, -bh/2+5],  [-bw/2+60, -bh/2+30]],
+      [[bw/2-20, -bh/2+20],  [bw/2-45, -bh/2+55]],
+      [[-10, -bh/2+10],       [10, -bh/2+50]],
+    ]
+    cracks.forEach(pts => {
+      ctx.beginPath()
+      ctx.moveTo(pts[0][0], pts[0][1])
+      ctx.lineTo(pts[1][0], pts[1][1])
+      ctx.stroke()
+    })
+    ctx.restore()
+
+    // ── GROUND SHADOW ──
+    const shG = ctx.createRadialGradient(0, 60, 10, 0, 60, 100)
+    shG.addColorStop(0, 'rgba(180,0,0,0.5)')
+    shG.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = shG
+    ctx.fillRect(-100, 35, 200, 60)
+
+    // ── 3D ISOMETRIC BODY — Top face ──
+    ctx.fillStyle = hit ? '#ff8888' : '#c4c4c4'
     ctx.beginPath()
-    ctx.moveTo(-bw/2, -bh/2); ctx.lineTo(-bw/2+DX, -bh/2-DY)
-    ctx.lineTo(bw/2+DX, -bh/2-DY); ctx.lineTo(bw/2, -bh/2); ctx.closePath()
+    ctx.moveTo(-bw/2, -bh/2)
+    ctx.lineTo(-bw/2 + DX, -bh/2 - DY)
+    ctx.lineTo(bw/2 + DX, -bh/2 - DY)
+    ctx.lineTo(bw/2, -bh/2)
+    ctx.closePath()
     ctx.fill()
-    ctx.strokeStyle = '#888'; ctx.lineWidth = 1.2; ctx.stroke()
+    ctx.strokeStyle = hit ? '#ffcccc' : '#e8e8e8'
+    ctx.lineWidth = 1.5
+    ctx.stroke()
 
-    // Right face
-    ctx.fillStyle = hit ? '#ffaaaa' : '#b0b0b0'
+    // Right face (shadow side)
+    const rightGrad = ctx.createLinearGradient(bw/2, -bh/2, bw/2 + DX, bh/2)
+    rightGrad.addColorStop(0, hit ? '#ff7777' : '#8a8a8a')
+    rightGrad.addColorStop(1, hit ? '#cc4444' : '#606060')
+    ctx.fillStyle = rightGrad
     ctx.beginPath()
-    ctx.moveTo(bw/2, -bh/2); ctx.lineTo(bw/2+DX, -bh/2-DY)
-    ctx.lineTo(bw/2+DX, bh/2-DY); ctx.lineTo(bw/2, bh/2); ctx.closePath()
-    ctx.fill(); ctx.stroke()
+    ctx.moveTo(bw/2, -bh/2)
+    ctx.lineTo(bw/2 + DX, -bh/2 - DY)
+    ctx.lineTo(bw/2 + DX, bh/2 - DY)
+    ctx.lineTo(bw/2, bh/2)
+    ctx.closePath()
+    ctx.fill()
+    ctx.strokeStyle = '#555'
+    ctx.lineWidth = 1
+    ctx.stroke()
 
-    // Front face
-    ctx.fillStyle = hit ? '#ffcccc' : '#e5e5e5'
+    // Front face gradient
+    const frontGrad = ctx.createLinearGradient(0, -bh/2, 0, bh/2)
+    frontGrad.addColorStop(0, hit ? '#ffdddd' : '#f0f0f0')
+    frontGrad.addColorStop(1, hit ? '#ffaaaa' : '#c8c8c8')
+    ctx.fillStyle = frontGrad
     ctx.fillRect(-bw/2, -bh/2, bw, bh)
-    ctx.strokeStyle = '#999'; ctx.lineWidth = 1.5; ctx.strokeRect(-bw/2, -bh/2, bw, bh)
+    ctx.strokeStyle = '#888'
+    ctx.lineWidth = 1.5
+    ctx.strokeRect(-bw/2, -bh/2, bw, bh)
 
-    // Texture marks (pixel grey streaks)
-    ctx.fillStyle = hit ? 'rgba(160,80,80,0.55)' : 'rgba(140,140,140,0.6)'
-    ;[[-28,-18,18,7],[12,-24,22,6],[-8,12,26,5],[22,16,14,4],[-35,28,10,4]].forEach(([mx,my,mw,mh])=>
-      ctx.fillRect(mx,my,mw,mh))
+    // Scar / texture marks
+    ctx.fillStyle = hit ? 'rgba(150,50,50,0.7)' : 'rgba(80,80,80,0.65)'
+    ;[[-35,-30,22,5],[14,-28,18,5],[-12,8,28,4],[28,18,12,4],[-38,28,8,4],[10,-10,20,4]].forEach(([mx,my,mw,mh]) =>
+      ctx.fillRect(mx, my, mw, mh))
 
-    // === EYES ===
-    const eyePositions = [-26, 10]
+    // ── FURROWED BROW (angry V) ──
+    ctx.save()
+    ctx.strokeStyle = hit ? '#cc0000' : '#333'
+    ctx.lineWidth = 3.5
+    ctx.lineCap = 'round'
+    ctx.shadowColor = '#ff0000'
+    ctx.shadowBlur = hit ? 12 : 5
+    ctx.beginPath(); ctx.moveTo(-38, -28); ctx.lineTo(-14, -18); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(14, -18);  ctx.lineTo(38, -28);  ctx.stroke()
+    ctx.restore()
+
+    // ── EYES (animated pulsing demon eyes) ──
+    const eyePulse = Math.sin(t * 5) * 0.15 + 0.85
+    const eyePositions = [-26, 12]
     eyePositions.forEach(ex => {
-      const ey = -8
-      // White
-      ctx.fillStyle = hit ? '#ffcccc' : '#e0e0e0'; ctx.fillRect(ex-8, ey-8, 16, 16)
-      // Red
-      ctx.fillStyle = '#cc0000'; ctx.fillRect(ex-5, ey-5, 10, 10)
-      // Pupil
-      ctx.fillStyle = '#1a0000'; ctx.fillRect(ex-3, ey-3, 6, 6)
-      // Glow
-      if (!hit) {
-        const eG = ctx.createRadialGradient(ex, ey, 0, ex, ey, 18)
-        eG.addColorStop(0, 'rgba(255,0,0,0.35)'); eG.addColorStop(1, 'rgba(0,0,0,0)')
-        ctx.fillStyle = eG; ctx.fillRect(ex-18, ey-18, 36, 36)
-      }
+      const ey = -5
+      ctx.fillStyle = '#1a0000'; ctx.fillRect(ex - 11, ey - 11, 22, 22)
+      ctx.fillStyle = hit ? '#ffeeee' : '#e0d0d0'; ctx.fillRect(ex - 8, ey - 8, 16, 16)
+      ctx.fillStyle = hit ? '#ff4444' : '#cc0000'; ctx.fillRect(ex - 6, ey - 6, 12, 12)
+      const eyeOffY = Math.sin(t * 2.2) * 1.5
+      ctx.fillStyle = '#0a0000'; ctx.fillRect(ex - 3, ey - 3 + eyeOffY, 6, 6)
+      ctx.fillStyle = '#ff8800'; ctx.fillRect(ex - 1, ey - 1 + eyeOffY, 2, 2)
+      const eG1 = ctx.createRadialGradient(ex, ey, 0, ex, ey, 22 * eyePulse)
+      eG1.addColorStop(0, hit ? 'rgba(255,50,0,0.9)' : 'rgba(255,0,0,0.75)')
+      eG1.addColorStop(0.5, 'rgba(200,0,0,0.3)')
+      eG1.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = eG1; ctx.fillRect(ex - 25, ey - 25, 50, 50)
+      const eG2 = ctx.createRadialGradient(ex, ey, 0, ex, ey, 45 * eyePulse)
+      eG2.addColorStop(0, 'rgba(255,0,0,0.15)')
+      eG2.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = eG2; ctx.fillRect(ex - 50, ey - 50, 100, 100)
     })
 
-    // === MOUTH ===
-    ctx.fillStyle = '#3a0000'; ctx.fillRect(-16, 22, 32, 22)
-    ctx.fillStyle = hit ? '#ffaaaa' : '#cccccc'
-    ;[-13, -3, 7].forEach(tx => ctx.fillRect(tx, 22, 8, 9))
+    // ── MOUTH (no teeth — open void + fire glow) ──
+    ctx.fillStyle = '#1a0000'; ctx.fillRect(-20, 20, 40, 28)
+    ctx.fillStyle = '#000000'; ctx.fillRect(-17, 23, 34, 22)
+    const mouthGlow = t * 4
+    const mG = ctx.createRadialGradient(0, 32, 2, 0, 32, 28)
+    mG.addColorStop(0, `rgba(255,${120 + Math.sin(mouthGlow) * 60},0,0.95)`)
+    mG.addColorStop(0.4, 'rgba(255,50,0,0.6)')
+    mG.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = mG; ctx.fillRect(-28, 10, 56, 50)
+    for (let fi = 0; fi < 3; fi++) {
+      const flicker = Math.sin(t * 8 + fi * 2.1) * 4
+      const fh = 12 + Math.abs(Math.sin(t * 6 + fi)) * 8
+      ctx.fillStyle = fi % 2 === 0 ? 'rgba(255,180,0,0.9)' : 'rgba(255,80,0,0.85)'
+      ctx.fillRect(-10 + fi * 10 - 3, 26 + flicker, 6, fh)
+    }
 
-    // === TENTACLES (5 hanging below) ===
+    // ── TENTACLES (9 curling, animated) ──
     const tentDefs = [
-      {dx:-42, len:58, p:0.0}, {dx:-21, len:72, p:0.6},
-      {dx:  0, len:65, p:1.2}, {dx: 21, len:70, p:1.8},
-      {dx: 42, len:52, p:2.4},
+      {dx:-52, len:60, p:0.0, w:9}, {dx:-36, len:80, p:0.5, w:10},
+      {dx:-18, len:72, p:1.0, w:11}, {dx:0,   len:88, p:1.5, w:12},
+      {dx: 18, len:74, p:2.0, w:11}, {dx:36,  len:82, p:2.5, w:10},
+      {dx: 52, len:62, p:3.0, w:9},
+      {dx:-64, len:44, p:3.5, w:8}, {dx:64,   len:48, p:4.0, w:8},
     ]
     tentDefs.forEach(td => {
-      const sw = Math.sin(g.phase * 1.6 + td.p) * 6
-      // Tentacle body
-      ctx.fillStyle = hit ? '#ffbbbb' : '#c4c4c4'
-      ctx.fillRect(td.dx - 5 + sw, bh/2, 10, td.len)
-      // Side shadow (3D feel)
-      ctx.fillStyle = hit ? '#ffaaaa' : '#ababab'
-      ctx.fillRect(td.dx + 3 + sw, bh/2, 4, td.len)
-      ctx.strokeStyle = '#888'; ctx.lineWidth = 0.8
-      ctx.strokeRect(td.dx - 5 + sw, bh/2, 10, td.len)
+      const sw  = Math.sin(t * 1.8 + td.p) * 9
+      const segH = td.len / 3
+      for (let seg = 0; seg < 3; seg++) {
+        const yOff = bh/2 + seg * segH
+        const xOff = td.dx + sw * (seg + 1) * 0.4
+        const segW = Math.max(4, td.w - seg * 2.5)
+        const tGrad = ctx.createLinearGradient(xOff - segW/2, 0, xOff + segW/2, 0)
+        tGrad.addColorStop(0, hit ? '#cc6666' : '#9a9a9a')
+        tGrad.addColorStop(0.35, hit ? '#ffbbbb' : '#d4d4d4')
+        tGrad.addColorStop(0.7, hit ? '#ffaaaa' : '#b8b8b8')
+        tGrad.addColorStop(1, hit ? '#884444' : '#707070')
+        ctx.fillStyle = tGrad; ctx.fillRect(xOff - segW/2, yOff, segW, segH + 2)
+        ctx.strokeStyle = hit ? '#883333' : '#666'; ctx.lineWidth = 0.8
+        ctx.strokeRect(xOff - segW/2, yOff, segW, segH + 2)
+      }
+      const tipX = td.dx + sw * 1.2
+      ctx.fillStyle = hit ? '#882222' : '#555'
+      ctx.fillRect(tipX - 4, bh/2 + td.len, 8, 7)
     })
 
-    // Ghast ambient glow
-    const gG = ctx.createRadialGradient(0, 0, 0, 0, 0, 130)
-    gG.addColorStop(0, hit ? 'rgba(255,100,100,0.12)' : 'rgba(220,220,220,0.07)')
+    // ── AMBIENT DANGER GLOW ──
+    const gPulse = 0.08 + Math.sin(t * 3) * 0.04
+    const gG = ctx.createRadialGradient(0, 0, 0, 0, 0, 140)
+    gG.addColorStop(0, hit ? 'rgba(255,80,0,0.35)' : `rgba(255,0,0,${gPulse})`)
+    gG.addColorStop(0.6, hit ? 'rgba(255,30,0,0.1)' : `rgba(100,0,0,${gPulse * 0.5})`)
     gG.addColorStop(1, 'rgba(0,0,0,0)')
-    ctx.fillStyle = gG; ctx.fillRect(-130, -130, 260, 260)
+    ctx.fillStyle = gG; ctx.fillRect(-140, -140, 280, 280)
 
-    // === 3 HEARTS above Ghast ===
     this._drawGhastHearts(ctx, bh)
-
     ctx.restore()
   }
+
 
   _drawGhastHearts(ctx, bh) {
     const P = 3.5, spacing = 30
