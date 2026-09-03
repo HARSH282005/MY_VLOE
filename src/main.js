@@ -3223,15 +3223,11 @@ class Level2Game {
     gsap.to(overlay, { opacity: 1, duration: 0.5 })
     gsap.to(txt, { opacity: 1, duration: 0.6, delay: 0.5 })
 
-    // Flash effect
-    gsap.to(overlay, { background:'rgba(150,220,255,0.12)', duration:0.3, delay:0.8,
-      yoyo:true, repeat:3, onComplete: () => {
-        gsap.to(overlay, { opacity:0, duration:0.8, delay:0.5, onComplete: () => {
-          overlay.remove()
-          setTimeout(() => this._showHalfHeartSlide(), 400)
-        }})
-      }
-    })
+    // Just wait a moment and fade out without flashing
+    gsap.to(overlay, { opacity:0, duration:0.8, delay:2.0, onComplete: () => {
+      overlay.remove()
+      setTimeout(() => this._showHalfHeartSlide(), 400)
+    }})
   }
 
   _showHalfHeartSlide() {
