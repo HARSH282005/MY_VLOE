@@ -22,10 +22,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Pacifico&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@500;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/lock.css">
     <link rel="stylesheet" href="/src/style.css">
     <link rel="stylesheet" href="/src/rose.css">
   </head>
-  <body>
+  <body class="locked">
+    <!-- Premium Lock Screen -->
+    <section id="lockScreen" class="lock-screen-overlay">
+      <div class="lock-screen-card glass-card">
+        <div class="lock-icon">
+          <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2 class="lock-question">WHAT'S OUR RELATIONSHIP SATRTING DATE</h2>
+        <div class="lock-input-group">
+          <input type="password" id="lockPinInput" class="lock-input" placeholder="Enter PIN" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+        </div>
+        <p class="lock-error" id="lockError">Incorrect PIN. Try again.</p>
+        <button id="lockSubmitBtn" class="lock-submit-btn">Unlock <span class="arrow">➜</span></button>
+      </div>
+    </section>
+
+    <!-- App content wrapper to blur when locked -->
+    <div id="mainAppWrapper" class="locked-blur">
     <!-- Live video background -->
     <video class="bg-breeze" src="/cherry-blossom-house-minecraft-live-wallpaper.mp4" autoplay loop muted playsinline></video>
     <div class="bg-overlay"></div>
@@ -763,7 +784,9 @@
     <!-- Flower Curtain Overlay -->
     <div id="flowerCurtain"></div>
 
+    </div> <!-- End of mainAppWrapper -->
     <!-- Scripts -->
+    <script type="module" src="/src/lock.js"></script>
     <script type="module" src="/src/level3.js"></script>
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/rose.js"></script>
