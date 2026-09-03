@@ -1872,26 +1872,29 @@ body.torch-off .mc-btn-pink {
 }
 .mc-loading-bar {
   width: 100%;
-  height: 28px;
-  background: #1a1a1a;
-  border: 3px solid #555;
+  height: 36px;
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow:
-    inset 2px 2px 0 rgba(0,0,0,0.6),
-    inset -2px -2px 0 rgba(255,255,255,0.06),
-    0 0 20px rgba(0,0,0,0.5);
-  border-radius: 2px;
+    inset 0 0 15px rgba(0,0,0,0.8),
+    0 0 25px rgba(126,200,80,0.5),
+    0 0 50px rgba(126,200,80,0.2);
+  border-radius: 8px;
   position: relative;
   overflow: hidden;
 }
 .mc-loading-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #7ec850 0%, #55aa22 50%, #7ec850 100%);
+  background: linear-gradient(90deg, #55aa22, #a8ff5c, #55aa22);
   background-size: 200% 100%;
-  animation: barShine 1.2s linear infinite;
+  animation: barShine 0.8s linear infinite;
   transition: width 0.05s linear;
   position: relative;
   z-index: 1;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+  border-radius: 6px;
 }
 @keyframes barShine {
   0%   { background-position: 200% center; }
@@ -1921,10 +1924,16 @@ body.torch-off .mc-btn-pink {
 }
 .mc-loading-percent {
   font-family: var(--font-pixel);
-  font-size: 0.55rem;
-  color: #7ec850;
-  text-shadow: 0 0 10px rgba(126,200,80,0.7);
-  letter-spacing: 0.1em;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 15px #7ec850, 0 0 30px #7ec850, 0 0 45px #55aa22;
+  letter-spacing: 0.15em;
+  margin-top: 5px;
+  animation: loadingPercentPulse 1s ease-in-out infinite;
+}
+@keyframes loadingPercentPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
 }
 
 /* Block decorations row */

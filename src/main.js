@@ -1264,8 +1264,9 @@ function initCharSelect() {
                 }, 700)
 
                 // Animate fill from 0 → 100% over 3 seconds
+                // Animate fill from 0 → 100% over 1 second
                 let progress = 0
-                const DURATION = 3000  // ms
+                const DURATION = 1000  // ms
                 const START    = performance.now()
 
                 function tickBar(now) {
