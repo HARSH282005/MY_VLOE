@@ -688,15 +688,14 @@ window.initFinalSlide = () => {
       flowerCurtain.innerHTML = '';
       const flowerImages = ['/flower_new_1.png', '/flower_new_2.png', '/flower_new_3.png'];
       
-      // Create a dense curtain of flowers to cover the whole slide
-      const count = 400;
+      // Create a dense curtain of flowers
+      const count = 1000;
       for (let i = 0; i < count; i++) {
         const img = document.createElement('img');
         img.src = flowerImages[Math.floor(Math.random() * flowerImages.length)];
         img.className = 'curtain-flower';
         
-        // Massive sizes to ensure no gaps
-        const size = Math.random() * 250 + 150; 
+        const size = Math.random() * 150 + 100; // 100px to 250px
         const x = Math.random() * 140 - 20; // -20vw to 120vw
         const y = Math.random() * 140 - 20; // -20vh to 120vh
         const rot = Math.random() * 360;
