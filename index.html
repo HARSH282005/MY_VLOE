@@ -584,6 +584,9 @@
           .sl-3 { bottom: 35% !important; left: 5% !important; width: 80px !important; }
           .sl-4 { bottom: 25% !important; right: 5% !important; width: 80px !important; }
           
+          /* Make sure the image inside scales properly on mobile */
+          .small-letter-wrapper img.sl-img { width: 100% !important; height: auto !important; }
+          
           .vintage-corner {
             transform: scale(0.5) !important;
             opacity: 0.5 !important;
@@ -613,13 +616,27 @@
           #final-big-note {
             width: 95vw !important;
             height: 85vh !important;
-            padding: 60px 20px 20px 20px !important;
+            padding: 50px 15px 15px 15px !important;
           }
           #final-note-heading {
-            font-size: 24px !important;
+            font-size: 20px !important;
+            margin-bottom: 10px !important;
           }
           #final-note-text {
-            font-size: 14px !important;
+            font-size: 16px !important;
+          }
+          /* Fix the button at the bottom of the final note for mobile */
+          #final-big-note .bottom-btn-group {
+            bottom: 15px !important;
+            right: 15px !important;
+            gap: 5px !important;
+          }
+          #final-big-note .bottom-btn-group span {
+            font-size: 1.1em !important;
+          }
+          #final-big-note .bottom-btn-group span.btn-click-open {
+            padding: 8px 12px !important;
+            font-size: 1.1em !important;
           }
         }
       </style>
@@ -664,9 +681,9 @@
         </div>
         
         <!-- Blended Click Open Button with Rose Text -->
-        <div style="position: absolute; bottom: 35px; right: 45px; display: flex; align-items: center; gap: 15px;">
+        <div class="bottom-btn-group" style="position: absolute; bottom: 35px; right: 45px; display: flex; align-items: center; gap: 15px; z-index: 10;">
           <span style="font-family: 'Caveat', cursive; color: #4a2e1b; font-size: 1.8em; font-weight: bold; text-shadow: 1px 1px 2px rgba(255,255,255,0.7);">ROSE FOR YOU</span>
-          <span style="font-family: 'Pacifico', cursive; color: #fff; background-color: #a11447; font-size: 1.8em; cursor: pointer; padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="openBlankSlide()">Click Open ➔</span>
+          <span class="btn-click-open" style="font-family: 'Pacifico', cursive; color: #fff; background-color: #a11447; font-size: 1.8em; cursor: pointer; padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="openBlankSlide()">Click Open ➔</span>
         </div>
       </div>
 
@@ -676,7 +693,7 @@
       <!-- The Secret Note -->
       <div id="secret-note-1" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(1)">×</span>
-        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 35%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow-y: auto;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">Always yours</h2>
           <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.2; color: #5c0834; margin: 0;">no matter what shoan bacha i will always love you and there will be oonly one person in my heart is you only</p>
         </div>
@@ -685,7 +702,7 @@
       <!-- The Secret Note 2 -->
       <div id="secret-note-2" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(2)">×</span>
-        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 35%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow-y: auto;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">I MISS YOU ALLOT BABULU</h2>
           <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.2; color: #5c0834; margin: 0;">NO MATTER WHAT HOW MUCH DO I TRY TO BE BUSY MAKE MY MIND BUSY TO JUST MAKE HABBIT BUT MY HEART ALWAYS MISS YOU AND CRAVE FRO YOU BABY</p>
         </div>
@@ -694,7 +711,7 @@
       <!-- The Secret Note 3 -->
       <div id="secret-note-3" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(3)">×</span>
-        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 35%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow-y: auto;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">I LOVE YOU MUCH MOLE SHONA</h2>
           <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.1; color: #5c0834; margin: 0;">BABY I REALLLLLLLLLLLLYYYYYYY LOVEEE YOU ALLOT NO MATTER HOW FAR WE WILL GO BUT I WILL ALWAY LOVE YOU MORE THAN ANYONE FROM THE FIRST DAY OF OUR RELATIONSHIP UPTO MY LAST BREATH I WILL LOVE YOU ONLY AND ALWASYS</p>
         </div>
@@ -703,7 +720,7 @@
       <!-- The Secret Note 4 -->
       <div id="secret-note-4" class="secret-note-modal" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; height: 750px; background: url('/tulip_note_bg_transparent.png') no-repeat center center; background-size: 100% 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5)); z-index: 10000;">
         <span style="position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 32px; font-weight: bold; color: #5c0834; text-shadow: none;" onclick="closeNote(4)">×</span>
-        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 32%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; mix-blend-mode: multiply;">
+        <div style="position: absolute; top: 38%; left: 15%; width: 70%; height: 35%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow-y: auto;">
           <h2 style="font-family: 'Minecrafter', 'Press Start 2P', monospace; color: #a11447; margin-bottom: 10px; font-size: 1.6em;">EFFORTS</h2>
           <p style="font-family: 'Caveat', cursive, sans-serif; font-size: 1.4em; line-height: 1.1; color: #5c0834; margin: 0;">IK WE BOTH DID ALLOT OF EFFORTS AND YOU DID WAY NUCH NORE THANA ME I ALWAYS FEEL BLESSED AAP JB TK BHI MERE SAT THE SBB SE KHASTE I NEVER WANT TO LOSE YOU AND THIS WEBSITE I MADE ITS JUST NTG INFRONT OF YIUR EFFORTS</p>
         </div>
