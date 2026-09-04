@@ -695,9 +695,10 @@ window.initFinalSlide = () => {
         img.src = flowerImages[Math.floor(Math.random() * flowerImages.length)];
         img.className = 'curtain-flower';
         
-        const size = Math.random() * 80 + 50; // 50px to 130px
-        const x = Math.random() * 100; // 0vw to 100vw
-        const y = Math.random() * 100; // 0vh to 100vh
+        // Make flowers much bigger to cover the slide (120px to 350px)
+        const size = Math.random() * 230 + 120; 
+        const x = Math.random() * 120 - 10; // -10vw to 110vw
+        const y = Math.random() * 120 - 10; // -10vh to 110vh
         const rot = Math.random() * 360;
         
         img.style.width = `${size}px`;
@@ -706,8 +707,15 @@ window.initFinalSlide = () => {
         img.style.top = `${y}vh`;
         img.style.transform = `rotate(${rot}deg)`;
         
-        // Add a gentle CSS sway animation instead of heavy JS rotation
-        img.style.animation = `sway-horizontal ${Math.random() * 2 + 3}s ease-in-out infinite alternate`;
+        // Spin the flower infinitely clockwise (with 150 count, this won't lag)
+        const duration = Math.random() * 6000 + 4000; // 4s to 10s per rotation
+        img.animate([
+          { transform: `rotate(${rot}deg)` },
+          { transform: `rotate(${rot + 360}deg)` }
+        ], {
+          duration: duration,
+          iterations: Infinity
+        });
         
         flowerCurtain.appendChild(img);
       }
