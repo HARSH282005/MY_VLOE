@@ -688,17 +688,17 @@ window.initFinalSlide = () => {
       flowerCurtain.innerHTML = '';
       const flowerImages = ['/flower_new_1.png', '/flower_new_2.png', '/flower_new_3.png'];
       
-      // Create a dense curtain of flowers (Optimized for CSS animation)
-      const count = 150;
+      // Create a dense curtain of flowers to cover the whole slide
+      const count = 400;
       for (let i = 0; i < count; i++) {
         const img = document.createElement('img');
         img.src = flowerImages[Math.floor(Math.random() * flowerImages.length)];
         img.className = 'curtain-flower';
         
-        // Make flowers much bigger to cover the slide (120px to 350px)
-        const size = Math.random() * 230 + 120; 
-        const x = Math.random() * 120 - 10; // -10vw to 110vw
-        const y = Math.random() * 120 - 10; // -10vh to 110vh
+        // Massive sizes to ensure no gaps
+        const size = Math.random() * 250 + 150; 
+        const x = Math.random() * 140 - 20; // -20vw to 120vw
+        const y = Math.random() * 140 - 20; // -20vh to 120vh
         const rot = Math.random() * 360;
         
         img.style.width = `${size}px`;
@@ -707,7 +707,7 @@ window.initFinalSlide = () => {
         img.style.top = `${y}vh`;
         img.style.transform = `rotate(${rot}deg)`;
         
-        // Spin the flower infinitely clockwise (with 150 count, this won't lag)
+        // Spin the flower infinitely clockwise
         const duration = Math.random() * 6000 + 4000; // 4s to 10s per rotation
         img.animate([
           { transform: `rotate(${rot}deg)` },
