@@ -85,6 +85,29 @@
             <span class="title-line line-1">WELCOME</span>
             <span class="title-line line-2 italic">PYALA BACHA</span>
           </h1>
+          
+          <!-- Warning note for skipping to reward -->
+          <div style="margin-top: 30px; text-align: center; z-index: 100; position: relative;">
+            <p style="color: #ff4444; font-family: 'Press Start 2P', monospace; font-size: 0.7rem; text-shadow: 1px 1px 0 #000; margin-bottom: 10px; line-height: 1.5;">
+              WARNING: IF YOU WANT TO GO DIRECTLY TO THE REWARD SLIDE
+            </p>
+            <button onclick="if(confirm('ARE YOU SURE ?')) { 
+              document.getElementById('app').style.display = 'none';
+              const finalSlide = document.getElementById('final-slide');
+              finalSlide.style.display = 'flex';
+              finalSlide.style.opacity = '1';
+              
+              // Stop background music if playing
+              const am = document.getElementById('ambientMusic');
+              const bm = document.getElementById('battleMusic');
+              if (am) am.pause();
+              if (bm) bm.pause();
+
+              if (window.initFinalSlide) window.initFinalSlide();
+            }" style="background: transparent; border: 2px solid #ff4444; color: #ff4444; padding: 10px 20px; font-family: 'Press Start 2P', monospace; font-size: 0.6rem; cursor: pointer; text-shadow: 1px 1px 0 #000; border-radius: 5px; transition: all 0.3s;">
+              CLICK HERE
+            </button>
+          </div>
         </div>
         
         <!-- Clean Scroll Indicator -->
