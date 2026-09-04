@@ -688,8 +688,8 @@ window.initFinalSlide = () => {
       flowerCurtain.innerHTML = '';
       const flowerImages = ['/flower_new_1.png', '/flower_new_2.png', '/flower_new_3.png'];
       
-      // Create a light, elegant curtain of flowers instead of 1000
-      const count = 35;
+      // Create a dense curtain of flowers (Optimized for CSS animation)
+      const count = 150;
       for (let i = 0; i < count; i++) {
         const img = document.createElement('img');
         img.src = flowerImages[Math.floor(Math.random() * flowerImages.length)];
