@@ -1,7 +1,13 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "echo done",
   "outputDirectory": ".",
   "framework": null,
-  "installCommand": "npm install --ignore-scripts"
+  "installCommand": "echo skip",
+  "rewrites": [
+    {
+      "source": "/:file([^/]+\\.(mp3|mp4|jpg|jpeg|png|svg|ico|webp|gif|woff2|woff|ttf|otf))",
+      "destination": "/public/:file"
+    }
+  ]
 }
