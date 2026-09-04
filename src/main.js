@@ -684,36 +684,30 @@ window.initFinalSlide = () => {
       if (curtainDropped) return;
       curtainDropped = true;
       
-      // 1. Generate flowers
+      // 1. Generate flowers (Optimized for performance)
       flowerCurtain.innerHTML = '';
       const flowerImages = ['/flower_new_1.png', '/flower_new_2.png', '/flower_new_3.png'];
       
-      // Create a dense curtain of flowers
-      const count = 1000;
+      // Create a light, elegant curtain of flowers instead of 1000
+      const count = 35;
       for (let i = 0; i < count; i++) {
         const img = document.createElement('img');
         img.src = flowerImages[Math.floor(Math.random() * flowerImages.length)];
         img.className = 'curtain-flower';
         
-        const size = Math.random() * 150 + 100; // 100px to 250px
-        const x = Math.random() * 140 - 20; // -20vw to 120vw
-        const y = Math.random() * 140 - 20; // -20vh to 120vh
+        const size = Math.random() * 80 + 50; // 50px to 130px
+        const x = Math.random() * 100; // 0vw to 100vw
+        const y = Math.random() * 100; // 0vh to 100vh
         const rot = Math.random() * 360;
         
-        img.style.setProperty('--size', `${size}px`);
-        img.style.setProperty('--x', `${x}vw`);
-        img.style.setProperty('--y', `${y}vh`);
-        img.style.setProperty('--rot', `${rot}deg`);
+        img.style.width = `${size}px`;
+        img.style.height = `${size}px`;
+        img.style.left = `${x}vw`;
+        img.style.top = `${y}vh`;
+        img.style.transform = `rotate(${rot}deg)`;
         
-        // Spin the flower infinitely clockwise
-        const duration = Math.random() * 5000 + 4000; // 4s to 9s per rotation
-        img.animate([
-          { transform: `rotate(${rot}deg)` },
-          { transform: `rotate(${rot + 360}deg)` }
-        ], {
-          duration: duration,
-          iterations: Infinity
-        });
+        // Add a gentle CSS sway animation instead of heavy JS rotation
+        img.style.animation = `sway-horizontal ${Math.random() * 2 + 3}s ease-in-out infinite alternate`;
         
         flowerCurtain.appendChild(img);
       }
