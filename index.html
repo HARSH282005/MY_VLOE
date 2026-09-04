@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Pacifico&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@500;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@500;700&family=Fira+Code:wght@500&family=Dancing+Script:wght@400;600;700&family=IM+Fell+English:ital@0;1&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/lock.css">
     <link rel="stylesheet" href="/src/style.css">
     <link rel="stylesheet" href="/src/rose.css">
@@ -94,8 +94,19 @@
             <button onclick="if(confirm('ARE YOU SURE ? WANT TO GO DIRECT REWARD SECTION ?')) { 
               document.getElementById('app').style.display = 'none';
               const finalSlide = document.getElementById('final-slide');
-              finalSlide.style.display = 'flex';
-              finalSlide.style.opacity = '1';
+              if(finalSlide) finalSlide.style.display = 'none';
+              
+              // Show love story first
+              const storySlide = document.getElementById('love-story-slide');
+              if(storySlide) {
+                storySlide.style.display = 'block';
+                storySlide.style.opacity = '1';
+                storySlide.scrollTop = 0;
+                if(window.initLoveStory) window.initLoveStory();
+              } else {
+                const letterSlide = document.getElementById('letter-content-slide');
+                if(letterSlide) { letterSlide.style.display = 'block'; letterSlide.style.opacity = '1'; }
+              }
               
               // Stop background music if playing
               const am = document.getElementById('ambientMusic');
@@ -501,6 +512,608 @@
         <img id="finalLetter" src="/envelope.png" style="width: 320px; margin-top: 15px; display: inline-block; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.6)); pointer-events: auto; cursor: pointer;" alt="Love Letter Envelope">
       </div>
     </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- OUR LOVE STORY — 9 CHAPTERS (shown after game, before final slide) -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section id="love-story-slide" style="display:none; position:relative; overflow-y:auto; overflow-x:hidden; background:#f5f0e8; font-family:'IM Fell English',serif;">
+
+      <style>
+        /* ── Story-specific styles ── */
+        #love-story-slide * { box-sizing: border-box; }
+        .story-chapter {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 5rem 2rem;
+          position: relative;
+          overflow: hidden;
+        }
+        .story-inner { max-width: 1100px; width: 100%; }
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        @media (max-width: 768px) {
+          .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+          .story-chapter { padding: 3rem 1.25rem; }
+        }
+        .s-label {
+          font-family: 'Lato', 'Inter', sans-serif;
+          font-weight: 300;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+          font-size: 0.72rem;
+          opacity: 0.65;
+          margin-bottom: 0.75rem;
+          display: block;
+        }
+        .s-title {
+          font-family: 'Playfair Display', 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          line-height: 1.1;
+          margin-bottom: 1.5rem;
+        }
+        .s-quote {
+          font-family: 'Dancing Script', 'Caveat', cursive;
+          line-height: 1.4;
+        }
+        .s-body {
+          font-family: 'IM Fell English', Georgia, serif;
+          line-height: 1.9;
+          font-size: 1.05rem;
+        }
+        .s-divider {
+          width: 40px; height: 2px;
+          margin-bottom: 1.5rem;
+        }
+        .s-img {
+          width: 100%; height: auto;
+          display: block;
+          border-radius: 4px;
+        }
+        /* Chapter colour tokens */
+        .ch-dark   { background: linear-gradient(160deg,#1a0f08,#2d1810,#3d2218); }
+        .ch-cream  { background: linear-gradient(180deg,#f2e8d5,#f5f0e8,#ede4d4); }
+        .ch-navy   { background: linear-gradient(135deg,#1a2035,#252d45,#1e1830); }
+        .ch-sepia  { background: linear-gradient(160deg,#f2e8d5,#e8dcc8); }
+        .ch-amber  { background: linear-gradient(160deg,#1a0f08,#2a1a10); }
+        .ch-storm  { background: linear-gradient(170deg,#0d1117,#131a24,#1a1220); }
+        .ch-gold   { background: linear-gradient(145deg,#2a1508,#3d2010,#1f1005); }
+        .ch-paper  { background: linear-gradient(170deg,#f2e8d5,#ede0cc); }
+        .ch-dawn   { background: linear-gradient(160deg,#fdf4ec,#f5e8d8,#ede0cc); }
+        /* Stars (ch1) */
+        .star-field { position:absolute; inset:0; pointer-events:none; }
+        .star-dot {
+          position:absolute; border-radius:50%;
+          background:#f5f0e8;
+          animation: starTwinkle 3s ease-in-out infinite alternate;
+        }
+        @keyframes starTwinkle { from{opacity:0.15;} to{opacity:0.75;} }
+        /* Rain (ch6) */
+        .rain-drop {
+          position:absolute;
+          width:1px;
+          background:linear-gradient(to bottom,transparent,rgba(180,200,220,.35));
+          animation: rainFall linear infinite;
+          pointer-events:none;
+        }
+        @keyframes rainFall {
+          from { transform:translateY(-100px); opacity:0; }
+          5%   { opacity:1; }
+          95%  { opacity:.5; }
+          to   { transform:translateY(110vh); opacity:0; }
+        }
+        /* Memory cards */
+        .mem-card {
+          background: rgba(255,255,255,.05);
+          border:1px solid rgba(212,168,83,.2);
+          border-radius:10px;
+          padding:.9rem 1.25rem;
+          display:flex; align-items:center; gap:.75rem;
+          transition: transform .3s, background .3s;
+          cursor:default;
+        }
+        .mem-card:hover { transform:translateX(8px); background:rgba(139,34,82,.15); }
+        /* Dream items */
+        .dream-item {
+          display:flex; align-items:center; gap:.9rem;
+          padding:.8rem 1.15rem;
+          border-radius:8px;
+          transition: all .3s;
+          cursor:default;
+        }
+        .dream-item:hover { transform:translateX(6px); }
+        /* Petal rain */
+        .petal {
+          position:fixed; pointer-events:none;
+          border-radius:50% 0 50% 0;
+          background:radial-gradient(ellipse at 30% 30%,#f0d6da,#c4637a66);
+          animation: petalFall linear infinite, petalSway ease-in-out infinite alternate;
+          z-index: 9998;
+        }
+        @keyframes petalFall {
+          from { transform:translateY(-30px) rotate(0); opacity:0; }
+          8%   { opacity:.8; }
+          92%  { opacity:.5; }
+          to   { transform:translateY(110vh) rotate(720deg); opacity:0; }
+        }
+        @keyframes petalSway {
+          from { margin-left:0; }
+          to   { margin-left:40px; }
+        }
+        /* Letter typewriter */
+        .letter-line { animation: fadeInLine .35s ease-out; }
+        @keyframes fadeInLine { from{opacity:0;transform:translateY(4px);} to{opacity:1;transform:translateY(0);} }
+        /* Reveal on scroll */
+        .story-reveal { opacity:0; transform:translateY(40px); transition: opacity .9s ease, transform .9s ease; }
+        .story-reveal.visible { opacity:1; transform:translateY(0); }
+        /* Scroll prompt */
+        .scroll-prompt {
+          display:flex; flex-direction:column; align-items:center; gap:.4rem;
+          color:#d4a853; animation: bounceDown 2s ease-in-out infinite;
+          position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+        }
+        @keyframes bounceDown {
+          0%,100% { transform:translateX(-50%) translateY(0); }
+          50%      { transform:translateX(-50%) translateY(8px); }
+        }
+        /* Pin-item grid */
+        .pin-grid { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+        /* Box ornament */
+        .box-ornament { position:absolute; width:16px; height:16px; }
+        .box-ornament.tl { top:12px; left:12px; border-top:1px solid #d4a853; border-left:1px solid #d4a853; }
+        .box-ornament.tr { top:12px; right:12px; border-top:1px solid #d4a853; border-right:1px solid #d4a853; }
+        .box-ornament.bl { bottom:12px; left:12px; border-bottom:1px solid #d4a853; border-left:1px solid #d4a853; }
+        .box-ornament.br { bottom:12px; right:12px; border-bottom:1px solid #d4a853; border-right:1px solid #d4a853; }
+        /* "Enter letters" button */
+        #storyToLetterBtn {
+          display:inline-block;
+          padding:1rem 3rem;
+          border:1px solid rgba(139,34,82,.4);
+          border-radius:2px;
+          font-family:'Lato','Inter',sans-serif;
+          letter-spacing:.18em; text-transform:uppercase; font-size:.75rem;
+          color:#8b2252; background:rgba(255,255,255,.5);
+          backdrop-filter:blur(4px); cursor:pointer;
+          transition:all .3s; margin-top:1.5rem;
+        }
+        #storyToLetterBtn:hover { background:rgba(139,34,82,.12); transform:scale(1.04); }
+      </style>
+
+      <!-- Floating petals (injected by JS below) -->
+      <div id="storyPetals" style="pointer-events:none;"></div>
+
+      <!-- ── Chapter 1: A Random Match ─────────────────────────────── -->
+      <div class="story-chapter ch-dark" style="position:relative;">
+        <div class="star-field" id="starField"></div>
+        <div class="story-inner story-grid" style="position:relative;z-index:2;">
+          <div class="story-reveal">
+            <span class="s-label" style="color:#d4a853;">Chapter One</span>
+            <h2 class="s-title" style="font-size:clamp(2.2rem,5vw,4rem);color:#f5f0e8;">
+              A Random<br><em style="color:#c4637a;">Match.</em>
+            </h2>
+            <div class="s-divider" style="background:#d4a853;"></div>
+            <p class="s-body" style="color:#d4c5b0;">
+              It started in a game — MLBB. Two strangers, randomly matched.
+              No plan, no reason. Just two players on the same team.
+            </p>
+            <p class="s-body" style="color:#d4c5b0;margin-top:.9rem;">
+              Neither of us knew it yet, but the universe had already decided.
+            </p>
+            <p class="s-quote" style="color:#c4637a;font-size:1.55rem;margin-top:1.75rem;">
+              "Not a coincidence. Destiny."
+            </p>
+          </div>
+          <div class="story-reveal" style="transition-delay:.2s;">
+            <div style="transform:rotate(-1.5deg);border-radius:4px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(212,168,83,.3);">
+              <img src="/ch1.jpg" class="s-img" alt="A Random Match" onerror="this.style.display='none'">
+            </div>
+            <div style="position:absolute;top:-12px;right:-12px;width:72px;height:72px;border:1px solid rgba(212,168,83,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(26,15,8,.8);font-size:1.8rem;">🎮</div>
+          </div>
+        </div>
+        <div class="scroll-prompt">
+          <span style="font-family:'Lato',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;">Scroll</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4a853" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+      </div>
+
+      <!-- ── Chapter 2: One Sorry Changed Everything ─────────────── -->
+      <div class="story-chapter ch-cream">
+        <div style="position:absolute;inset:0;opacity:.05;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='20' fill='none' stroke='%238b2252' stroke-width='1'/%3E%3C/svg%3E\");background-size:60px;pointer-events:none;"></div>
+        <div class="story-inner story-grid" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="position:relative;">
+            <div style="transform:rotate(-2deg);box-shadow:4px 8px 40px rgba(61,43,31,.25);border-radius:4px;overflow:hidden;">
+              <img src="/ch2.jpg" class="s-img" alt="The note that changed everything" onerror="this.style.display='none'">
+            </div>
+            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:56px;height:22px;background:rgba(212,168,83,.45);border-radius:2px;"></div>
+          </div>
+          <div class="story-reveal" style="transition-delay:.2s;">
+            <span class="s-label" style="color:#8b2252;">Chapter Two</span>
+            <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,3.2rem);color:#3d2b1f;">
+              One "Sorry"<br><em style="color:#8b2252;">Changed Everything.</em>
+            </h2>
+            <div class="s-divider" style="background:#8b2252;"></div>
+            <p class="s-body" style="color:#5a3d2b;">He was with friends in a squad. She messaged him.</p>
+            <p class="s-body" style="color:#5a3d2b;margin-top:.9rem;">He typed back: <em>"Sorry, I'm with friends right now."</em></p>
+            <p class="s-body" style="color:#5a3d2b;margin-top:.9rem;">That one polite apology opened a door neither knew existed.</p>
+            <blockquote class="s-quote" style="font-size:1.4rem;color:#8b2252;border-left:3px solid #d4a853;padding-left:1.25rem;margin-top:1.75rem;">
+              "The smallest words carry the heaviest destinies."
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 3: Falling Without Knowing ─────────────────── -->
+      <div class="story-chapter ch-navy">
+        <div style="position:absolute;top:20%;left:10%;width:380px;height:380px;background:radial-gradient(circle,rgba(139,34,82,.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:10%;right:10%;width:460px;height:460px;background:radial-gradient(circle,rgba(212,168,83,.09) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div class="story-inner" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="text-align:center;margin-bottom:3rem;">
+            <span class="s-label" style="color:#d4a853;">Chapter Three</span>
+            <h2 class="s-title" style="font-size:clamp(2rem,4.5vw,3.6rem);color:#f5f0e8;">
+              Falling Without <em style="color:#c4637a;">Knowing.</em>
+            </h2>
+            <p class="s-body" style="color:#9ba8c0;max-width:560px;margin:1.25rem auto 0;">
+              He had never talked to a girl this late, this long, this honestly. It wasn't a choice — it was a <em>pull.</em>
+            </p>
+          </div>
+          <div class="story-grid story-reveal" style="transition-delay:.15s;">
+            <div style="display:flex;flex-direction:column;gap:.9rem;">
+              <div class="mem-card"><span style="font-size:1.4rem;">📱</span><span class="s-body" style="color:#d4c5b0;font-size:.95rem;">Talked every single day</span></div>
+              <div class="mem-card"><span style="font-size:1.4rem;">⏰</span><span class="s-body" style="color:#d4c5b0;font-size:.95rem;">Waited for each other — always</span></div>
+              <div class="mem-card"><span style="font-size:1.4rem;">📷</span><span class="s-body" style="color:#d4c5b0;font-size:.95rem;">Shared Instagram IDs</span></div>
+              <div class="mem-card"><span style="font-size:1.4rem;">🌙</span><span class="s-body" style="color:#d4c5b0;font-size:.95rem;">Late nights turned into mornings</span></div>
+              <div class="mem-card"><span style="font-size:1.4rem;">💫</span><span class="s-body" style="color:#d4c5b0;font-size:.95rem;">Still falling, every single day</span></div>
+            </div>
+            <div style="text-align:center;">
+              <div style="display:inline-block;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);padding:3px;border-radius:18px;margin-bottom:1.25rem;">
+                <div style="background:#1a2035;border-radius:15px;padding:1.75rem;text-align:center;">
+                  <div style="font-size:2.5rem;margin-bottom:.4rem;">📸</div>
+                  <p class="s-label" style="color:#9ba8c0;margin-bottom:.4rem;">Then came the moment —</p>
+                  <p class="s-quote" style="color:#f5f0e8;font-size:1.35rem;">"Share your Insta?"</p>
+                </div>
+              </div>
+              <p class="s-quote" style="color:#c4637a;font-size:1.35rem;margin-top:1.25rem;">
+                "This much can't be coincidence.<br>It has to be destiny."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 4: Across The Screen ───────────────────────── -->
+      <div class="story-chapter ch-sepia" style="position:relative;">
+        <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(61,43,31,.22) 100%);"></div>
+        <div class="story-inner story-grid" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="position:relative;">
+            <div style="box-shadow:8px 12px 50px rgba(61,43,31,.3);border-radius:4px;overflow:hidden;position:relative;">
+              <img src="/ch4.jpg" class="s-img" alt="First video call" onerror="this.style.display='none'">
+            </div>
+          </div>
+          <div class="story-reveal" style="transition-delay:.2s;">
+            <span class="s-label" style="color:#7a5c48;">Chapter Four</span>
+            <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,3rem);color:#3d2b1f;">
+              Across<br><em style="color:#8b2252;">The Screen.</em>
+            </h2>
+            <div class="s-divider" style="background:#7a5c48;"></div>
+            <p class="s-body" style="color:#5a3d2b;">LDR. Long Distance. Two cities, two screens, one connection.</p>
+            <p class="s-body" style="color:#5a3d2b;margin-top:.9rem;">
+              Their first video call — both so unbearably shy. Neither could look at the other's face. 
+              They'd look away, laugh nervously, hide their smiles.
+            </p>
+            <blockquote class="s-quote" style="font-size:1.3rem;color:#8b2252;border-left:3px solid #d4a853;padding-left:1.1rem;margin-top:1.5rem;">
+              "So funny. So sweet. So us."
+            </blockquote>
+            <p class="s-body" style="color:#5a3d2b;margin-top:1.25rem;">
+              They never met in person — yet celebrated every festival, every birthday, every ordinary Tuesday. Together.
+            </p>
+            <div style="margin-top:1.5rem;padding:1rem 1.4rem;background:rgba(139,34,82,.07);border-radius:8px;border:1px solid rgba(139,34,82,.18);">
+              <p class="s-label" style="color:#8b2252;margin-bottom:.4rem;">Their LDR Life</p>
+              <p class="s-body" style="color:#5a3d2b;font-size:.9rem;">📹 Sleeping on call &nbsp;|&nbsp; 💌 Daily letters &nbsp;|&nbsp; 🍫 Surprise gifts &nbsp;|&nbsp; 🌙 Late nights</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 5: Letters & Late Nights ───────────────────── -->
+      <div class="story-chapter ch-amber" style="position:relative;">
+        <div style="position:absolute;top:35%;left:50%;transform:translateX(-50%);width:580px;height:280px;background:radial-gradient(ellipse,rgba(212,168,83,.11) 0%,transparent 70%);pointer-events:none;"></div>
+        <div class="story-inner" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="text-align:center;margin-bottom:2.5rem;">
+            <span class="s-label" style="color:#d4a853;">Chapter Five</span>
+            <h2 class="s-title" style="font-size:clamp(2rem,4vw,3.4rem);color:#f5f0e8;">
+              Letters & <em style="color:#d4a853;">Late Nights.</em>
+            </h2>
+            <p class="s-body" style="color:#9b8870;max-width:520px;margin:1.25rem auto 0;">In a long-distance relationship, the small things become everything. They made the small things extraordinary.</p>
+          </div>
+          <div class="story-grid story-reveal" style="transition-delay:.15s;align-items:start;">
+            <div style="border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+              <img src="/ch5.jpg" class="s-img" alt="Letters and late nights" onerror="this.style.display='none'">
+            </div>
+            <div>
+              <div class="pin-grid">
+                <div style="background:rgba(245,240,232,.06);border:1px solid rgba(212,168,83,.14);border-radius:8px;padding:1.1rem;text-align:center;">
+                  <div style="font-size:1.6rem;margin-bottom:.4rem;">💌</div>
+                  <p class="s-body" style="color:#d4c5b0;font-size:.82rem;">Letters written every day</p>
+                </div>
+                <div style="background:rgba(139,34,82,.1);border:1px solid rgba(212,168,83,.14);border-radius:8px;padding:1.1rem;text-align:center;">
+                  <div style="font-size:1.6rem;margin-bottom:.4rem;">🍫</div>
+                  <p class="s-body" style="color:#d4c5b0;font-size:.82rem;">Chocolates & surprise gifts — from her</p>
+                </div>
+                <div style="background:rgba(212,168,83,.07);border:1px solid rgba(212,168,83,.14);border-radius:8px;padding:1.1rem;text-align:center;">
+                  <div style="font-size:1.6rem;margin-bottom:.4rem;">📞</div>
+                  <p class="s-body" style="color:#d4c5b0;font-size:.82rem;">"I love you" in every sentence</p>
+                </div>
+                <div style="background:rgba(245,240,232,.06);border:1px solid rgba(212,168,83,.14);border-radius:8px;padding:1.1rem;text-align:center;">
+                  <div style="font-size:1.6rem;margin-bottom:.4rem;">🌙</div>
+                  <p class="s-body" style="color:#d4c5b0;font-size:.82rem;">Falling asleep on video call</p>
+                </div>
+              </div>
+              <div style="margin-top:.9rem;background:rgba(139,34,82,.18);border:1px solid rgba(196,99,122,.38);border-radius:8px;padding:1.1rem 1.4rem;text-align:center;">
+                <p class="s-quote" style="color:#f0d6da;font-size:1.15rem;">"She did the most. Chocolates. Gifts. Letters. Love. Always."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 6: The Storms We Made ──────────────────────── -->
+      <div class="story-chapter ch-storm" style="position:relative;">
+        <div id="rainContainer" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;"></div>
+        <div style="position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 40% 60%,rgba(139,34,82,.07) 0%,transparent 60%);"></div>
+        <div class="story-inner story-grid" style="position:relative;z-index:2;">
+          <div class="story-reveal">
+            <div style="border-radius:4px;overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.7);filter:brightness(.86) saturate(.9);">
+              <img src="/ch6.jpg" class="s-img" alt="The storms we made" onerror="this.style.display='none'">
+            </div>
+          </div>
+          <div class="story-reveal" style="transition-delay:.2s;">
+            <span class="s-label" style="color:#6b7a9a;">Chapter Six</span>
+            <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,3rem);color:#e8dfd0;">
+              The Storms<br><em style="color:#c4637a;">We Made.</em>
+            </h2>
+            <div class="s-divider" style="background:#3d4a60;"></div>
+            <p class="s-body" style="color:#8a9ab5;">They fought. More than most. His jealousy ran deep — in the game, if she messaged any boy, showed any emote, his heart would flinch and his words would hurt.</p>
+            <p class="s-body" style="color:#8a9ab5;margin-top:.9rem;">Misunderstandings. Distance. Silence that lasted too long.</p>
+            <p class="s-body" style="color:#8a9ab5;margin-top:.9rem;">And through it all — her health wasn't good. He couldn't be there. The distance made him feel helpless. That helplessness came out wrong.</p>
+            <blockquote class="s-quote" style="font-size:1.2rem;color:#c4637a;border-left:3px solid #3d4a60;padding-left:1.1rem;margin-top:1.5rem;line-height:1.6;">
+              "Even through every storm,<br>they never truly let go."
+            </blockquote>
+            <p class="s-body" style="color:#6b7a9a;font-size:.9rem;margin-top:1.25rem;font-style:italic;">Together. No matter what. Still.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 7: A Promise We Kept ───────────────────────── -->
+      <div class="story-chapter ch-gold" style="position:relative;">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:480px;height:480px;background:radial-gradient(circle,rgba(212,168,83,.07) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div class="story-inner story-grid" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="position:relative;text-align:center;">
+            <div style="border-radius:6px;overflow:hidden;box-shadow:0 20px 60px rgba(212,168,83,.18),0 0 0 1px rgba(212,168,83,.18);">
+              <img src="/ch7.jpg" class="s-img" alt="The promise" onerror="this.style.display='none'">
+            </div>
+            <div id="sealBadge" style="position:absolute;bottom:-18px;right:-18px;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#d4a853,#f0d080);display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 0 22px rgba(212,168,83,.35);">🤝</div>
+          </div>
+          <div class="story-reveal" style="transition-delay:.2s;">
+            <span class="s-label" style="color:#d4a853;">Chapter Seven</span>
+            <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,3rem);color:#f5f0e8;">
+              A Promise<br><em style="color:#d4a853;">We Kept.</em>
+            </h2>
+            <div class="s-divider" style="background:#d4a853;"></div>
+            <p class="s-body" style="color:#c5b090;">Through every fight. Every misunderstanding. Every moment when it felt easier to walk away —</p>
+            <div style="margin:1.75rem 0;padding:1.75rem;background:rgba(212,168,83,.07);border:1px solid rgba(212,168,83,.28);border-radius:8px;position:relative;">
+              <div class="box-ornament tl"></div><div class="box-ornament tr"></div>
+              <div class="box-ornament bl"></div><div class="box-ornament br"></div>
+              <p class="s-label" style="color:#d4a853;text-align:center;margin-bottom:.9rem;">The Promise</p>
+              <p class="s-quote" style="color:#f5f0e8;font-size:1.25rem;text-align:center;line-height:1.6;">
+                "No matter how hard it gets,<br>no matter how much it hurts —<br>we will not separate.<br>
+                <span style="color:#d4a853;">We stick. Together. Always."</span>
+              </p>
+            </div>
+            <p class="s-body" style="color:#c5b090;">Not on a wedding day — but in the quiet of a late night, across miles of distance, through the glow of a phone screen. The most real vow two people can make.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 8: I'm Sorry, Sohneo ────────────────────────── -->
+      <div class="story-chapter ch-paper" style="position:relative;">
+        <div class="story-inner" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="text-align:center;margin-bottom:2.5rem;">
+            <span class="s-label" style="color:#8b2252;">Chapter Eight</span>
+            <h2 class="s-title" style="font-size:clamp(2rem,4vw,3.2rem);color:#3d2b1f;">
+              I'm Sorry, <em style="color:#8b2252;">Sohneo.</em>
+            </h2>
+          </div>
+          <div class="story-reveal" id="sorryLetterCard" style="max-width:680px;margin:0 auto;background:#fdf8f0;border:1px solid rgba(139,34,82,.1);border-radius:4px;padding:3rem;box-shadow:4px 8px 40px rgba(61,43,31,.18),0 0 0 8px #f5ede0,0 0 0 9px rgba(139,34,82,.1);position:relative;min-height:380px;transition-delay:.1s;">
+            <div style="position:absolute;left:3.4rem;top:0;bottom:0;width:1px;background:rgba(196,99,122,.18);"></div>
+            <div id="letterLines" style="font-family:'IM Fell English',Georgia,serif;line-height:2.2;color:#3d2b1f;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Chapter 9: What I Dream Of ─────────────────────────── -->
+      <div class="story-chapter ch-dawn" style="position:relative;">
+        <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:760px;height:360px;background:radial-gradient(ellipse at 50% 0%,rgba(240,208,128,.22) 0%,transparent 70%);pointer-events:none;"></div>
+        <div class="story-inner" style="position:relative;z-index:1;">
+          <div class="story-reveal" style="text-align:center;margin-bottom:3rem;">
+            <span class="s-label" style="color:#8b2252;">Chapter Nine</span>
+            <h2 class="s-title" style="font-size:clamp(2rem,4.5vw,3.6rem);color:#3d2b1f;">
+              What I <em style="color:#8b2252;">Dream Of.</em>
+            </h2>
+            <p class="s-body" style="color:#7a5c48;max-width:460px;margin:.9rem auto 0;">Not things. Not places. Just her. Just this.</p>
+          </div>
+          <div class="story-grid story-reveal" style="transition-delay:.15s;align-items:center;">
+            <div style="display:flex;flex-direction:column;gap:.8rem;">
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">🤝</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Hold her hand — finally, really, truly</p></div>
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">💰</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Build a life. Be rich. Be free. Together.</p></div>
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">👧👦</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Adopt one girl, one boy. Love them wildly.</p></div>
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">🤗</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Cuddle all day. Just be.</p></div>
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">🌅</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Wake up looking at her face every morning</p></div>
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">😴</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Watch her sleep and whisper "finally"</p></div>
+              <div class="dream-item" style="background:rgba(139,34,82,.04);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">💍</span><p class="s-body" style="color:#5a3d2b;font-size:.95rem;">Cry at our wedding — happy tears, earned ones</p></div>
+              <div class="dream-item" style="background:linear-gradient(135deg,rgba(139,34,82,.1),rgba(212,168,83,.07));border:1px solid rgba(139,34,82,.28);border-radius:8px;"><span style="font-size:1.45rem;flex-shrink:0;">👀</span><p class="s-body" style="color:#8b2252;font-size:1rem;font-weight:600;">Just see her once. Just once.</p></div>
+            </div>
+            <div style="position:relative;">
+              <div style="border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(61,43,31,.18),0 0 0 6px white,0 0 0 7px rgba(139,34,82,.14);">
+                <img src="/ch9.jpg" class="s-img" alt="Dreams of our future" onerror="this.style.display='none'">
+              </div>
+              <div style="position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);background:white;border:1px solid rgba(139,34,82,.2);border-radius:40px;padding:.55rem 1.4rem;white-space:nowrap;box-shadow:0 8px 20px rgba(61,43,31,.1);">
+                <p class="s-quote" style="color:#8b2252;font-size:1.05rem;">"We did it." — on our wedding day 💍</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Transition to Final Slide ───────────────────────────── -->
+      <div class="story-chapter" style="background:linear-gradient(180deg,#ede0cc,#d4b896);min-height:60vh;flex-direction:column;text-align:center;">
+        <div class="story-reveal">
+          <p class="s-quote" style="font-size:clamp(1.4rem,3.5vw,2.2rem);color:#8b2252;max-width:600px;margin:0 auto 1.75rem;line-height:1.5;">
+            "I love you, and that is the beginning and end of everything."
+          </p>
+          <p style="font-family:'Lato','Inter',sans-serif;font-weight:300;letter-spacing:.28em;text-transform:uppercase;font-size:.75rem;color:#7a5c48;margin-bottom:2rem;">
+            For Jai — My Sohneo 🌹
+          </p>
+          <button id="storyToLetterBtn" onclick="window.showLetterSlide()">
+            Read Her Letters ↓
+          </button>
+        </div>
+      </div>
+
+    </section><!-- end #love-story-slide -->
+
+    <!-- Story JS: reveal + rain + typewriter + petals -->
+    <script>
+    (function() {
+
+      /* ── Scroll reveal observer ── */
+      function initStoryReveal() {
+        const els = document.querySelectorAll('#love-story-slide .story-reveal');
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        els.forEach(el => io.observe(el));
+      }
+
+      /* ── Star field ── */
+      function initStars() {
+        const sf = document.getElementById('starField');
+        if(!sf) return;
+        for(let i=0;i<55;i++) {
+          const d=document.createElement('div');
+          const s=1+Math.random()*2;
+          d.className='star-dot';
+          d.style.cssText=`width:${s}px;height:${s}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${.15+Math.random()*.5};animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s;`;
+          sf.appendChild(d);
+        }
+      }
+
+      /* ── Rain drops ── */
+      function initRain() {
+        const rc=document.getElementById('rainContainer');
+        if(!rc) return;
+        for(let i=0;i<55;i++){
+          const d=document.createElement('div');
+          d.className='rain-drop';
+          const h=12+Math.random()*20;
+          d.style.cssText=`left:${Math.random()*100}%;top:0;height:${h}px;animation-duration:${.4+Math.random()*.5}s;animation-delay:${Math.random()*3}s;`;
+          rc.appendChild(d);
+        }
+      }
+
+      /* ── Floating petals ── */
+      function initPetals() {
+        const c=document.getElementById('storyPetals');
+        if(!c) return;
+        for(let i=0;i<16;i++){
+          const p=document.createElement('div');
+          const sz=8+Math.random()*14;
+          p.className='petal';
+          p.style.cssText=`left:${Math.random()*100}vw;top:-30px;width:${sz}px;height:${sz*1.2}px;animation-duration:${9+Math.random()*10}s,${4+Math.random()*3}s;animation-delay:${Math.random()*12}s,${Math.random()*4}s;`;
+          c.appendChild(p);
+        }
+      }
+
+      /* ── Typewriter letter ── */
+      const lines=[
+        'Sohneo,','',
+        "I don't know where to start except at the truth:",
+        'I was wrong. In so many ways, for so long.','',
+        'You did everything. The letters. The gifts. The chocolates.',
+        'The calls. The waiting. The loving — even when I made it hard.','',
+        'My jealousy was my mistake. Not yours.',
+        "You never gave me a reason. I just didn't know",
+        'how to hold something this precious without squeezing too tight.','',
+        'You cried because of me. That thought alone',
+        'is something I carry every single day.','',
+        "I'm sorry. Not just as words on a screen.",
+        "From somewhere deeper than I've ever reached.",'',
+        "You're not just my person, Jai.",
+        'You're the reason I want to be better.','',
+        '— Always yours,','Sohneo 🌹'
+      ];
+      let typeInterval=null;
+
+      function startTypewriter() {
+        const box=document.getElementById('letterLines');
+        if(!box||typeInterval) return;
+        let i=0;
+        typeInterval=setInterval(()=>{
+          if(i>=lines.length){clearInterval(typeInterval);typeInterval=null;return;}
+          const p=document.createElement('p');
+          p.className='letter-line';
+          const ln=lines[i];
+          p.style.cssText=`font-size:${ln==='Sohneo,'?'1.25rem':'1rem'};color:${(ln.startsWith('—')||ln==='Sohneo,')?'#8b2252':'#3d2b1f'};min-height:${ln===''?'1.1rem':'auto'};font-weight:${ln==='Sohneo,'?600:400};font-style:${ln.startsWith('—')?'italic':'normal'};`;
+          p.textContent=ln;
+          box.appendChild(p);
+          i++;
+        },190);
+      }
+
+      /* Watch letter card entering viewport */
+      function watchLetter() {
+        const card=document.getElementById('sorryLetterCard');
+        if(!card) return;
+        const io=new IntersectionObserver((entries)=>{
+          if(entries[0].isIntersecting){ startTypewriter(); io.disconnect(); }
+        },{threshold:.2});
+        io.observe(card);
+      }
+
+      /* ── Seal pulse ── */
+      function initSealPulse() {
+        const seal=document.getElementById('sealBadge');
+        if(!seal) return;
+        let up=true;
+        setInterval(()=>{
+          seal.style.boxShadow=up?'0 0 40px 10px rgba(212,168,83,.4)':'0 0 20px rgba(212,168,83,.25)';
+          up=!up;
+        },1400);
+      }
+
+      /* ── Main init (called when slide becomes visible) ── */
+      window.initLoveStory = function() {
+        initStars(); initRain(); initPetals();
+        setTimeout(()=>{ initStoryReveal(); watchLetter(); initSealPulse(); },120);
+      };
+
+      /* ── Transition to final letter slide ── */
+      window.showLetterSlide = function() {
+        const story=document.getElementById('love-story-slide');
+        const letter=document.getElementById('letter-content-slide');
+        if(!story||!letter) return;
+        story.style.transition='opacity .6s';
+        story.style.opacity='0';
+        setTimeout(()=>{
+          story.style.display='none';
+          letter.style.display='block';
+          letter.style.opacity='1';
+          letter.scrollTop=0;
+          if(window.initFinalSlide) window.initFinalSlide();
+        },600);
+      };
+
+    })();
+    </script>
 
     <!-- The Letter Slide -->
     <section id="letter-content-slide" class="section" style="display:none; position:relative; overflow-y:auto; overflow-x:hidden; height:100vh; background:url('/letter_bg_3.jpg') no-repeat center center; background-size:cover; color:#7D4F50;">

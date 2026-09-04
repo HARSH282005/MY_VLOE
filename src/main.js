@@ -725,11 +725,21 @@ window.initFinalSlide = () => {
       void flowerCurtain.offsetWidth;
       flowerCurtain.classList.add('drop');
       
-      // 3. Switch slides and fall away
+      // 3. Switch slides and fall away — show LOVE STORY first, then letter slide
       setTimeout(() => {
         finalSlide.style.display = 'none';
-        letterSlide.style.display = 'block';
-        letterSlide.style.opacity = '1';
+        // Show love story chapters first
+        const storySlide = document.getElementById('love-story-slide');
+        if (storySlide) {
+          storySlide.style.display = 'block';
+          storySlide.style.opacity = '1';
+          storySlide.scrollTop = 0;
+          if (window.initLoveStory) window.initLoveStory();
+        } else {
+          // Fallback: go straight to letters if story not found
+          letterSlide.style.display = 'block';
+          letterSlide.style.opacity = '1';
+        }
         document.body.classList.remove('lit-up'); // Clean up old states if needed
         
         setTimeout(() => {
