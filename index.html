@@ -91,31 +91,7 @@
             <p style="color: #d12c2c; font-family: 'Press Start 2P', monospace; font-size: 0.5rem; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); margin-bottom: 10px; line-height: 1.5;">
               WARNING: SKIP TO REWARD?
             </p>
-            <button onclick="if(confirm('ARE YOU SURE ? WANT TO GO DIRECT REWARD SECTION ?')) { 
-              document.getElementById('app').style.display = 'none';
-              const finalSlide = document.getElementById('final-slide');
-              if(finalSlide) finalSlide.style.display = 'none';
-              
-              // Show love story first
-              const storySlide = document.getElementById('love-story-slide');
-              if(storySlide) {
-                storySlide.style.display = 'block';
-                storySlide.style.opacity = '1';
-                storySlide.scrollTop = 0;
-                if(window.initLoveStory) window.initLoveStory();
-              } else {
-                const letterSlide = document.getElementById('letter-content-slide');
-                if(letterSlide) { letterSlide.style.display = 'block'; letterSlide.style.opacity = '1'; }
-              }
-              
-              // Stop background music if playing
-              const am = document.getElementById('ambientMusic');
-              const bm = document.getElementById('battleMusic');
-              if (am) am.pause();
-              if (bm) bm.pause();
-
-              if (window.initFinalSlide) window.initFinalSlide();
-            }" style="background: #d12c2c; border: 2px solid #8b0000; color: #fff; padding: 10px 15px; font-family: 'Press Start 2P', monospace; font-size: 0.6rem; cursor: pointer; text-shadow: 1px 1px 0 #000; border-radius: 5px; transition: transform 0.2s;">
+            <button id="skipToRewardBtn" style="background: #d12c2c; border: 2px solid #8b0000; color: #fff; padding: 10px 15px; font-family: 'Press Start 2P', monospace; font-size: 0.6rem; cursor: pointer; text-shadow: 1px 1px 0 #000; border-radius: 5px; transition: transform 0.2s;">
               CLICK HERE
             </button>
           </div>
@@ -1111,6 +1087,41 @@
           if(window.initFinalSlide) window.initFinalSlide();
         },600);
       };
+
+      /* ── Wire skip-to-reward button ── */
+      document.addEventListener('DOMContentLoaded', function() {
+        var skipBtn = document.getElementById('skipToRewardBtn');
+        if (skipBtn) {
+          skipBtn.addEventListener('click', function() {
+            if (!confirm('ARE YOU SURE ? WANT TO GO DIRECT REWARD SECTION ?')) return;
+            var app = document.getElementById('app');
+            if (app) app.style.display = 'none';
+            var fs = document.getElementById('final-slide');
+            if (fs) fs.style.display = 'none';
+            var ss = document.getElementById('love-story-slide');
+            if (ss) {
+              ss.style.display = 'block';
+              ss.style.opacity = '1';
+              ss.scrollTop = 0;
+              if (window.initLoveStory) window.initLoveStory();
+            } else {
+              var ls = document.getElementById('letter-content-slide');
+              if (ls) { ls.style.display = 'block'; ls.style.opacity = '1'; }
+            }
+            var am = document.getElementById('ambientMusic');
+            var bm = document.getElementById('battleMusic');
+            if (am) am.pause();
+            if (bm) bm.pause();
+            if (window.initFinalSlide) window.initFinalSlide();
+          });
+        }
+        var storyToLetterBtn = document.getElementById('storyToLetterBtn');
+        if (storyToLetterBtn) {
+          storyToLetterBtn.addEventListener('click', function() {
+            if (window.showLetterSlide) window.showLetterSlide();
+          });
+        }
+      });
 
     })();
     </script>
