@@ -1,5 +1,5 @@
 'use client';
-import HeroCanvas from '@/components/HeroCanvas';
+import { useState } from 'react';
 import StoryHero from '@/components/story/StoryHero';
 import TextThatChangedEverything from '@/components/story/TextThatChangedEverything';
 import FallingWithoutKnowing from '@/components/story/FallingWithoutKnowing';
@@ -12,11 +12,13 @@ import WhatIDreamOf from '@/components/story/WhatIDreamOf';
 import FloatingPetals from '@/components/story/FloatingPetalsClient';
 import dynamic from 'next/dynamic';
 
-const ScrollProgress = dynamic(() => import('@/components/story/ScrollProgress'), { ssr: false });
-const AnimatedMascot = dynamic(() => import('@/components/story/AnimatedMascot'), { ssr: false });
+const ScrollProgress  = dynamic(() => import('@/components/story/ScrollProgress'),  { ssr: false });
+const AnimatedMascot  = dynamic(() => import('@/components/story/AnimatedMascot'),  { ssr: false });
 const ScrapbookStickers = dynamic(() => import('@/components/story/ScrapbookStickers'), { ssr: false });
+const IntroOverlay    = dynamic(() => import('@/components/IntroOverlay'),           { ssr: false });
 
 export default function Home() {
+  const [introComplete, setIntroComplete] = useState(false);
   return (
     <main style={{ background: '#f5f0e8', overflowX: 'hidden' }}>
       {/* Scroll progress bar + chapter dot nav */}
@@ -27,9 +29,10 @@ export default function Home() {
       <ScrapbookStickers />
       {/* Global floating rose petals (client-only, DOM-dependent) */}
       <FloatingPetals />
+      {/* ── Full intro sequence: Lock → Anniversary → Heart → Begin ─ */}
+      <IntroOverlay onComplete={() => setIntroComplete(true)} />
 
-      {/* ── Intro: 3D Heart Hero ────────────────────────────── */}
-      <HeroCanvas />
+      {/* ── Story scrolls in below the overlay ─────────────────── */}
 
       {/* ── Chapter 1: A Random Match ─────────────────────── */}
       <StoryHero />
