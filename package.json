@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cd scrollytelling && npm install && npm run build && npx shx cp -r out ../dist/story",
     "preview": "vite preview"
   },
   "devDependencies": {

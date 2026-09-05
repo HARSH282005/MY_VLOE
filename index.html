@@ -1093,27 +1093,13 @@
         if (skipBtn) {
           skipBtn.addEventListener('click', function() {
             if (!confirm('ARE YOU SURE ? WANT TO GO DIRECT REWARD SECTION ?')) return;
-            const sectionsToHide = ['hero', 'letter', 'reasons', 'promise', 'final', 'level1Game', 'final-slide'];
-            sectionsToHide.forEach(id => {
-              const el = document.getElementById(id);
-              if (el) el.style.display = 'none';
-            });
             
             // Stop any running games
             if (window.game && window.game.stop) window.game.stop();
             if (window._level2 && window._level2.stop) window._level2.stop();
             if (window._level3 && window._level3.stop) window._level3.stop();
 
-            var ss = document.getElementById('love-story-slide');
-            if (ss) {
-              ss.style.display = 'block';
-              ss.style.opacity = '1';
-              ss.scrollTop = 0;
-              if (window.initLoveStory) window.initLoveStory();
-            } else {
-              var ls = document.getElementById('letter-content-slide');
-              if (ls) { ls.style.display = 'block'; ls.style.opacity = '1'; }
-            }
+            window.location.href = '/story/';
             var am = document.getElementById('ambientMusic');
             var bm = document.getElementById('battleMusic');
             if (am) am.pause();

@@ -39,8 +39,8 @@ export default function WhatIDreamOf() {
       gsap.fromTo('.dream-item',
         { opacity: 0, x: 30 },
         {
-          opacity: 1, x: 0, stagger: 0.08, duration: 0.7, ease: 'expo.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 60%', delay: 0.8 }
+          opacity: 1, x: 0, stagger: 0.08, duration: 0.7, ease: 'expo.out', delay: 0.8,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' }
         }
       );
     }, sectionRef);

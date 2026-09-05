@@ -1,3 +1,4 @@
+'use client';
 import HeroCanvas from '@/components/HeroCanvas';
 import StoryHero from '@/components/story/StoryHero';
 import TextThatChangedEverything from '@/components/story/TextThatChangedEverything';
