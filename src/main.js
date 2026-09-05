@@ -631,6 +631,7 @@ window.initFinalSlide = () => {
   if (torchBtn) torchBtn.style.display = 'none';
   if (window.torch && window.torch.canvas) {
     window.torch.canvas.style.display = 'none';
+    if (window.torch.overlay) window.torch.overlay.style.display = 'none';
   }
   
   // Start heart cursor
@@ -2672,6 +2673,7 @@ function initTorchToggle() {
       // Show torch canvas
       if (window.torch) {
         window.torch.canvas.style.display = 'block'
+        if (window.torch.overlay) window.torch.overlay.style.display = 'block'
       }
       // Hide normal cursor again
       document.body.style.cursor = 'none'
@@ -2684,6 +2686,7 @@ function initTorchToggle() {
       // Hide torch canvas (darkness + torch drawing)
       if (window.torch) {
         window.torch.canvas.style.display = 'none'
+        if (window.torch.overlay) window.torch.overlay.style.display = 'none'
       }
       // Restore cursor so user can navigate normally
       document.body.style.cursor = 'auto'
