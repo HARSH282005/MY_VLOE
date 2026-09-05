@@ -1,5 +1,5 @@
 'use client';
-
+import HeroCanvas from '@/components/HeroCanvas';
 import StoryHero from '@/components/story/StoryHero';
 import TextThatChangedEverything from '@/components/story/TextThatChangedEverything';
 import FallingWithoutKnowing from '@/components/story/FallingWithoutKnowing';
@@ -15,7 +15,6 @@ import dynamic from 'next/dynamic';
 const ScrollProgress = dynamic(() => import('@/components/story/ScrollProgress'), { ssr: false });
 const AnimatedMascot = dynamic(() => import('@/components/story/AnimatedMascot'), { ssr: false });
 const ScrapbookStickers = dynamic(() => import('@/components/story/ScrapbookStickers'), { ssr: false });
-const AnniversaryIntro = dynamic(() => import('@/components/AnniversaryIntro'), { ssr: false });
 
 export default function Home() {
   return (
@@ -29,8 +28,8 @@ export default function Home() {
       {/* Global floating rose petals (client-only, DOM-dependent) */}
       <FloatingPetals />
 
-      {/* ── Intro: Anniversary scene → letter click → heart reveal ─ */}
-      <AnniversaryIntro />
+      {/* ── Intro: 3D Heart Hero ────────────────────────────── */}
+      <HeroCanvas />
 
       {/* ── Chapter 1: A Random Match ─────────────────────── */}
       <StoryHero />
