@@ -1,5 +1,5 @@
 'use client';
-import HeroCanvas from '@/components/HeroCanvas';
+
 import StoryHero from '@/components/story/StoryHero';
 import TextThatChangedEverything from '@/components/story/TextThatChangedEverything';
 import FallingWithoutKnowing from '@/components/story/FallingWithoutKnowing';
@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 const ScrollProgress = dynamic(() => import('@/components/story/ScrollProgress'), { ssr: false });
 const AnimatedMascot = dynamic(() => import('@/components/story/AnimatedMascot'), { ssr: false });
 const ScrapbookStickers = dynamic(() => import('@/components/story/ScrapbookStickers'), { ssr: false });
+const AnniversaryIntro = dynamic(() => import('@/components/AnniversaryIntro'), { ssr: false });
 
 export default function Home() {
   return (
@@ -28,8 +29,8 @@ export default function Home() {
       {/* Global floating rose petals (client-only, DOM-dependent) */}
       <FloatingPetals />
 
-      {/* ── Intro: Scrollytelling Hero ──────────────────────── */}
-      <HeroCanvas />
+      {/* ── Intro: Anniversary scene → letter click → heart reveal ─ */}
+      <AnniversaryIntro />
 
       {/* ── Chapter 1: A Random Match ─────────────────────── */}
       <StoryHero />
@@ -96,7 +97,7 @@ export default function Home() {
             For Jai — My Sohneo ♥
           </p>
           <a
-            href="/"
+            href="/scrapbook"
             style={{
               display: 'inline-block',
               padding: '1rem 3rem',
@@ -125,7 +126,7 @@ export default function Home() {
               (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 20px rgba(139,34,82,0.1)';
             }}
           >
-            ♥ Go to Her Letters
+            ♥ Read Her Letters
           </a>
         </div>
       </section>
