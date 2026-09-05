@@ -1100,6 +1100,15 @@
             if (window._level2 && window._level2.stop) window._level2.stop();
             if (window._level3 && window._level3.stop) window._level3.stop();
 
+            // Hide any dynamic game canvases appended to the body
+            if (window.game && window.game.canvas) window.game.canvas.style.display = 'none';
+            if (window._level2 && window._level2.canvas) window._level2.canvas.style.display = 'none';
+            if (window._level3 && window._level3.canvas) window._level3.canvas.style.display = 'none';
+            
+            // Also hide fireworks if they are running
+            var fwCanvas = document.getElementById('fireworksCanvas');
+            if (fwCanvas) fwCanvas.style.display = 'none';
+
             var fs = document.getElementById('final-slide');
             if (fs) {
               fs.style.display = 'block';
