@@ -12,10 +12,10 @@ import WhatIDreamOf from '@/components/story/WhatIDreamOf';
 import FloatingPetals from '@/components/story/FloatingPetalsClient';
 import dynamic from 'next/dynamic';
 
-const ScrollProgress  = dynamic(() => import('@/components/story/ScrollProgress'),  { ssr: false });
-const AnimatedMascot  = dynamic(() => import('@/components/story/AnimatedMascot'),  { ssr: false });
+const ScrollProgress = dynamic(() => import('@/components/story/ScrollProgress'), { ssr: false });
+const AnimatedMascot = dynamic(() => import('@/components/story/AnimatedMascot'), { ssr: false });
 const ScrapbookStickers = dynamic(() => import('@/components/story/ScrapbookStickers'), { ssr: false });
-const IntroOverlay    = dynamic(() => import('@/components/IntroOverlay'),           { ssr: false });
+const IntroOverlay = dynamic(() => import('@/components/IntroOverlay'), { ssr: false });
 
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);

@@ -48,8 +48,8 @@ function Petal({ left, size, color, anim }: { left: string; size: number; color:
   return (
     <div style={{ position: 'absolute', left, top: '-40px', width: size, height: size * 0.8, pointerEvents: 'none', animation: anim }}>
       <svg viewBox="0 0 20 16" width="100%" height="100%">
-        <ellipse cx="10" cy="8" rx="9" ry="7" fill={color} opacity="0.88"/>
-        <ellipse cx="9" cy="7" rx="5" ry="3.5" fill="white" opacity="0.22"/>
+        <ellipse cx="10" cy="8" rx="9" ry="7" fill={color} opacity="0.88" />
+        <ellipse cx="9" cy="7" rx="5" ry="3.5" fill="white" opacity="0.22" />
       </svg>
     </div>
   );
@@ -62,20 +62,20 @@ type Phase = 'lock' | 'unlocking' | 'anniversary' | 'burst' | 'heart' | 'ready' 
 
 // ══════════════════════════════════════════════════════════════
 export default function IntroOverlay({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase]           = useState<Phase>('lock');
-  const [input, setInput]           = useState('');
-  const [shake, setShake]           = useState(false);
-  const [wrongMsg, setWrongMsg]     = useState('');
+  const [phase, setPhase] = useState<Phase>('lock');
+  const [input, setInput] = useState('');
+  const [shake, setShake] = useState(false);
+  const [wrongMsg, setWrongMsg] = useState('');
   const [lockUnlocked, setLockUnlocked] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [exiting, setExiting]       = useState(false);
+  const [exiting, setExiting] = useState(false);
 
   // Petal arrays
   const scenePetals = useMemo(() =>
     Array.from({ length: 36 }, (_, i) => ({
       id: i, left: `${Math.random() * 102 - 1}%`,
       size: 12 + Math.random() * 14,
-      color: ['#ffb3c6','#ff85a1','#ffd6e7','#ffccd5','#f9a8c9'][i % 5],
+      color: ['#ffb3c6', '#ff85a1', '#ffd6e7', '#ffccd5', '#f9a8c9'][i % 5],
       dur: 4 + Math.random() * 5, delay: Math.random() * 9,
     })), []);
 
@@ -83,7 +83,7 @@ export default function IntroOverlay({ onComplete }: { onComplete: () => void })
     Array.from({ length: 65 }, (_, i) => ({
       id: i, left: `${Math.random() * 102 - 1}%`,
       size: 14 + Math.random() * 18,
-      color: ['#ffb3c6','#ff85a1','#ffd6e7','#ff4d6d','#ffccd5'][i % 5],
+      color: ['#ffb3c6', '#ff85a1', '#ffd6e7', '#ff4d6d', '#ffccd5'][i % 5],
       delay: Math.random() * 1.0,
     })), []);
 
@@ -131,15 +131,15 @@ export default function IntroOverlay({ onComplete }: { onComplete: () => void })
   if (phase === 'done') return null;
 
   // ─── LOCK phase ────────────────────────────────────────────────
-  const isLock        = phase === 'lock' || phase === 'unlocking';
+  const isLock = phase === 'lock' || phase === 'unlocking';
   const isAnniversary = phase === 'anniversary' || phase === 'burst';
-  const isHeart       = phase === 'heart' || phase === 'ready';
+  const isHeart = phase === 'heart' || phase === 'ready';
 
   const displayDots = Array.from({ length: PASSCODE.length }, (_, i) =>
     i < input.length ? (lockUnlocked ? '♥' : '●') : '○'
   );
 
-  const numKeys = ['1','2','3','4','5','6','7','8','9','','0','del'];
+  const numKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'];
 
   return (
     <div style={{
@@ -304,22 +304,22 @@ export default function IntroOverlay({ onComplete }: { onComplete: () => void })
         {/* Tree silhouettes */}
         <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '65%', pointerEvents: 'none' }}
           viewBox="0 0 1280 420" preserveAspectRatio="xMidYMax slice">
-          <rect x="15" y="210" width="22" height="210" fill="#150820"/>
-          <ellipse cx="26" cy="150" rx="80" ry="95" fill="#1e0a30" opacity="0.88"/>
-          <ellipse cx="0"  cy="120" rx="55" ry="65" fill="#2a0e40" opacity="0.7"/>
-          <ellipse cx="55" cy="130" rx="50" ry="60" fill="#2a0e40" opacity="0.7"/>
-          {[{x:10,y:115},{x:50,y:125},{x:80,y:140},{x:0,y:140},{x:30,y:100},{x:65,y:110},{x:-10,y:155},{x:42,y:150}].map((p,i)=>(
-            <ellipse key={i} cx={p.x} cy={p.y} rx="20" ry="15" fill="#ff85a1" opacity={0.6+i*0.03}/>
+          <rect x="15" y="210" width="22" height="210" fill="#150820" />
+          <ellipse cx="26" cy="150" rx="80" ry="95" fill="#1e0a30" opacity="0.88" />
+          <ellipse cx="0" cy="120" rx="55" ry="65" fill="#2a0e40" opacity="0.7" />
+          <ellipse cx="55" cy="130" rx="50" ry="60" fill="#2a0e40" opacity="0.7" />
+          {[{ x: 10, y: 115 }, { x: 50, y: 125 }, { x: 80, y: 140 }, { x: 0, y: 140 }, { x: 30, y: 100 }, { x: 65, y: 110 }, { x: -10, y: 155 }, { x: 42, y: 150 }].map((p, i) => (
+            <ellipse key={i} cx={p.x} cy={p.y} rx="20" ry="15" fill="#ff85a1" opacity={0.6 + i * 0.03} />
           ))}
-          <rect x="1243" y="220" width="22" height="200" fill="#150820"/>
-          <ellipse cx="1254" cy="170" rx="80" ry="95" fill="#1e0a30" opacity="0.88"/>
-          <ellipse cx="1280" cy="130" rx="60" ry="70" fill="#2a0e40" opacity="0.7"/>
-          <ellipse cx="1220" cy="145" rx="55" ry="65" fill="#2a0e40" opacity="0.7"/>
-          {[{x:1270,y:115},{x:1240,y:130},{x:1210,y:148},{x:1280,y:145},{x:1255,y:100},{x:1225,y:120},{x:1265,y:160}].map((p,i)=>(
-            <ellipse key={i} cx={p.x} cy={p.y} rx="20" ry="15" fill="#ff85a1" opacity={0.6+i*0.03}/>
+          <rect x="1243" y="220" width="22" height="200" fill="#150820" />
+          <ellipse cx="1254" cy="170" rx="80" ry="95" fill="#1e0a30" opacity="0.88" />
+          <ellipse cx="1280" cy="130" rx="60" ry="70" fill="#2a0e40" opacity="0.7" />
+          <ellipse cx="1220" cy="145" rx="55" ry="65" fill="#2a0e40" opacity="0.7" />
+          {[{ x: 1270, y: 115 }, { x: 1240, y: 130 }, { x: 1210, y: 148 }, { x: 1280, y: 145 }, { x: 1255, y: 100 }, { x: 1225, y: 120 }, { x: 1265, y: 160 }].map((p, i) => (
+            <ellipse key={i} cx={p.x} cy={p.y} rx="20" ry="15" fill="#ff85a1" opacity={0.6 + i * 0.03} />
           ))}
-          {[50,150,260,380,500,640,780,900,1030,1150,1240].map((x,i)=>(
-            <ellipse key={i} cx={x} cy={45+Math.sin(i)*15} rx="28" ry="18" fill="#ff85a1" opacity="0.55"/>
+          {[50, 150, 260, 380, 500, 640, 780, 900, 1030, 1150, 1240].map((x, i) => (
+            <ellipse key={i} cx={x} cy={45 + Math.sin(i) * 15} rx="28" ry="18" fill="#ff85a1" opacity="0.55" />
           ))}
         </svg>
 
@@ -352,15 +352,15 @@ export default function IntroOverlay({ onComplete }: { onComplete: () => void })
           filter: 'drop-shadow(0 0 18px rgba(255,180,100,0.65))',
         }}>
           <svg viewBox="0 0 220 165" width="200" height="150">
-            <rect x="12" y="38" width="196" height="122" rx="8" fill="#e8d5a0" stroke="#c8a860" strokeWidth="2.5"/>
-            <line x1="35" y1="90"  x2="185" y2="90"  stroke="#c8a860" strokeWidth="0.5" opacity="0.3"/>
-            <line x1="35" y1="105" x2="185" y2="105" stroke="#c8a860" strokeWidth="0.5" opacity="0.3"/>
-            <path d="M12 38 L110 95 L208 38 Z" fill="#d4b878" stroke="#c8a860" strokeWidth="1.5"/>
-            <path d="M12 160 L70 108" stroke="#c8a860" strokeWidth="1.5" opacity="0.4"/>
-            <path d="M208 160 L150 108" stroke="#c8a860" strokeWidth="1.5" opacity="0.4"/>
-            <circle cx="110" cy="130" r="22" fill="#700010" stroke="#500008" strokeWidth="1.5"/>
-            <circle cx="110" cy="130" r="18" fill="#8b0018"/>
-            <path d="M110 122 C110 122 104 116 104 111 C104 108.5 105.8 106 108 106 C109.2 106 110 107.5 110 107.5 C110 107.5 110.8 106 112 106 C114.2 106 116 108.5 116 111 C116 116 110 122 110 122Z" fill="#ffd0d0" opacity="0.9"/>
+            <rect x="12" y="38" width="196" height="122" rx="8" fill="#e8d5a0" stroke="#c8a860" strokeWidth="2.5" />
+            <line x1="35" y1="90" x2="185" y2="90" stroke="#c8a860" strokeWidth="0.5" opacity="0.3" />
+            <line x1="35" y1="105" x2="185" y2="105" stroke="#c8a860" strokeWidth="0.5" opacity="0.3" />
+            <path d="M12 38 L110 95 L208 38 Z" fill="#d4b878" stroke="#c8a860" strokeWidth="1.5" />
+            <path d="M12 160 L70 108" stroke="#c8a860" strokeWidth="1.5" opacity="0.4" />
+            <path d="M208 160 L150 108" stroke="#c8a860" strokeWidth="1.5" opacity="0.4" />
+            <circle cx="110" cy="130" r="22" fill="#700010" stroke="#500008" strokeWidth="1.5" />
+            <circle cx="110" cy="130" r="18" fill="#8b0018" />
+            <path d="M110 122 C110 122 104 116 104 111 C104 108.5 105.8 106 108 106 C109.2 106 110 107.5 110 107.5 C110 107.5 110.8 106 112 106 C114.2 106 116 108.5 116 111 C116 116 110 122 110 122Z" fill="#ffd0d0" opacity="0.9" />
           </svg>
           <p style={{ textAlign: 'center', fontFamily: "'Lato',sans-serif", fontSize: '0.72rem', letterSpacing: '0.22em', color: 'rgba(255,210,170,0.8)', marginTop: '0.6rem', animation: 'blinkHint 2.2s ease-in-out infinite' }}>
             CLICK TO OPEN
@@ -399,7 +399,7 @@ export default function IntroOverlay({ onComplete }: { onComplete: () => void })
             <Canvas dpr={[1, 2]}>
               <PerspectiveCamera makeDefault position={[0, 0, 9]} fov={48} />
               <ambientLight intensity={0.35} />
-              <directionalLight position={[8, 10, 5]}  intensity={2.5} color="#ffccd5" />
+              <directionalLight position={[8, 10, 5]} intensity={2.5} color="#ffccd5" />
               <directionalLight position={[-8, -6, -4]} intensity={0.8} color="#ff2d55" />
               <pointLight position={[0, 0, 4]} intensity={2.2} color="#ff85a1" distance={10} />
               <Environment preset="night" />
