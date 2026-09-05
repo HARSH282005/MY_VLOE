@@ -24,6 +24,15 @@ class MinecraftTorch {
     document.body.appendChild(this.canvas)
     this.ctx = this.canvas.getContext('2d')
 
+    this.overlay = document.createElement('div')
+    this.overlay.id = 'torchOverlay'
+    this.overlay.style.position = 'fixed'
+    this.overlay.style.inset = '0'
+    this.overlay.style.zIndex = '9999'
+    this.overlay.style.pointerEvents = 'none'
+    this.overlay.style.background = 'radial-gradient(circle var(--r, 230px) at var(--tx, 50vw) var(--ty, 50vh), rgba(255,160,30,var(--warmA, 0.14)) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.65) 100%)'
+    document.body.appendChild(this.overlay)
+
     this.mx = window.innerWidth / 2   // mouse x
     this.my = window.innerHeight / 2  // mouse y
     this.tx = this.mx                  // smoothed x
@@ -57,42 +66,15 @@ class MinecraftTorch {
 
   /** Draw the dark cave overlay with a warm circular hole at torch position */
   drawDarkness(x, y, phase) {
-    const ctx = this.ctx
-    const W = this.canvas.width
-    const H = this.canvas.height
-
     // Flicker the radius naturally
     const r = 230 + Math.sin(phase * 1.7) * 18 + Math.cos(phase * 2.9) * 10
-
-    // ── Cave darkness gradient ──────────────────────────
-    const dark = ctx.createRadialGradient(x, y, r * 0.12, x, y, r)
-    dark.addColorStop(0.00, 'rgba(0,0,0,0)')
-    dark.addColorStop(0.35, 'rgba(0,0,0,0.02)')
-    dark.addColorStop(0.60, 'rgba(0,0,0,0.40)')
-    dark.addColorStop(0.80, 'rgba(0,0,0,0.55)')
-    dark.addColorStop(1.00, 'rgba(0,0,0,0.65)')
-    ctx.fillStyle = dark
-    ctx.fillRect(0, 0, W, H)
-
-    // ── Warm orange torch glow ──────────────────────────
-    const warmR  = 160 + Math.sin(phase * 1.1) * 14
     const warmA  = 0.14 + Math.sin(phase * 2.1) * 0.025
-    const warm = ctx.createRadialGradient(x, y - 10, 0, x, y - 10, warmR)
-    warm.addColorStop(0.00, `rgba(255,160,30,${warmA})`)
-    warm.addColorStop(0.40, `rgba(255,100,10,${warmA * 0.45})`)
-    warm.addColorStop(0.75, `rgba(200,60,0,${warmA * 0.1})`)
-    warm.addColorStop(1.00, 'rgba(0,0,0,0)')
-    ctx.fillStyle = warm
-    ctx.fillRect(0, 0, W, H)
-
-    // ── Secondary ambient flicker highlight ────────────
-    const flareX = x + Math.sin(phase * 3.3) * 15
-    const flareY = y + Math.cos(phase * 2.7) * 10 - 20
-    const flare  = ctx.createRadialGradient(flareX, flareY, 0, flareX, flareY, 55)
-    flare.addColorStop(0, `rgba(255,220,100,${0.06 + Math.sin(phase * 4) * 0.02})`)
-    flare.addColorStop(1, 'rgba(0,0,0,0)')
-    ctx.fillStyle = flare
-    ctx.fillRect(0, 0, W, H)
+    
+    // Update CSS variables for the hardware-accelerated overlay
+    this.overlay.style.setProperty('--tx', `${x}px`);
+    this.overlay.style.setProperty('--ty', `${y - 10}px`);
+    this.overlay.style.setProperty('--r', `${r}px`);
+    this.overlay.style.setProperty('--warmA', warmA);
   }
 
   /**
