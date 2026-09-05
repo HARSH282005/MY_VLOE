@@ -21,8 +21,8 @@ body.locked {
 }
 
 .locked-blur.unlocked {
-  filter: blur(0px) grayscale(0%);
-  transform: scale(1);
+  filter: none;
+  transform: none;
   pointer-events: auto;
   user-select: auto;
   overflow: auto;

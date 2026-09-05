@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+
+:root {
+  --cream: #f5f0e8;
+  --cream-dark: #e8dfd0;
+  --rose: #8b2252;
+  --rose-light: #c4637a;
+  --rose-pale: #f0d6da;
+  --brown: #3d2b1f;
+  --brown-light: #7a5c48;
+  --sage: #7a8c6e;
+  --gold: #d4a853;
+  --gold-light: #f0d080;
+  --navy: #1a2035;
+  --parchment: #f2e8d5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles this */
+}
+
+body {
+  background: var(--cream);
+  color: var(--brown);
+  font-family: 'Lato', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Paper texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+/* Fonts */
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-dancing { font-family: 'Dancing Script', cursive; }
+.font-fell { font-family: 'IM Fell English', serif; }
+.font-lato { font-family: 'Lato', sans-serif; }
+
+/* Chapter heading styles */
+.chapter-label {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.chapter-quote {
+  font-family: 'Dancing Script', cursive;
+  line-height: 1.4;
+}
+
+.chapter-body {
+  font-family: 'IM Fell English', serif;
+  line-height: 1.8;
+}
+
+/* Torn paper edge utility */
+.torn-top {
+  position: relative;
+}
+.torn-top::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: inherit;
+  clip-path: polygon(
+    0% 100%, 2% 40%, 4% 80%, 6% 30%, 8% 70%, 10% 20%,
+    12% 60%, 14% 10%, 16% 50%, 18% 85%, 20% 25%, 22% 65%,
+    24% 15%, 26% 55%, 28% 90%, 30% 35%, 32% 75%, 34% 20%,
+    36% 60%, 38% 5%, 40% 45%, 42% 80%, 44% 30%, 46% 70%,
+    48% 15%, 50% 55%, 52% 95%, 54% 40%, 56% 75%, 58% 25%,
+    60% 65%, 62% 10%, 64% 50%, 66% 85%, 68% 30%, 70% 70%,
+    72% 20%, 74% 55%, 76% 90%, 78% 35%, 80% 75%, 82% 20%,
+    84% 60%, 86% 5%, 88% 45%, 90% 80%, 92% 30%, 94% 65%,
+    96% 15%, 98% 55%, 100% 100%
+  );
+}
+
+/* Scroll animation base */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* Petal animation */
+@keyframes petalFall {
+  0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(110vh) rotate(720deg) translateX(80px); opacity: 0; }
+}
+
+@keyframes petalSway {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+}
+
+/* Typewriter cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+/* Rain animation */
+@keyframes rainFall {
+  0% { transform: translateY(-100px) translateX(0); opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 0.6; }
+  100% { transform: translateY(110vh) translateX(-20px); opacity: 0; }
+}
+
+/* Wax seal pulse */
+@keyframes sealPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(212, 168, 83, 0.3); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(212, 168, 83, 0.6); }
+}
+
+/* Floating hearts */
+@keyframes heartFloat {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+}
+
+/* Music player */
+.music-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  background: rgba(245, 240, 232, 0.9);
+  border: 1px solid var(--rose-pale);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--brown);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.music-btn:hover {
+  background: var(--rose-pale);
+  transform: scale(1.05);
+}
+
+@keyframes soundWave {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+
+.sound-bar {
+  width: 3px;
+  background: var(--rose);
+  border-radius: 2px;
+  animation: soundWave 0.8s ease-in-out infinite;
+}
+.sound-bar:nth-child(2) { animation-delay: 0.1s; }
+.sound-bar:nth-child(3) { animation-delay: 0.2s; }
+.sound-bar:nth-child(4) { animation-delay: 0.3s; }
