@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 import million from "million/compiler";
 
 const nextConfig: NextConfig = {
+  output: "export",
+  basePath: "/scrapbook",
+  images: {
+    unoptimized: true,
+  },
   webpack: (config) => {
     // Required for Transformers.js background removal in browser
     config.resolve.alias = {
