@@ -421,103 +421,117 @@ class Fireworks {
 class HeartCursor {
   constructor() {
     this.canvas = document.createElement('canvas');
-    this.canvas.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:10000;';
+    this.canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10000;will-change:transform;';
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d');
     this.x = window.innerWidth / 2;
     this.y = window.innerHeight / 2;
     this.particles = [];
     this.active = true;
-    
+    this._lastSpawn = 0; // throttle spawning by time, not random chance
+
     this.resize();
     window.addEventListener('resize', () => this.resize());
+
+    // Capture raw mouse coords — no transforms needed
     window.addEventListener('mousemove', (e) => {
       this.x = e.clientX;
       this.y = e.clientY;
-      if (Math.random() > 0.2) {
+      const now = performance.now();
+      if (now - this._lastSpawn > 40) { // spawn at most every 40ms (~25/s)
+        this._lastSpawn = now;
         this.particles.push(this.createParticle());
       }
     });
+
     window.addEventListener('touchmove', (e) => {
-      if(e.touches.length > 0) {
+      if (e.touches.length > 0) {
         this.x = e.touches[0].clientX;
         this.y = e.touches[0].clientY;
-        if (Math.random() > 0.2) {
+        const now = performance.now();
+        if (now - this._lastSpawn > 40) {
+          this._lastSpawn = now;
           this.particles.push(this.createParticle());
         }
       }
     }, { passive: true });
-    
-    // Hide default cursor
+
     document.body.style.cursor = 'none';
-    
     this.loop();
   }
-  
+
   resize() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
   }
-  
+
   createParticle() {
     return {
-      x: this.x + (Math.random() - 0.5) * 30,
-      y: this.y + (Math.random() - 0.5) * 30,
-      vx: (Math.random() - 0.5) * 1.5,
-      vy: (Math.random() - 0.5) * 1.5 - 1, // Drift upwards slightly
+      x: this.x,
+      y: this.y,
+      vx: (Math.random() - 0.5) * 1.2,
+      vy: (Math.random() - 0.5) * 1.2 - 0.8,
       life: 1,
-      size: Math.random() * 10 + 6,
-      color: '#FFFFF0' // Ivory
+      size: Math.random() * 8 + 5,
+      color: `hsl(${340 + Math.random() * 20},80%,${60 + Math.random() * 15}%)`
     };
   }
-  
+
   drawHeart(ctx, x, y, size, color, glow) {
     ctx.save();
     if (glow) {
       ctx.shadowColor = color;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 10;
     }
     ctx.fillStyle = color;
     ctx.beginPath();
-    // Adjust so x,y is roughly the top-left/center for pointing
-    const topX = x;
-    const topY = y;
-    ctx.moveTo(topX, topY + size / 4);
-    ctx.bezierCurveTo(topX, topY, topX - size / 2, topY, topX - size / 2, topY + size / 4);
-    ctx.bezierCurveTo(topX - size / 2, topY + size / 2, topX, topY + size * 0.8, topX, topY + size);
-    ctx.bezierCurveTo(topX, topY + size * 0.8, topX + size / 2, topY + size / 2, topX + size / 2, topY + size / 4);
-    ctx.bezierCurveTo(topX + size / 2, topY, topX, topY, topX, topY + size / 4);
+    ctx.moveTo(x, y + size / 4);
+    ctx.bezierCurveTo(x, y,               x - size/2, y,               x - size/2, y + size/4);
+    ctx.bezierCurveTo(x - size/2, y + size/2, x, y + size*0.8, x, y + size);
+    ctx.bezierCurveTo(x, y + size*0.8, x + size/2, y + size/2, x + size/2, y + size/4);
+    ctx.bezierCurveTo(x + size/2, y, x, y, x, y + size/4);
     ctx.fill();
     ctx.restore();
   }
-  
+
   loop() {
     if (!this.active) return;
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
-    // Draw trail
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Draw trail particles — NO shadowBlur (too slow)
+    ctx.save();
+    ctx.shadowBlur = 0;
     for (let i = this.particles.length - 1; i >= 0; i--) {
-      let p = this.particles[i];
+      const p = this.particles[i];
       p.x += p.vx;
       p.y += p.vy;
-      p.life -= 0.02; // Fade out speed
+      p.life -= 0.04; // faster fade = fewer particles alive at once
       if (p.life <= 0) {
         this.particles.splice(i, 1);
         continue;
       }
-      this.ctx.globalAlpha = p.life;
-      this.drawHeart(this.ctx, p.x, p.y, p.size, p.color, true);
+      ctx.globalAlpha = p.life * 0.8;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      const s = p.size * p.life; // shrink as they fade
+      ctx.moveTo(p.x, p.y + s/4);
+      ctx.bezierCurveTo(p.x, p.y, p.x-s/2, p.y, p.x-s/2, p.y+s/4);
+      ctx.bezierCurveTo(p.x-s/2, p.y+s/2, p.x, p.y+s*0.8, p.x, p.y+s);
+      ctx.bezierCurveTo(p.x, p.y+s*0.8, p.x+s/2, p.y+s/2, p.x+s/2, p.y+s/4);
+      ctx.bezierCurveTo(p.x+s/2, p.y, p.x, p.y, p.x, p.y+s/4);
+      ctx.fill();
     }
-    
-    // Draw main cursor heart
-    this.ctx.globalAlpha = 1;
-    // The hot spot of the cursor is the mouse coords (this.x, this.y).
-    // Let's offset the heart so its top left bump or center is right at the cursor hot spot.
-    this.drawHeart(this.ctx, this.x, this.y - 4, 24, '#800020', true); // Deep Burgundy
-    
+    ctx.restore();
+
+    // Main cursor heart — single glow call
+    ctx.globalAlpha = 1;
+    this.drawHeart(ctx, this.x, this.y - 4, 22, '#800020', true);
+
     requestAnimationFrame(() => this.loop());
   }
 }
+
 
 // ═══════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════════
