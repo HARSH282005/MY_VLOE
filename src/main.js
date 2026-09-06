@@ -24,15 +24,7 @@ class MinecraftTorch {
     document.body.appendChild(this.canvas)
     this.ctx = this.canvas.getContext('2d')
 
-    this.overlay = document.createElement('div')
-    this.overlay.id = 'torchOverlay'
-    this.overlay.style.position = 'fixed'
-    this.overlay.style.inset = '0'
-    this.overlay.style.zIndex = '9999'
-    this.overlay.style.pointerEvents = 'none'
-    // Change warm light to cherry pinkish-red light
-    this.overlay.style.background = 'radial-gradient(circle var(--r, 230px) at var(--tx, 50vw) var(--ty, 50vh), rgba(210,4,45,var(--warmA, 0.14)) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.65) 100%)'
-    document.body.appendChild(this.overlay)
+    // Removed torch overlay
 
     this.mx = window.innerWidth / 2   // mouse x
     this.my = window.innerHeight / 2  // mouse y
@@ -64,15 +56,7 @@ class MinecraftTorch {
     this.canvas.height = window.innerHeight
   }
 
-  drawDarkness(x, y, phase) {
-    const r = 230 + Math.sin(phase * 1.7) * 18 + Math.cos(phase * 2.9) * 10
-    const warmA  = 0.14 + Math.sin(phase * 2.1) * 0.025
-    
-    this.overlay.style.setProperty('--tx', `${x}px`);
-    this.overlay.style.setProperty('--ty', `${y - 10}px`);
-    this.overlay.style.setProperty('--r', `${r}px`);
-    this.overlay.style.setProperty('--warmA', warmA);
-  }
+  // Darkness removed
 
   drawHeart(ctx, x, y, size, color) {
     ctx.save();
@@ -127,7 +111,7 @@ class MinecraftTorch {
     this.ty += (this.my - this.ty) * 0.12
     this.phase += 0.055
 
-    this.drawDarkness(this.tx, this.ty, this.phase)
+    // No darkness
 
     // Spawn heart particles occasionally
     if (Math.random() < 0.3) {
@@ -825,8 +809,8 @@ gsap.registerPlugin(ScrollTrigger);
   initTypewriter();
   initButtons(window.fireworks);
   initParallax();
-  initTorchToggle();
-  initTorchHint();
+  // Removed initTorchToggle();
+  // Removed initTorchHint();
   initMusic();
 // ═══════════════════════════════════════════════════════════
 //  HEART RAIN & PETAL RAIN
@@ -2466,22 +2450,7 @@ function initLoader() {
   }, 500)
 }
 
-// ═══════════════════════════════════════════════════════════
-//  TORCH HINT FADE
-// ═══════════════════════════════════════════════════════════
-function initTorchHint() {
-  const hint = document.getElementById('torchHint')
-  if (!hint) return
-  // Auto-hide after first mouse move or touch
-  const hideHint = () => {
-    gsap.to(hint, { opacity: 0, duration: 1, delay: 0.5, onComplete: () => hint.remove() })
-    window.removeEventListener('mousemove', hideHint)
-    window.removeEventListener('touchstart', hideHint)
-  }
-  window.addEventListener('mousemove', hideHint, { once: true })
-  window.addEventListener('touchstart', hideHint, { once: true })
-}
-
+// Removed initTorchHint
 // ═══════════════════════════════════════════════════════════
 //  MUSIC INITIALIZATION
 // ═══════════════════════════════════════════════════════════
@@ -2561,53 +2530,7 @@ function initMusic() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  TORCH TOGGLE — ON / OFF button (top-left)
-// ═══════════════════════════════════════════════════════════
-function initTorchToggle() {
-  const btn   = document.getElementById('torchToggleBtn')
-  const label = document.getElementById('torchBtnLabel')
-  if (!btn) return
-
-  let torchOn = true
-
-  btn.addEventListener('click', () => {
-    torchOn = !torchOn
-
-    if (torchOn) {
-      // Turn torch ON
-      btn.classList.remove('torch-off')
-      label.textContent = 'TORCH ON'
-
-      // Show torch canvas
-      if (window.torch) {
-        window.torch.canvas.style.display = 'block'
-        if (window.torch.overlay) window.torch.overlay.style.display = 'block'
-      }
-      // Hide normal cursor again
-      document.body.style.cursor = 'none'
-
-    } else {
-      // Turn torch OFF
-      btn.classList.add('torch-off')
-      label.textContent = 'TORCH OFF'
-
-      // Hide torch canvas (darkness + torch drawing)
-      if (window.torch) {
-        window.torch.canvas.style.display = 'none'
-        if (window.torch.overlay) window.torch.overlay.style.display = 'none'
-      }
-      // Restore cursor so user can navigate normally
-      document.body.style.cursor = 'auto'
-    }
-
-    // Little bounce animation on the button
-    gsap.fromTo(btn,
-      { scale: 0.88 },
-      { scale: 1, duration: 0.35, ease: 'back.out(2.5)' }
-    )
-  })
-}
+// Removed initTorchToggle
 
 // Initialization merged into the first DOMContentLoaded block.
 
