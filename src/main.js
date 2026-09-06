@@ -2484,10 +2484,9 @@ function initLoader() {
   setTimeout(() => {
     loader.classList.add('hidden')
     if (app) app.classList.add('visible')
-    // Play background music if enabled
-    const bgm = document.getElementById('ambientMusic');
-    if (bgm && !window.musicMuted) {
-      bgm.play().catch(e => console.log('Audio autoplay blocked', e));
+    // Play background music if enabled, respecting currentMusic (e.g. if jumpToLetters set it to sawaal)
+    if (window.playMusicTrack && window.currentMusic && !window.musicMuted) {
+      window.playMusicTrack(window.currentMusic);
     }
   }, 500)
 }

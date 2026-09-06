@@ -1071,6 +1071,14 @@
           const bgBreeze = document.querySelector('.bg-breeze');
           if (bgBreeze) bgBreeze.style.display = 'none';
 
+          // Hide all other background elements to avoid mixing
+          const appDiv = document.getElementById('app');
+          if (appDiv) appDiv.style.display = 'none';
+          const bgVideo = document.getElementById('bgVideo');
+          if (bgVideo) bgVideo.style.display = 'none';
+          const flowerCurtain = document.getElementById('flowerCurtain');
+          if (flowerCurtain) flowerCurtain.style.display = 'none';
+
           if (window.playMusicTrack) {
             window.playMusicTrack('sawaal'); // Play Sawaal on the letter/scrapbook slide
           }
@@ -1426,24 +1434,38 @@
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/rose.js"></script>
     <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        if (window.location.search.includes('jumpToLetters=true')) {
+      document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('jumpToLetters') === 'true') {
+          // 1. Hide lock screen and remove lock classes
           const lock = document.getElementById('lockScreen');
           if (lock) lock.style.display = 'none';
           document.body.classList.remove('locked');
           const wrapper = document.getElementById('mainAppWrapper');
           if (wrapper) wrapper.classList.remove('locked-blur');
 
+          // 2. Hide all other elements to prevent mixing
+          const appDiv = document.getElementById('app');
+          if (appDiv) appDiv.style.display = 'none';
+          const bgVideo = document.getElementById('bgVideo');
+          if (bgVideo) bgVideo.style.display = 'none';
+          document.body.style.background = '#000';
+
+          const loader = document.getElementById('loader');
+          if (loader) loader.style.display = 'none';
+          
           document.querySelectorAll('.section').forEach(s => {
             s.style.display = 'none';
           });
           
+          // 3. Show only the letter slide
           const letterSlide = document.getElementById('letter-content-slide');
           if (letterSlide) {
             letterSlide.style.display = 'block';
             letterSlide.style.opacity = '1';
           }
           
+          // 4. Play only Sawaal
           if (window.playMusicTrack) {
             window.playMusicTrack('sawaal');
           } else {
