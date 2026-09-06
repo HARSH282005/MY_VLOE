@@ -8,9 +8,9 @@ export default function MusicPlayer() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Use a royalty-free piano piece via CDN
+    // Use the requested song
     const audio = new Audio(
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3'
+      '/Last%20Leaves%20of%20Autumn%20-%20Zleepyfred%20(Official%20Lyric%20Video)%20-%20Zleepyfred.mp3'
     );
     audio.loop = true;
     audio.volume = 0.25;
