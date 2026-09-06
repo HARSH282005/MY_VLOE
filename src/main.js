@@ -1308,6 +1308,18 @@ function launchSlide6(app, charMeta) {
   if (gameSec) {
     gsap.fromTo(gameSec, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' })
   }
+  
+  // Hide global background video from slide 6 onwards with a smooth fade
+  const bgBreeze = document.querySelector('.bg-breeze')
+  const bgOverlay = document.querySelector('.bg-overlay')
+  if (bgBreeze) {
+    bgBreeze.style.transition = 'opacity 0.8s ease'
+    bgBreeze.style.opacity = '0'
+  }
+  if (bgOverlay) {
+    bgOverlay.style.transition = 'opacity 0.8s ease'
+    bgOverlay.style.opacity = '0'
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
