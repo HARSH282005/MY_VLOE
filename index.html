@@ -1409,9 +1409,7 @@
       function openBlankSlide() {
         document.getElementById('letter-content-slide').style.display = 'none';
         document.getElementById('blank-final-slide').style.display = 'flex';
-        // Stop Sawaal when transitioning to flower blooming
-        const saw = document.getElementById('sawaalMusic');
-        if (saw) { saw.pause(); saw.currentTime = 0; }
+        // Sawaal continues playing through the bloom slide as requested
         if(window.startRoseLoader) {
             window.startRoseLoader();
         }
