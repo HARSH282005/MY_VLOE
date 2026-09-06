@@ -99,7 +99,7 @@ export default function Home() {
             For Jai — My Sohneo ♥
           </p>
           <a
-            href="/scrapbook/"
+            href="/?jumpToLetters=true"
             style={{
               display: 'inline-block',
               padding: '1rem 3rem',

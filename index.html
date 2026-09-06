@@ -1461,5 +1461,26 @@
     <script type="module" src="/src/level3.js"></script>
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/rose.js"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.location.search.includes('jumpToLetters=true')) {
+          const lock = document.getElementById('lockScreen');
+          if (lock) lock.style.display = 'none';
+          document.body.classList.remove('locked');
+          const wrapper = document.getElementById('mainAppWrapper');
+          if (wrapper) wrapper.classList.remove('locked-blur');
+
+          document.querySelectorAll('.section').forEach(s => {
+            s.style.display = 'none';
+          });
+          
+          const letterSlide = document.getElementById('letter-content-slide');
+          if (letterSlide) {
+            letterSlide.style.display = 'block';
+            letterSlide.style.opacity = '1';
+          }
+        }
+      });
+    </script>
   </body>
 </html>
