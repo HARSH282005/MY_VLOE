@@ -75,11 +75,6 @@
             <span class="title-line line-1">WELCOME</span>
             <span class="title-line line-2 italic">PYALA BACHA</span>
           </h1>
-          
-          <!-- Skip to Reward Button -->
-          <button id="newSkipBtn" style="position: fixed; bottom: 30px; right: 30px; background: linear-gradient(45deg, #ff4d4d, #ff1a1a); border: 3px solid #fff; color: #fff; padding: 15px 25px; font-family: 'Press Start 2P', monospace; font-size: 0.8rem; cursor: pointer; border-radius: 50px; box-shadow: 0 10px 25px rgba(255, 0, 0, 0.5); z-index: 10000; transition: all 0.3s ease;">
-            SKIP TO REWARD ➔
-          </button>
         </div>
         
         <!-- Clean Scroll Indicator -->
@@ -1073,47 +1068,7 @@
         },600);
       };
 
-      /* ── Wire skip-to-reward button ── */
-      document.addEventListener('DOMContentLoaded', function() {
-        var newSkipBtn = document.getElementById('newSkipBtn');
-        if (newSkipBtn) {
-          newSkipBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Hide the button itself
-            newSkipBtn.style.display = 'none';
-            
-            const allSections = document.querySelectorAll('section');
-            allSections.forEach(s => s.style.display = 'none');
-            
-            // Stop any running games
-            if (window.game && window.game.stop) window.game.stop();
-            if (window._level2 && window._level2.stop) window._level2.stop();
-            if (window._level3 && window._level3.stop) window._level3.stop();
 
-            // Hide any dynamic game canvases appended to the body
-            if (window.game && window.game.canvas) window.game.canvas.style.display = 'none';
-            if (window._level2 && window._level2.canvas) window._level2.canvas.style.display = 'none';
-            if (window._level3 && window._level3.canvas) window._level3.canvas.style.display = 'none';
-            
-            // Also hide fireworks if they are running
-            var fwCanvas = document.getElementById('fireworksCanvas');
-            if (fwCanvas) fwCanvas.style.display = 'none';
-
-            var fs = document.getElementById('final-slide');
-            if (fs) {
-              fs.style.display = 'block';
-              fs.style.opacity = '1';
-              fs.scrollTop = 0;
-              if (window.initFinalSlide) window.initFinalSlide();
-            }
-            
-            var am = document.getElementById('ambientMusic');
-            var bm = document.getElementById('battleMusic');
-            if (am) am.pause();
-            if (bm) bm.pause();
-          });
-        }
         var storyToLetterBtn = document.getElementById('storyToLetterBtn');
         if (storyToLetterBtn) {
           storyToLetterBtn.addEventListener('click', function() {
