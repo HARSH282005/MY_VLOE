@@ -527,7 +527,7 @@ window.initFinalSlide = () => {
   initAnniversaryCanvas();
   
   if (window.playMusicTrack) {
-    window.playMusicTrack('final');
+    window.playMusicTrack('ambient'); // Keep ambient music until the envelope is clicked
   }
 
   // Disable torch on final slide
@@ -571,6 +571,11 @@ window.initFinalSlide = () => {
       if (curtainDropped) return;
       curtainDropped = true;
       
+      // START "Last Leaves of Autumn" music upon clicking the envelope
+      if (window.playMusicTrack) {
+        window.playMusicTrack('final');
+      }
+
       // 1. Generate flowers (Optimized for performance)
       flowerCurtain.innerHTML = '';
       const flowerImages = ['/flower_new_1.png', '/flower_new_2.png', '/flower_new_3.png'];

@@ -48,7 +48,7 @@
     <div id="mainAppWrapper" class="locked-blur">
     <!-- Live video background -->
     <video class="bg-breeze" autoplay loop muted playsinline poster="/bg-cherry.jpg">
-      <source src="/cherry-blossom-house-minecraft-live-wallpaper.mp4" type="video/mp4">
+      <source src="/cherry%20video.mp4" type="video/mp4">
     </video>
     <div class="bg-overlay"></div>
 
@@ -1062,7 +1062,13 @@
           letter.style.display='block';
           letter.style.opacity='1';
           letter.scrollTop=0;
-          if(window.initFinalSlide) window.initFinalSlide();
+          
+          const bgBreeze = document.querySelector('.bg-breeze');
+          if (bgBreeze) bgBreeze.style.display = 'none';
+
+          if (window.playMusicTrack) {
+            window.playMusicTrack('final'); // Play "Last Leaves of Autumn"
+          }
         },600);
       };
 
@@ -1422,6 +1428,15 @@
           if (letterSlide) {
             letterSlide.style.display = 'block';
             letterSlide.style.opacity = '1';
+          }
+          
+          if (window.playMusicTrack) {
+            window.playMusicTrack('final');
+          } else {
+            // In case main.js hasn't finished loading yet
+            setTimeout(() => {
+              if (window.playMusicTrack) window.playMusicTrack('final');
+            }, 1000);
           }
         }
       });
