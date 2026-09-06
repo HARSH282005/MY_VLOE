@@ -2,8 +2,6 @@
 import dynamic from 'next/dynamic';
 import BookScene from '@/components/BookScene';
 import Uploader from '@/components/Uploader';
-import Mascot from '@/components/Mascot';
-
 // Konva relies on window and canvas, so it must be disabled for SSR
 const CanvasWorkspace = dynamic(() => import('@/components/CanvasWorkspace'), {
   ssr: false,
@@ -21,7 +19,6 @@ export default function Home() {
       
       {/* UI Overlay Layer */}
       <Uploader />
-      <Mascot />
     </main>
   );
 }
