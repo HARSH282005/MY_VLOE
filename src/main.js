@@ -114,8 +114,8 @@ class MinecraftTorch {
       }
 
       const alpha = Math.max(0, p.life);
-      // Small floating hearts
-      this.drawHeart(ctx, p.x, p.y, p.size, `rgba(210, 4, 45, ${alpha})`);
+      // Small floating hearts, slightly smaller and cherry color
+      this.drawHeart(ctx, p.x, p.y, p.size * 0.5, `rgba(222, 49, 99, ${alpha})`);
     }
   }
 
@@ -136,12 +136,13 @@ class MinecraftTorch {
 
     this.updateAndDrawParticles(ctx);
 
-    // Draw main heart cursor (Cherry Red: #D2042D)
+    // Draw main heart cursor (Cherry color: #DE3163)
     // Add glowing effect
-    ctx.shadowColor = '#D2042D';
-    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#DE3163';
+    ctx.shadowBlur = 10;
     const pulse = 1 + Math.sin(this.phase * 3) * 0.1;
-    this.drawHeart(ctx, this.tx, this.ty, pulse * 1.5, '#D2042D');
+    // Made the cursor heart significantly smaller (pulse * 0.6 instead of pulse * 1.5)
+    this.drawHeart(ctx, this.tx, this.ty, pulse * 0.6, '#DE3163');
     ctx.shadowBlur = 0;
 
     requestAnimationFrame(this.animate.bind(this))
