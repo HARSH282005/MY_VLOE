@@ -46,10 +46,8 @@
 
     <!-- App content wrapper to blur when locked -->
     <div id="mainAppWrapper" class="locked-blur">
-    <!-- Live video background -->
-    <video class="bg-breeze" autoplay loop muted playsinline poster="/bg-cherry.jpg">
-      <source src="/minecraft-sakura-oasis-moewalls-com.mp4" type="video/mp4">
-    </video>
+    <!-- Static image background -->
+    <img class="bg-breeze" src="/ch1.jpg" alt="Background" />
     <div class="bg-overlay"></div>
 
     <!-- Music Toggle Button -->
@@ -361,9 +359,7 @@
     <!-- FINAL SLIDE: SCRAPBOOK DIARY -->
     <section id="final-slide" style="display:none; opacity:0; position:relative; overflow-y:auto; overflow-x:hidden; height:100vh;">
       <div class="final-fixed-bg">
-        <video id="finalVideoBg" autoplay muted loop playsinline poster="/bg-cherry.jpg">
-          <source src="/minecraft-sakura-oasis-moewalls-com.mp4" type="video/mp4">
-        </video>
+        <img id="finalVideoBg" src="/ch1.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" alt="Final Background" />
         <div class="final-vid-overlay"></div>
       </div>
       
