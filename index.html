@@ -14,8 +14,13 @@
     <audio id="battleMusic" loop preload="none">
       <source src="/battle_music.mp3" type="audio/mpeg">
     </audio>
+    <!-- Last Leaves of Autumn - no longer used on letter slide -->
     <audio id="finalMusic" loop preload="none">
       <source src="/Last%20Leaves%20of%20Autumn%20-%20Zleepyfred%20(Official%20Lyric%20Video)%20-%20Zleepyfred.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Sawaal - plays on the letter/scrapbook slide through flower blooming -->
+    <audio id="sawaalMusic" loop preload="auto">
+      <source src="/Sawaal.mp3" type="audio/mpeg">
     </audio>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1067,7 +1072,7 @@
           if (bgBreeze) bgBreeze.style.display = 'none';
 
           if (window.playMusicTrack) {
-            window.playMusicTrack('final'); // Play "Last Leaves of Autumn"
+            window.playMusicTrack('sawaal'); // Play Sawaal on the letter/scrapbook slide
           }
         },600);
       };
@@ -1404,6 +1409,9 @@
       function openBlankSlide() {
         document.getElementById('letter-content-slide').style.display = 'none';
         document.getElementById('blank-final-slide').style.display = 'flex';
+        // Stop Sawaal when transitioning to flower blooming
+        const saw = document.getElementById('sawaalMusic');
+        if (saw) { saw.pause(); saw.currentTime = 0; }
         if(window.startRoseLoader) {
             window.startRoseLoader();
         }
@@ -1439,11 +1447,11 @@
           }
           
           if (window.playMusicTrack) {
-            window.playMusicTrack('final');
+            window.playMusicTrack('sawaal');
           } else {
             // In case main.js hasn't finished loading yet
             setTimeout(() => {
-              if (window.playMusicTrack) window.playMusicTrack('final');
+              if (window.playMusicTrack) window.playMusicTrack('sawaal');
             }, 1000);
           }
         }

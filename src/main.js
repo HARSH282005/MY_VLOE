@@ -2499,34 +2499,35 @@ function initMusic() {
   const ambient = document.getElementById('ambientMusic')
   const battle = document.getElementById('battleMusic')
   const finalM = document.getElementById('finalMusic')
+  const sawaal = document.getElementById('sawaalMusic')
   const btn = document.getElementById('musicToggleBtn')
   const icon = document.getElementById('musicBtnIcon')
   const label = document.getElementById('musicBtnLabel')
   
   if (ambient) ambient.volume = 0.4
-  if (battle) battle.volume = 0.4
-  if (finalM) finalM.volume = 0.6
-  
+  if (battle)  battle.volume  = 0.4
+  if (finalM)  finalM.volume  = 0.6
+  if (sawaal)  sawaal.volume  = 0.55
+
   let hasStarted = false
   window.isMusicMuted = false
-  window.currentMusic = 'ambient' // 'ambient', 'battle', or 'final'
-  
+  window.currentMusic = 'ambient'
+
   window.playMusicTrack = (track) => {
     window.currentMusic = track;
     if (window.isMusicMuted) return;
-    
+
+    // Stop all tracks first
+    [ambient, battle, finalM, sawaal].forEach(a => { if (a) a.pause(); });
+
     if (track === 'ambient') {
-      if (battle) battle.pause();
-      if (finalM) finalM.pause();
       if (ambient) ambient.play().catch(() => {});
     } else if (track === 'battle') {
-      if (ambient) ambient.pause();
-      if (finalM) finalM.pause();
       if (battle) battle.play().catch(() => {});
     } else if (track === 'final') {
-      if (ambient) ambient.pause();
-      if (battle) battle.pause();
       if (finalM) finalM.play().catch(() => {});
+    } else if (track === 'sawaal') {
+      if (sawaal) sawaal.play().catch(() => {});
     }
   }
 
@@ -2553,6 +2554,7 @@ function initMusic() {
         if (ambient) ambient.pause()
         if (battle) battle.pause()
         if (finalM) finalM.pause()
+        const saw = document.getElementById('sawaalMusic'); if (saw) saw.pause();
         btn.classList.add('torch-off')
         if (label) label.textContent = 'MUSIC OFF'
         if (icon) icon.textContent = '🔇'
