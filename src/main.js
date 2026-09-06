@@ -30,7 +30,8 @@ class MinecraftTorch {
     this.overlay.style.inset = '0'
     this.overlay.style.zIndex = '9999'
     this.overlay.style.pointerEvents = 'none'
-    this.overlay.style.background = 'radial-gradient(circle var(--r, 230px) at var(--tx, 50vw) var(--ty, 50vh), rgba(255,160,30,var(--warmA, 0.14)) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.65) 100%)'
+    // Change warm light to cherry pinkish-red light
+    this.overlay.style.background = 'radial-gradient(circle var(--r, 230px) at var(--tx, 50vw) var(--ty, 50vh), rgba(210,4,45,var(--warmA, 0.14)) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.65) 100%)'
     document.body.appendChild(this.overlay)
 
     this.mx = window.innerWidth / 2   // mouse x
@@ -38,8 +39,7 @@ class MinecraftTorch {
     this.tx = this.mx                  // smoothed x
     this.ty = this.my                  // smoothed y
     this.phase = 0
-
-    this.PIXEL = 9   // base unit — each "Minecraft pixel" = 9 real pixels
+    this.particles = []
 
     this.resize()
     window.addEventListener('resize', () => this.resize())
@@ -64,166 +64,85 @@ class MinecraftTorch {
     this.canvas.height = window.innerHeight
   }
 
-  /** Draw the dark cave overlay with a warm circular hole at torch position */
   drawDarkness(x, y, phase) {
-    // Flicker the radius naturally
     const r = 230 + Math.sin(phase * 1.7) * 18 + Math.cos(phase * 2.9) * 10
     const warmA  = 0.14 + Math.sin(phase * 2.1) * 0.025
     
-    // Update CSS variables for the hardware-accelerated overlay
     this.overlay.style.setProperty('--tx', `${x}px`);
     this.overlay.style.setProperty('--ty', `${y - 10}px`);
     this.overlay.style.setProperty('--r', `${r}px`);
     this.overlay.style.setProperty('--warmA', warmA);
   }
 
-  /**
-   * Draw a solid 3D rectangular prism — Minecraft-style.
-   * bx,by = top-left of the FRONT face.  W×H = front face dimensions.
-   * DX/DY = isometric depth offsets.
-   * opts: { front, frontAlt, top, side, textured }
-   */
-  draw3DBox(ctx, bx, by, W, H, DX, DY, opts, alpha) {
-    const P = this.PIXEL
-    ctx.save()
-    ctx.globalAlpha = alpha
-
-    // ── Front face ────────────────────────────────────────────
-    if (opts.textured) {
-      // Alternating row bands for wood-grain pixel texture
-      for (let r = 0; r < H; r += P) {
-        const even = Math.floor(r / P) % 2 === 0
-        ctx.fillStyle = even ? opts.front : opts.frontAlt
-        ctx.fillRect(bx, by + r, W, Math.min(P, H - r))
-      }
-      // Vertical pixel division line down centre of stick
-      ctx.fillStyle = 'rgba(0,0,0,0.12)'
-      ctx.fillRect(bx + Math.floor(W / 2) - 1, by, 1, H)
-    } else {
-      // Flame head — gradient from bright top to ember bottom
-      const grad = ctx.createLinearGradient(bx, by, bx, by + H)
-      grad.addColorStop(0.0, opts.frontAlt)   // top — brightest
-      grad.addColorStop(0.5, opts.front)      // mid — orange
-      grad.addColorStop(1.0, '#cc4400')       // bottom — ember
-      ctx.fillStyle = grad
-      ctx.fillRect(bx, by, W, H)
-    }
-
-    // ── Top face (bright lit parallelogram) ───────────────────
-    ctx.fillStyle = opts.top
-    ctx.beginPath()
-    ctx.moveTo(bx,          by)         // front-left
-    ctx.lineTo(bx + DX,     by - DY)    // back-left
-    ctx.lineTo(bx + DX + W, by - DY)    // back-right
-    ctx.lineTo(bx + W,      by)         // front-right
-    ctx.closePath()
-    ctx.fill()
-
-    // ── Right side face (dark shadow parallelogram) ───────────
-    ctx.fillStyle = opts.side
-    ctx.beginPath()
-    ctx.moveTo(bx + W,        by)
-    ctx.lineTo(bx + W + DX,   by - DY)
-    ctx.lineTo(bx + W + DX,   by - DY + H)
-    ctx.lineTo(bx + W,        by + H)
-    ctx.closePath()
-    ctx.fill()
-
-    // ── Pixel grid lines on textured wood ────────────────────
-    if (opts.textured) {
-      ctx.strokeStyle = 'rgba(0,0,0,0.20)'
-      ctx.lineWidth = 0.8
-      for (let r = P; r < H; r += P) {
-        ctx.beginPath(); ctx.moveTo(bx, by + r); ctx.lineTo(bx + W, by + r); ctx.stroke()
-      }
-    }
-
-    // ── Block outline ─────────────────────────────────────────
-    ctx.strokeStyle = 'rgba(0,0,0,0.75)'
-    ctx.lineWidth   = 1.5
-    ctx.strokeRect(bx + 0.75, by + 0.75, W - 1.5, H - 1.5)
-
-    ctx.restore()
+  drawHeart(ctx, x, y, size, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    // Heart shape centered roughly at 0,0
+    ctx.moveTo(0, 0 - 0.2 * 10); 
+    ctx.bezierCurveTo(0, -1 * 10, -1.5 * 10, -1 * 10, -1.5 * 10, 0); 
+    ctx.bezierCurveTo(-1.5 * 10, 1 * 10, 0, 2 * 10, 0, 2.5 * 10); 
+    ctx.bezierCurveTo(0, 2 * 10, 1.5 * 10, 1 * 10, 1.5 * 10, 0); 
+    ctx.bezierCurveTo(1.5 * 10, -1 * 10, 0, -1 * 10, 0, -0.2 * 10); 
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
   }
 
-  /**
-   * Draw the full Minecraft torch as two stacked 3D rectangular prisms.
-   * Flame HEAD (wide square) sits atop a tall thin STICK.
-   */
-  drawTorch(x, y, phase) {
-    const ctx = this.ctx
-    const P   = this.PIXEL          // 9px base unit
-    const DX  = Math.round(P * 0.6) // isometric depth — X
-    const DY  = Math.round(P * 0.3) // isometric depth — Y
-
-    // Subtle flicker wobble on flame
-    const fx = Math.sin(phase * 3.1) * 1.4
-    const fy = Math.cos(phase * 2.8) * 0.9
-
-    // ── Proportions ──────────
-    const headW  = P * 3   // flame head: 3 units wide
-    const headH  = P * 2   // flame head: 2 units tall
-    const stickW = P * 2   // stick: 2 units wide
-    const stickH = P * 10  // stick: 10 units tall
-
-    ctx.save()
-    // Move to cursor, rotate so stick points down-right (held at an angle)
-    ctx.translate(x, y)
-    ctx.rotate(-Math.PI / 7) // ~25 degrees counter-clockwise
-
-    // Head top-left — center the head around (0,0) so the cursor is exactly at the flame
-    const headX  = -headW / 2 - DX / 2 + fx
-    const headY  = -headH / 2 + fy
-    
-    // Stick horizontally centred under head
-    const stickX = headX + (headW - stickW) / 2
-    const stickY = headY + headH
-
-    // ── 1. Stick — draw first (behind the head) ─────────────
-    this.draw3DBox(ctx, stickX, stickY, stickW, stickH, DX, DY, {
-      front:    '#D4AF37',  // Premium gold
-      frontAlt: '#AA8529',  // Deep gold/bronze
-      top:      '#FFF0B3',  // Bright lit gold top
-      side:     '#5A3B00',  // Rich dark shadow
-      textured: true,
-    }, 1.0)
-
-    // ── 2. Flame head — draw on top ──────────────────────────
-    const fA = 0.90 + Math.sin(phase * 6.3) * 0.10  // flicker alpha
-    this.draw3DBox(ctx, headX, headY, headW, headH, DX, DY, {
-      front:    '#ff9900',   // mid orange
-      frontAlt: '#ffe555',   // bright yellow-white
-      top:      '#ffffff',   // top face — pure white glow
-      side:     '#bb4400',   // right side — dark ember
-      textured: false,
-    }, fA)
-
-    // ── 3. Bright glow bead dancing above flame ───────────────
-    const gx = DX * 0.3 + Math.sin(phase * 5.3) * 3
-    const gy = headY - DY + Math.cos(phase * 4.1) * 2 + fy
-    const gA = 0.88 + Math.sin(phase * 7.5) * 0.12
-    const gG = ctx.createRadialGradient(gx, gy, 0, gx, gy, P * 3.5)
-    gG.addColorStop(0,    `rgba(255,255,210,${gA})`)
-    gG.addColorStop(0.35, `rgba(255,200,50,${gA * 0.5})`)
-    gG.addColorStop(1,    'rgba(0,0,0,0)')
-    ctx.fillStyle = gG
-    ctx.fillRect(gx - P * 3.5, gy - P * 3.5, P * 7, P * 7)
-
-    ctx.restore()
+  spawnParticle(x, y) {
+    this.particles.push({
+      x: x + (Math.random() * 20 - 10),
+      y: y + (Math.random() * 20 - 10),
+      vx: (Math.random() - 0.5) * 1,
+      vy: Math.random() * -2 - 1, // moving up
+      life: 1.0,
+      size: Math.random() * 0.5 + 0.3
+    });
   }
 
+  updateAndDrawParticles(ctx) {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      let p = this.particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= 0.02;
+
+      if (p.life <= 0) {
+        this.particles.splice(i, 1);
+        continue;
+      }
+
+      const alpha = Math.max(0, p.life);
+      // Small floating hearts
+      this.drawHeart(ctx, p.x, p.y, p.size, `rgba(210, 4, 45, ${alpha})`);
+    }
+  }
 
   animate() {
     const ctx = this.ctx
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-    // Smooth mouse follow (lerp)
     this.tx += (this.mx - this.tx) * 0.12
     this.ty += (this.my - this.ty) * 0.12
     this.phase += 0.055
 
     this.drawDarkness(this.tx, this.ty, this.phase)
-    this.drawTorch(this.tx, this.ty, this.phase)
+
+    // Spawn heart particles occasionally
+    if (Math.random() < 0.3) {
+      this.spawnParticle(this.tx, this.ty);
+    }
+
+    this.updateAndDrawParticles(ctx);
+
+    // Draw main heart cursor (Cherry Red: #D2042D)
+    // Add glowing effect
+    ctx.shadowColor = '#D2042D';
+    ctx.shadowBlur = 15;
+    const pulse = 1 + Math.sin(this.phase * 3) * 0.1;
+    this.drawHeart(ctx, this.tx, this.ty, pulse * 1.5, '#D2042D');
+    ctx.shadowBlur = 0;
 
     requestAnimationFrame(this.animate.bind(this))
   }
