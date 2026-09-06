@@ -585,9 +585,10 @@ window.initFinalSlide = () => {
       if (curtainDropped) return;
       curtainDropped = true;
       
-      // START "Last Leaves of Autumn" music upon clicking the envelope
+      // Keep ambient playing during envelope click / flower curtain
+      // Sawaal will start when showLetterSlide() is called after the story
       if (window.playMusicTrack) {
-        window.playMusicTrack('final');
+        window.playMusicTrack('ambient');
       }
 
       // 1. Generate flowers (Optimized for performance)
@@ -639,8 +640,8 @@ window.initFinalSlide = () => {
         const storySlide = document.getElementById('love-story-slide');
         if (storySlide) {
           storySlide.style.display = 'block';
-          // Ensure we continue playing the final track (it's already playing, this is just to be safe)
-          if (window.playMusicTrack) window.playMusicTrack('final');
+          // Keep ambient playing through the story slide; Sawaal starts at showLetterSlide
+          if (window.playMusicTrack) window.playMusicTrack('ambient');
           // Initialize the inline story
           if (window.initLoveStory) window.initLoveStory();
         }
