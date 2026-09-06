@@ -615,7 +615,17 @@ window.initFinalSlide = () => {
       // 3. Switch slides and fall away — show LOVE STORY first, then letter slide
       setTimeout(() => {
         finalSlide.style.display = 'none';
-        window.location.href = '/story/';
+        
+        // Show the inline love-story-slide instead of navigating away
+        const storySlide = document.getElementById('love-story-slide');
+        if (storySlide) {
+          storySlide.style.display = 'block';
+          // Ensure we continue playing the final track (it's already playing, this is just to be safe)
+          if (window.playMusicTrack) window.playMusicTrack('final');
+          // Initialize the inline story
+          if (window.initLoveStory) window.initLoveStory();
+        }
+        
         document.body.classList.remove('lit-up'); // Clean up old states if needed
         
         setTimeout(() => {
