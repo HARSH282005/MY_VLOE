@@ -17,7 +17,31 @@ export default function MusicPlayer() {
     audioRef.current = audio;
     setLoaded(true);
 
+    // Attempt autoplay immediately
+    const attemptPlay = () => {
+      audio.play().then(() => {
+        setPlaying(true);
+        // Remove listeners once it successfully plays
+        document.removeEventListener('click', attemptPlay);
+        document.removeEventListener('scroll', attemptPlay);
+        document.removeEventListener('touchstart', attemptPlay);
+      }).catch(() => {
+        // Autoplay was prevented by browser, wait for interaction
+        setPlaying(false);
+      });
+    };
+
+    attemptPlay();
+
+    // Add fallback listeners for browsers that block autoplay until interaction
+    document.addEventListener('click', attemptPlay);
+    document.addEventListener('scroll', attemptPlay);
+    document.addEventListener('touchstart', attemptPlay);
+
     return () => {
+      document.removeEventListener('click', attemptPlay);
+      document.removeEventListener('scroll', attemptPlay);
+      document.removeEventListener('touchstart', attemptPlay);
       audio.pause();
       audio.src = '';
     };
