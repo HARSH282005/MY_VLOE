@@ -3262,8 +3262,10 @@ body.torch-off .mc-btn-pink {
 .lamp-1 { left: 10%; --lamp-scale: 0.7; animation: dropLamp 1.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards, swingLamp 3.5s ease-in-out infinite alternate 2.8s; }
 .lamp-2 { left: 22%; --lamp-scale: 0.9; animation: dropLamp 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards, swingLamp 4.2s ease-in-out infinite alternate 2.9s; }
 .lamp-3 { left: 35%; --lamp-scale: 0.8; animation: dropLamp 1.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.1s forwards, swingLamp 3.8s ease-in-out infinite alternate 2.5s; }
-.lamp-mid { left: 50%; --lamp-scale: 2.2; --lamp-x: -50%; z-index: 16; pointer-events: auto; animation: dropLamp 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.7s forwards; cursor: pointer; }
+.lamp-mid { left: 50%; --lamp-scale: 2.2; --lamp-x: -50%; z-index: 16; pointer-events: auto; animation: dropLamp 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards; cursor: pointer; }
 .lamp-mid:hover { filter: brightness(1.2); }
+
+.lit-up .cherry-pool-bg { opacity: 0.6 !important; }
 .lamp-4 { left: 65%; --lamp-scale: 0.85; animation: dropLamp 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.4s forwards, swingLamp 4.5s ease-in-out infinite alternate 2.9s; }
 .lamp-5 { left: 78%; --lamp-scale: 0.75; animation: dropLamp 1.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.6s forwards, swingLamp 3.2s ease-in-out infinite alternate 3.2s; }
 .lamp-6 { left: 90%; --lamp-scale: 0.9; animation: dropLamp 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.3s forwards, swingLamp 4.8s ease-in-out infinite alternate 2.7s; }

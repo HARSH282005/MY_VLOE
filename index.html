@@ -368,6 +368,11 @@
       <!-- Solid background fallback for final slide -->
       <div class="final-fixed-bg" style="background: #111;"></div>
       
+      <!-- Cherry Pool Video Background (hidden initially) -->
+      <video id="cherryPoolVideo" class="cherry-pool-bg" autoplay loop muted playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: opacity 2.5s ease; pointer-events: none;">
+        <source src="/cherry%20pool.mp4" type="video/mp4">
+      </video>
+
       <!-- Anniversary Interactive Canvas -->
       <canvas id="anniversaryCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:auto;"></canvas>
       <!-- Minecraft Hanging Lamps -->
