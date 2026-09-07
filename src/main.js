@@ -632,31 +632,10 @@ window.initFinalSlide = () => {
       void flowerCurtain.offsetWidth;
       flowerCurtain.classList.add('drop');
       
-      // 3. Switch slides and fall away — show LOVE STORY first, then letter slide
+      // 3. Curtain fully drops → navigate to Our Story page
       setTimeout(() => {
-        finalSlide.style.display = 'none';
-        
-        // Show the inline love-story-slide instead of navigating away
-        const storySlide = document.getElementById('love-story-slide');
-        if (storySlide) {
-          storySlide.style.display = 'block';
-          // Keep ambient playing through the story slide; Sawaal starts at showLetterSlide
-          if (window.playMusicTrack) window.playMusicTrack('ambient');
-          // Initialize the inline story
-          if (window.initLoveStory) window.initLoveStory();
-        }
-        
-        document.body.classList.remove('lit-up'); // Clean up old states if needed
-        
-        setTimeout(() => {
-          flowerCurtain.classList.remove('drop');
-          flowerCurtain.classList.add('fall-away');
-          
-          setTimeout(() => {
-            flowerCurtain.style.display = 'none';
-            flowerCurtain.innerHTML = '';
-          }, 1500);
-        }, 800);
+        // Curtain is now fully covering the screen — navigate to /story
+        window.location.href = '/story';
       }, 1500);
     });
   }
