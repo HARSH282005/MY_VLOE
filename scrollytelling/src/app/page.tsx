@@ -14,7 +14,6 @@ import dynamic from 'next/dynamic';
 
 const ScrollProgress = dynamic(() => import('@/components/story/ScrollProgress'), { ssr: false });
 const AnimatedMascot = dynamic(() => import('@/components/story/AnimatedMascot'), { ssr: false });
-const ScrapbookStickers = dynamic(() => import('@/components/story/ScrapbookStickers'), { ssr: false });
 const IntroOverlay = dynamic(() => import('@/components/IntroOverlay'), { ssr: false });
 
 export default function Home() {
@@ -25,8 +24,6 @@ export default function Home() {
       <ScrollProgress />
       {/* Animated chibi mascot that reacts at key chapters */}
       <AnimatedMascot />
-      {/* Pinterest-style scrapbook stickers that slide in at each chapter */}
-      <ScrapbookStickers />
       {/* Global floating rose petals (client-only, DOM-dependent) */}
       <FloatingPetals />
       {/* ── Full intro sequence: Lock → Anniversary → Heart → Begin ─ */}
