@@ -1277,7 +1277,7 @@ function launchSlide5(app, charMeta) {
   if (window.fireworks) window.fireworks.launch()
   petalRain(30)
 
-  // ── PLAY button → Slide 6 game ──────────────────────────
+  // PLAY button goes straight to final slide
   const playBtn = document.getElementById('gsStartBtn')
   if (playBtn) {
     playBtn.addEventListener('click', () => {
@@ -1293,7 +1293,7 @@ function launchSlide5(app, charMeta) {
                 window.scrollTo(0, 0)
                 document.documentElement.scrollTop = 0
                 document.body.scrollTop = 0
-                launchSlide6(app, charMeta)
+                if (window.initFinalSlide) window.initFinalSlide()
               }
             })
           }
@@ -1303,9 +1303,6 @@ function launchSlide5(app, charMeta) {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  LAUNCH SLIDE 6 — Nether Ghast Battle
-// ═══════════════════════════════════════════════════════════
 function launchSlide6(app, charMeta) {
   const tmpl = document.getElementById('slide6Template')
   if (!tmpl || !app) return
