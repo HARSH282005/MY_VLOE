@@ -1277,7 +1277,7 @@ function launchSlide5(app, charMeta) {
   if (window.fireworks) window.fireworks.launch()
   petalRain(30)
 
-  // PLAY button goes straight to final slide
+  // PLAY button → Level 1 game
   const playBtn = document.getElementById('gsStartBtn')
   if (playBtn) {
     playBtn.addEventListener('click', () => {
@@ -1293,7 +1293,7 @@ function launchSlide5(app, charMeta) {
                 window.scrollTo(0, 0)
                 document.documentElement.scrollTop = 0
                 document.body.scrollTop = 0
-                if (window.initFinalSlide) window.initFinalSlide()
+                launchSlide6(app, charMeta)
               }
             })
           }
