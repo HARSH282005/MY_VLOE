@@ -84,6 +84,16 @@ export default function StoryHero() {
         { opacity: 1, scale: 1, rotateY: 0, duration: 1.6, ease: 'expo.out', delay: 0.6 }
       );
 
+      // Sticker entrance
+      gsap.to('.hero-sticker', {
+        opacity: 0.95,
+        x: 0,
+        duration: 1.5,
+        ease: 'back.out(1.2)',
+        stagger: 0.2,
+        delay: 0.8
+      });
+
       // Parallax on scroll
       gsap.to(imgRef.current, {
         y: -80, ease: 'none',
@@ -145,6 +155,47 @@ export default function StoryHero() {
           color: '#c4637a',
         }}>♥</div>
       ))}
+
+      {/* Side Stickers */}
+      <div style={{
+        position: 'absolute',
+        top: '15%',
+        left: '2%',
+        width: '280px',
+        opacity: 0,
+        transform: 'rotate(-8deg) translateX(-50px)',
+        zIndex: 5,
+        filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.6))',
+      }} className="hero-sticker">
+        <Image
+          src="/sticker-soulmate.jpg"
+          alt="Soulmate"
+          width={400}
+          height={200}
+          style={{ width: '100%', height: 'auto', borderRadius: '16px' }}
+          priority
+        />
+      </div>
+
+      <div style={{
+        position: 'absolute',
+        bottom: '15%',
+        right: '2%',
+        width: '320px',
+        opacity: 0,
+        transform: 'rotate(6deg) translateX(50px)',
+        zIndex: 5,
+        filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.6))',
+      }} className="hero-sticker">
+        <Image
+          src="/sticker-love.jpg"
+          alt="I truly love you"
+          width={400}
+          height={200}
+          style={{ width: '100%', height: 'auto', borderRadius: '16px' }}
+          priority
+        />
+      </div>
 
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '1200px', width: '100%', padding: '2rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
         {/* Text side */}
