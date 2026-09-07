@@ -168,11 +168,11 @@ export default function StoryHero() {
         filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.6))',
       }} className="hero-sticker">
         <Image
-          src="/story/sticker-soulmate.jpg"
+          src="/story/sticker-soulmate.png"
           alt="Soulmate"
           width={400}
           height={200}
-          style={{ width: '100%', height: 'auto', borderRadius: '16px' }}
+          style={{ width: '100%', height: 'auto' }}
           priority
         />
       </div>
@@ -188,11 +188,11 @@ export default function StoryHero() {
         filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.6))',
       }} className="hero-sticker">
         <Image
-          src="/story/sticker-love.jpg"
+          src="/story/sticker-love.png"
           alt="I truly love you"
           width={400}
           height={200}
-          style={{ width: '100%', height: 'auto', borderRadius: '16px' }}
+          style={{ width: '100%', height: 'auto' }}
           priority
         />
       </div>
