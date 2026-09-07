@@ -168,7 +168,7 @@ export default function StoryHero() {
         filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.6))',
       }} className="hero-sticker">
         <Image
-          src="/sticker-soulmate.jpg"
+          src="/story/sticker-soulmate.jpg"
           alt="Soulmate"
           width={400}
           height={200}
@@ -188,7 +188,7 @@ export default function StoryHero() {
         filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.6))',
       }} className="hero-sticker">
         <Image
-          src="/sticker-love.jpg"
+          src="/story/sticker-love.jpg"
           alt="I truly love you"
           width={400}
           height={200}
